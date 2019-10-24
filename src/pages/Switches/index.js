@@ -6,14 +6,10 @@ import {
 
 import './index.css';
 import VirtualTable from './VirtualTable';
-import Toolbar from '../../components/Beers/Toolbar';
 
-export function VirtualTableView() {
+export function Switches() {
   return (
     <>
-    <PageSection variant={PageSectionVariants.light}>
-      <Toolbar />
-    </PageSection>
     <PageSection variant={PageSectionVariants.light}>
       <VirtualTable />
     </PageSection>
@@ -21,4 +17,4 @@ export function VirtualTableView() {
   );
 }
 
-export default VirtualTableView;
+export default Switches;

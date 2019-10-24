@@ -5,9 +5,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import { history } from '../modules/history.js';
 import Layout from '../components/Layout';
 import Home from './Home';
-import TableView from './TableView'
-import VirtualTableView from './VirtualTableView'
-import EditResourceView from './EditResourceView'
+import Switches from './Switches'
 
 export function Root({store}) {
   return (
@@ -16,9 +14,7 @@ export function Root({store}) {
         <Layout>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/table-view" component={TableView} />
-            <Route path="/virtual-table-view/:id" component={EditResourceView} />
-            <Route path="/virtual-table-view" component={VirtualTableView} />
+            <Route path="/switches" component={Switches} />
           </Switch>
         </Layout>
       </Router>
