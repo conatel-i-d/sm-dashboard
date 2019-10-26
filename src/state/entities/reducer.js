@@ -1,15 +1,15 @@
 import merge from 'lodash/merge';
 
 export const initialState = {
-  beers: {}
+  switches: {}
 }
 
-export function entitiesReducer(state = initialState, {type, payload}) {
-  if (type.search(/\/GET_SUCCESS/) > -1 && payload && payload.entities) {
+export function reducer(state = initialState, {type, payload}) {
+  if (payload && payload.entities) {
     return merge(state, payload.entities)
   }
 
   return state;
 }
 
-export default entitiesReducer;
+export default reducer;

@@ -36,10 +36,10 @@ export function selectPathname(state) {
   return {pathname: get(state, 'ui.history.pathname')};
 }
 
-export const uiReducer = combineReducers({
+export const reducer = combineReducers({
   history: historyReducer,
   app: appReducer,
   global: globalUiReducer
 });
 
-export default uiReducer;
+export default reducer;

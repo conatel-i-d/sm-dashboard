@@ -1,3 +1,11 @@
+.Switches__Page {
+  padding: 0 1em;
+}
+
+.Switches__Toolbar {
+  padding: 0.5em 0;
+}
+
 .ReactVirtualized__Table__Grid {
   outline: none;
 }

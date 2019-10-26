@@ -1,14 +1,12 @@
 import { combineReducers } from 'redux';
 
-import { uiReducer } from './ui'
-import { beersReducer } from './beers';
-import { todosReducer } from './todos';
-import { entitiesReducer } from './entities';
+import { reducer as uiReducer } from './ui'
+import { reducer as switchesReducer } from './switches';
+import { reducer as entitiesReducer } from './entities';
 
 export const rootReducer = combineReducers({
   ui: uiReducer,
-  beers: beersReducer,
-  todos: todosReducer,
+  switches: switchesReducer,
   entities: entitiesReducer
 });
 

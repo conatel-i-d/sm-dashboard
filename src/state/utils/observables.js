@@ -10,7 +10,10 @@ export const defaultRestOptions = {
   read: true, 
   update: true, 
   delete: true,
-  parseResponse: (response) => Array.isArray(response) ? response : [response]
+  parseResponse: (response) => Array.isArray(response) ? response : [response],
+  headers: {
+    'Content-Type': 'application/json'
+  }
 }
 /**
  * Crea una lista de epicas para interactuar con un recurso de una API REST
@@ -61,11 +64,8 @@ export function restEpicFactory(options) {
           body: options.method === 'POST' || options.method === 'PUT' ? payload : undefined
         }).pipe(
           map(({response}) => {
-            if (options.method === 'GET') {
-              response = options.parseResponse(response);
-              response = normalize(response, [options.schema]);
-            }
-
+            response = options.parseResponse(response);
+            response = normalize(response, [options.schema]);
             return {
               type: `@${options.prefix}/${options.method}_SUCCESS`,
               payload: response
@@ -73,7 +73,9 @@ export function restEpicFactory(options) {
           }),
           catchError(err => of({
             type: `@${options.prefix}/${options.method}_FAILURE`,
-            payload: err.response.message
+            payload: err.response && err.response.message
+              ? err.response.message
+              : err
           }))
         );
         const blocker$ = merge(
