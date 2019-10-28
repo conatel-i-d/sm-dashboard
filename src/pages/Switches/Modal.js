@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal as PatternflyModal } from '@patternfly/react-core';
 
-import Form from '../Form';
+import Form from './Form.js';
 
 const defaultState = {
   name: '',

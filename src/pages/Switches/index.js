@@ -6,9 +6,9 @@ import {
 } from '@patternfly/react-core';
 
 import './index.css';
-import Modal from './Modal';
-import VirtualTable from './VirtualTable';
-import Toolbar from './Toolbar';
+import Modal from './Modal.js';
+import Table from './Table';
+import Toolbar from './Toolbar.js';
 import { getAll, create, getState, toggleModal } from '../../state/switches'
 
 export function Switches({ getAll, create, isModalOpen, toggleModal }) {
@@ -23,7 +23,7 @@ export function Switches({ getAll, create, isModalOpen, toggleModal }) {
       <Toolbar />
     </PageSection>
     <PageSection variant={PageSectionVariants.light} className="Switches__Page">
-      <VirtualTable />
+      <Table />
     </PageSection>
     </>
   );

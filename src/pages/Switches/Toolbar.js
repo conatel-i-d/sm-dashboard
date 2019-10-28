@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Toolbar as PatternflyToolbar, ToolbarItem } from '@patternfly/react-core';
 import { PlusCircleIcon } from '@patternfly/react-icons';
 
-import { toggleModal } from '../../../state/switches';
+import { toggleModal } from '../../state/switches';
 
 function Toolbar({ toggleModal }) {
   return (
