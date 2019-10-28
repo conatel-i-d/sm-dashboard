@@ -9,6 +9,7 @@
     "@patternfly/react-table": "^2.20.15",
     "@patternfly/react-virtualized-extension": "^1.2.23",
     "clsx": "^1.0.4",
+    "fuse.js": "^3.4.5",
     "lodash": "^4.17.15",
     "normalizr": "^3.4.1",
     "react": "^16.9.0",

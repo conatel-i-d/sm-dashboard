@@ -1,5 +1,6 @@
 import union from 'lodash/union';
 import get from 'lodash/get';
+import Fuse from 'fuse.js';
 
 import { createReducer } from '../utils';
 
@@ -19,6 +20,7 @@ export const reducer = createReducer(initialState, {
   [`@${entity}/CANCELED`]: toggleLoading,
   [`@${entity}/FAILURE`]: toggleLoading,
   [`@${entity}/TOGGLE_MODAL`]: toggleModal,
+  [`@${entity}/UPDATE_FILTER_INPUT`]: updateFilterInput,
 });
 
 function toggleModal(state) {
@@ -43,6 +45,13 @@ function updateIds(state, payload) {
   }
 }
 
+function updateFilterInput(state, payload) {
+  return {
+    ...state,
+    filterInput: payload
+  }
+}
+
 export default reducer;
 
 export function selectOne(state, props) {
@@ -56,12 +65,33 @@ export function selectOne(state, props) {
   };
 }
 
+const FUSE_OPTIONS = {
+  shouldSort: true,
+  threshold: 0.2,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: [
+    "name",
+    "description",
+    "model",
+    "ip"
+  ]
+}
+
 export function selectAll(state) {
   const ids = get(state, `${entity}.ids`, []);
   const collection = get(state, `entities.${entity}`, {});
-  return {
-    items: ids.map(id => collection[id]).filter(item => item !== undefined),
-  };
+  const filterInput = get(state, `${entity}.filterInput`, '');
+  let items = ids.map(id => collection[id]).filter(item => item !== undefined);
+  if (filterInput !== '') {
+    const fuse = new Fuse(items, FUSE_OPTIONS);
+    items = fuse.search(filterInput);
+    console.log(filterInput, items);
+  }
+
+  return { items };
 }
 
 export function getState(state) {

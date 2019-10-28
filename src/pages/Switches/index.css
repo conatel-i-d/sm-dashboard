@@ -3,53 +3,6 @@
 }
 
 .Switches__Toolbar {
-  padding: 0.5em 0;
-}
-
-.ReactVirtualized__Table__Grid {
-  outline: none;
-}
-
-.ReactVirtualized__Table__headerRow {
-  height: 1px;
-  border-bottom: var(--pf-c-table--BorderWidth) solid var(--pf-c-table--BorderColor);
-}
-
-.ReactVirtualized__Table__row {
-  /*padding: var(--pf-c-table-cell--PaddingTop) 0 var(--pf-c-table-cell--PaddingBottom) 0;*/
-}
-
-.ReactVirtualized__Table__headerColumn,
-.ReactVirtualized__Table__rowColumn {
-  /*padding: var(--pf-c-table-cell--PaddingTop) 0 var(--pf-c-table-cell--PaddingBottom) 0;*/
-  font-size: var(--pf-c-table-cell--FontSize);
-  font-weight: var(--pf-c-table--FontWeight);
-  vertical-align: baseline;
-  text-transform: none;
-}
-
-.ReactVirtualized__Table__rowColumn {
-  /*padding: 0 var(--pf-c-table-cell--PaddingRight) 0 var(--pf-c-table-cell--PaddingLeft);*/
-}
-
-.ReactVirtualized__Table__headerColumn {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.ReactVirtualized__Table__caption {
-  display: block;
-  padding: 40px 48px 0 48px;
-  font-size: 14px;
-  color: var(--pf-global--Color--200);
-}
-
-.ReactVirtualized__Table__row {
-  /* align-items: flex-start; */
-  height: 1px;
-  border-bottom: var(--pf-c-table--BorderWidth) solid var(--pf-c-table--BorderColor);
-}
-
-.VirtualTableToolbar__page-form-group {
-  width: 100px;
+  padding: 1em 0;
+  justify-content: space-between;
 }

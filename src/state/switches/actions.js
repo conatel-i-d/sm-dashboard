@@ -18,3 +18,10 @@ export function toggleModal() {
     type: `@${entity}/TOGGLE_MODAL`,
   };
 }
+
+export function updateFilterInput(payload) {
+  return {
+    type: `@${entity}/UPDATE_FILTER_INPUT`,
+    payload
+  }
+}
