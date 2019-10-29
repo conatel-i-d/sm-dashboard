@@ -5,8 +5,7 @@ import {
   Table as PatternflyTable,
   TableHeader,
   TableBody,
-  sortable,
-  SortByDirection,
+  sortable
 } from '@patternfly/react-table';
 
 import { selectAll } from '../../state/switches';
@@ -19,17 +18,12 @@ const COLUMNS = [
   { key: 'ip', title: 'IP', transforms: [sortable] },
 ]
 
-function Table({ items }) {
-    const [sortBy, setSortBy] = React.useState({
-      index: 0,
-      direction: 'asc'
-    });
-
+function Table({ items, sortBy, onSort }) {
     return (
       <PatternflyTable
         aria-label="Switches Table"
         sortBy={sortBy}
-        onSort={onSort}
+        onSort={(_, index, direction) => onSort({index, direction, key: get(COLUMNS, `${index}.key`)})}
         cells={COLUMNS}
         rows={calculateRows(items, sortBy)}
       >
@@ -37,24 +31,10 @@ function Table({ items }) {
         <TableBody rowKey={({rowData}) => rowData.cells[0]}/>
       </PatternflyTable>
     );
-
-    function onSort(_, index, direction) {
-      setSortBy({ index, direction });
-    }
 }
 
-function calculateRows(items, sortBy) {
-  const rows = items.map(item => ({ cells: COLUMNS.map(column => get(item, column.key)) }));
-  if (sortBy.index === undefined || sortBy.direction === undefined) return rows;
-  const { index, direction } = sortBy;
-  const sortedRows = rows.sort((a, b) => (
-    a.cells[index] < b.cells[index] 
-      ? -1 
-      : a.cells[index] > b.cells[index]
-        ? 1
-        : 0
-  ));
-  return direction === SortByDirection.asc ? sortedRows : sortedRows.reverse();
+function calculateRows(items) {
+  return items.map(item => ({ cells: COLUMNS.map(column => get(item, column.key)) }));
 }
 
 export default connect(selectAll)(Table);

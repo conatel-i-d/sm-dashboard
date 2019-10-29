@@ -1,40 +1,51 @@
 import union from 'lodash/union';
 import get from 'lodash/get';
+import isFunction from 'lodash/isFunction';
+import lodashSortBy from 'lodash/sortBy';
 import Fuse from 'fuse.js';
+import {
+  SortByDirection
+} from '@patternfly/react-table';
 
 import { createReducer } from '../utils';
 
-const entity = 'switches'
+const ENTITY = 'switches'
 
 export const initialState = {
   ids: [],
   loading: false,
-  isModalOpen: false
+  isModalOpen: false,
+  sortBy: {
+    index: 0,
+    key: 'id',
+    direction: 'asc'
+  }
 }
+
+const toggleModal = updateState('isModalOpen', (state) => !state.isModalOpen);
+const toggleLoading = updateState('loading', (state) => !state.loading);
 
 export const reducer = createReducer(initialState, {
-  [`@${entity}/GET_SUCCESS`]: updateIds,
-  [`@${entity}/POST_SUCCESS`]: updateIds,
-  [`@${entity}/GET_REQUEST_SENT`]: toggleLoading,
-  [`@${entity}/POST_REQUEST_SENT`]: toggleLoading,
-  [`@${entity}/CANCELED`]: toggleLoading,
-  [`@${entity}/FAILURE`]: toggleLoading,
-  [`@${entity}/TOGGLE_MODAL`]: toggleModal,
-  [`@${entity}/UPDATE_FILTER_INPUT`]: updateFilterInput,
+  [`@${ENTITY}/GET_SUCCESS`]: updateIds,
+  [`@${ENTITY}/POST_SUCCESS`]: updateIds,
+  [`@${ENTITY}/GET_REQUEST_SENT`]: toggleLoading,
+  [`@${ENTITY}/POST_REQUEST_SENT`]: toggleLoading,
+  [`@${ENTITY}/CANCELED`]: toggleLoading,
+  [`@${ENTITY}/FAILURE`]: toggleLoading,
+  [`@${ENTITY}/TOGGLE_MODAL`]: toggleModal,
+  [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
+  [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
 });
 
-function toggleModal(state) {
-  return {
-    ...state,
-    isModalOpen: !state.isModalOpen
+function updateState(key, stateTransform) {
+  return function (state, payload) {
+    return {
+      ...state,
+      [key]: isFunction(stateTransform) 
+        ? stateTransform(state, payload) 
+        : payload 
+    };
   };
-}
-
-function toggleLoading(state) {
-  return {
-    ...state,
-    loading: !state.loading
-  }
 }
 
 function updateIds(state, payload) {
@@ -45,18 +56,11 @@ function updateIds(state, payload) {
   }
 }
 
-function updateFilterInput(state, payload) {
-  return {
-    ...state,
-    filterInput: payload
-  }
-}
-
 export default reducer;
 
 export function selectOne(state, props) {
   const id = get(props, 'match.params.id', undefined);
-  const collection = get(state, `entities.${entity}`, {});
+  const collection = get(state, `entities.${ENTITY}`, {});
 
   if (id === undefined) return {};
 
@@ -80,23 +84,36 @@ const FUSE_OPTIONS = {
   ]
 }
 
+export function filterItems(items, filterInput, options) {
+  const fuse = new Fuse(items, options);
+  return fuse.search(filterInput);
+}
+
+export function sortItems(items, sortBy = {}) {
+  if (sortBy.key === undefined || sortBy.direction === undefined) return items;
+  const { key, direction } = sortBy;
+  items = lodashSortBy(items, key);
+  return direction === SortByDirection.asc ? items : items.reverse();
+}
+
 export function selectAll(state) {
-  const ids = get(state, `${entity}.ids`, []);
-  const collection = get(state, `entities.${entity}`, {});
-  const filterInput = get(state, `${entity}.filterInput`, '');
+  const ids = get(state, `${ENTITY}.ids`, []);
+  const collection = get(state, `entities.${ENTITY}`, {});
+  const filterInput = get(state, `${ENTITY}.filterInput`, '');
+  const sortBy = get(state, `${ENTITY}.sortBy`, '');
   let items = ids.map(id => collection[id]).filter(item => item !== undefined);
   if (filterInput !== '') {
-    const fuse = new Fuse(items, FUSE_OPTIONS);
-    items = fuse.search(filterInput);
-    console.log(filterInput, items);
+    items = filterItems(items, filterInput, FUSE_OPTIONS);
+  } else {
+    items = sortItems(items, sortBy);
   }
-
   return { items };
 }
 
 export function getState(state) {
   return {
-    loading: get(state, `${entity}.loading`),
-    isModalOpen: get(state, `${entity}.isModalOpen`)
+    loading: get(state, `${ENTITY}.loading`),
+    isModalOpen: get(state, `${ENTITY}.isModalOpen`),
+    sortBy: get(state, `${ENTITY}.sortBy`)
   };
 }

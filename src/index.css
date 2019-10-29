@@ -1,3 +1,8 @@
+* {
+  outline: none;
+}
+
 #root {
   height: 100%;
 }
+
