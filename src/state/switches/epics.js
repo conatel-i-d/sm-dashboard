@@ -1,5 +1,5 @@
 import { combineEpics } from 'redux-observable';
-import { schema } from 'normalizr';
+import { normalize, schema } from 'normalizr';
 
 import { rest$ } from '../utils';
 
@@ -9,10 +9,15 @@ export const restEpic = rest$({
   url: API,
   prefix: 'switches',
   schema: new schema.Entity('switches'),
-  parseResponse: (response) => {
-    if (response.items) return response.items;
-    if (response.item) return [response.item];
-    return response;
+  parseResponse: (response, options, payload) => {
+    if (options.method === 'DELETE') {
+      return payload.id
+    }
+    return response.items
+      ? normalize(response.items, [options.schema])
+      : response.item
+        ? normalize([response.item], [options.schema])
+        : undefined;
   }
 });
 

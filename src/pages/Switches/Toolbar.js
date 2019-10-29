@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { 
   Button,
   ButtonVariant,
@@ -10,15 +11,15 @@ import {
 } from '@patternfly/react-core';
 import { PlusCircleIcon, SearchIcon } from '@patternfly/react-icons';
 
-import { toggleModal, updateFilterInput } from '../../state/switches';
+import { updateFilterInput } from '../../state/switches';
 
-function Toolbar({ toggleModal, updateFilterInput }) {
+function Toolbar({ updateFilterInput }) {
   return (
     <PatternflyToolbar className="Switches__Toolbar">
-      <ToolbarItem>
-        <Button variant="link" icon={<PlusCircleIcon />} onClick={toggleModal}>
+      <ToolbarItem><Link to="/switches/create">
+        <Button variant="link" icon={<PlusCircleIcon />}>
           Crear un nuevo Switch
-        </Button>
+        </Button></Link>
       </ToolbarItem>
       <ToolbarItem>
         <InputGroup>
@@ -32,4 +33,4 @@ function Toolbar({ toggleModal, updateFilterInput }) {
   );
 }
 
-export default connect(() => ({}), { toggleModal, updateFilterInput })(Toolbar);
+export default connect(() => ({}), { updateFilterInput })(Toolbar);

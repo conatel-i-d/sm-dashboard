@@ -1,26 +1,23 @@
 import React from 'react';
+import get from 'lodash/get';
 import { Button, Modal as PatternflyModal } from '@patternfly/react-core';
 
-import Form from './Form.js';
+import { onClose } from './helpers.js';
 
-const defaultState = {
-  name: '',
-  description: '',
-  model: '',
-  ip: ''
-};
+function DeleteModal({ model, onDelete }) {
+  const [state, setState] = React.useState(model);
 
-function Modal({ isModalOpen, onAccept, onClose }) {
-  const [state, setState] = React.useState(defaultState);
+  React.useEffect(() => setState(model), [model, setState]);
+
   return (
     <PatternflyModal
       isSmall
-      title="Crear un nuevo Switch"
-      isOpen={isModalOpen}
+      title="Atención"
+      isOpen={true}
       onClose={onClose}
       actions={[
         <Button key="confirm" variant="primary" onClick={handleSubmit}>
-          Crear Switch
+          Si, deseo eliminar el Switch
         </Button>,
         <Button key="cancel" variant="link" onClick={onClose}>
           Cancelar operación
@@ -28,15 +25,14 @@ function Modal({ isModalOpen, onAccept, onClose }) {
       ]}
       isFooterLeftAligned
     >
-      <Form model={state} onChange={setState} />
+      <b>{`¿Esta seguro que desea eliminar el Switch #${get(model, 'id', '')}?`}</b>
     </PatternflyModal>
   );
 
   function handleSubmit() {
-    onAccept(state);
+    onDelete(state);
     onClose();
-    setState(defaultState);
   }
 }
 
-export default Modal
+export default DeleteModal;

@@ -7,14 +7,13 @@ import {
   SortByDirection
 } from '@patternfly/react-table';
 
-import { createReducer } from '../utils';
+import { createReducer, updateObject } from '../utils';
 
 const ENTITY = 'switches'
 
 export const initialState = {
   ids: [],
   loading: false,
-  isModalOpen: false,
   sortBy: {
     index: 0,
     key: 'id',
@@ -22,38 +21,45 @@ export const initialState = {
   }
 }
 
-const toggleModal = updateState('isModalOpen', (state) => !state.isModalOpen);
 const toggleLoading = updateState('loading', (state) => !state.loading);
 
 export const reducer = createReducer(initialState, {
   [`@${ENTITY}/GET_SUCCESS`]: updateIds,
   [`@${ENTITY}/POST_SUCCESS`]: updateIds,
+  [`@${ENTITY}/PUT_SUCCESS`]: updateIds,
+  [`@${ENTITY}/DELETE_SUCCESS`]: removeId,
   [`@${ENTITY}/GET_REQUEST_SENT`]: toggleLoading,
   [`@${ENTITY}/POST_REQUEST_SENT`]: toggleLoading,
+  [`@${ENTITY}/PUT_REQUEST_SENT`]: toggleLoading,
+  [`@${ENTITY}/DELETE_REQUEST_SENT`]: toggleLoading,
   [`@${ENTITY}/CANCELED`]: toggleLoading,
   [`@${ENTITY}/FAILURE`]: toggleLoading,
-  [`@${ENTITY}/TOGGLE_MODAL`]: toggleModal,
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
 });
 
 function updateState(key, stateTransform) {
   return function (state, payload) {
-    return {
-      ...state,
+    return updateObject(state, {
       [key]: isFunction(stateTransform) 
         ? stateTransform(state, payload) 
         : payload 
-    };
+    });
   };
 }
 
 function updateIds(state, payload) {
-  return {
-    ...state,
+  return updateObject(state, {
     loading: false,
     ids: union(state.ids, payload.result)
-  }
+  });
+}
+
+function removeId(state, payload) {
+  return updateObject(state, {
+    loading: false,
+    ids: state.ids.filter(id => id !== payload)
+  });
 }
 
 export default reducer;
@@ -113,7 +119,27 @@ export function selectAll(state) {
 export function getState(state) {
   return {
     loading: get(state, `${ENTITY}.loading`),
-    isModalOpen: get(state, `${ENTITY}.isModalOpen`),
-    sortBy: get(state, `${ENTITY}.sortBy`)
+    sortBy: get(state, `${ENTITY}.sortBy`),
+    model: getModel(state),
   };
+}
+
+const defaultState = {
+  name: '',
+  description: '',
+  model: '',
+  ip: ''
+};
+
+const editRegExp = new RegExp(`/${ENTITY}/edit|delete/([0-9]+)`);
+
+function getModel(state) {
+  const pathname = get(state, 'ui.history.pathname')
+  const editMatch = pathname.match(editRegExp)
+  if (editMatch) {
+    const id = editMatch[1];
+    const model = get(state, `entities.${ENTITY}.${id}`, {...defaultState});
+    return model;
+  }
+  return {...defaultState};
 }

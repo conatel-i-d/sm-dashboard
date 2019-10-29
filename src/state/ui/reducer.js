@@ -9,7 +9,7 @@ const historyReducer = createReducer({pathname: ''}, {
 });
 
 function historyPush(state, payload) {
-  return updateObject(state, { pathname: payload.location.pathname });
+  return updateObject(state, {...payload.location});
 }
 
 const appReducer = createReducer({ready: false}, {

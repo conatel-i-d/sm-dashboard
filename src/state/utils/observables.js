@@ -2,7 +2,6 @@ import { of, merge, concat, race } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { catchError, debounceTime, map, switchMap, mapTo } from "rxjs/operators";
 import { ofType } from 'redux-observable';
-import { normalize } from 'normalizr'
 import isFunction from 'lodash/isFunction';
 
 export const defaultRestOptions = {
@@ -64,11 +63,9 @@ export function restEpicFactory(options) {
           body: options.method === 'POST' || options.method === 'PUT' ? payload : undefined
         }).pipe(
           map(({response}) => {
-            response = options.parseResponse(response);
-            response = normalize(response, [options.schema]);
             return {
               type: `@${options.prefix}/${options.method}_SUCCESS`,
-              payload: response
+              payload: options.parseResponse(response, options, payload)
             }
           }),
           catchError(err => of({

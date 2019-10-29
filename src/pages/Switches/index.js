@@ -6,12 +6,12 @@ import {
 } from '@patternfly/react-core';
 
 import './index.css';
-import Modal from './Modal.js';
+import Modal from './Modal';
 import Table from './Table';
 import Toolbar from './Toolbar.js';
-import { getAll, create, getState, toggleModal, updateSortBy } from '../../state/switches'
+import { getAll, create, edit, destroy, getState, updateSortBy } from '../../state/switches'
 
-export function Switches({ sortBy, getAll, create, isModalOpen, toggleModal, updateSortBy }) {
+export function Switches({ model, sortBy, getAll, create, edit, destroy, updateSortBy }) {
   React.useEffect(() => {
     getAll();
   }, [getAll]);
@@ -19,7 +19,7 @@ export function Switches({ sortBy, getAll, create, isModalOpen, toggleModal, upd
   return (
     <>
     <PageSection variant={PageSectionVariants.light} className="Switches__Page">
-      <Modal isModalOpen={isModalOpen} onClose={toggleModal} onAccept={create} />
+      <Modal model={model} onAccept={create} onEdit={edit} onDelete={destroy} />
       <Toolbar />
     </PageSection>
     <PageSection variant={PageSectionVariants.light} className="Switches__Page">
@@ -29,4 +29,4 @@ export function Switches({ sortBy, getAll, create, isModalOpen, toggleModal, upd
   );
 }
 
-export default connect(getState, { getAll, create, toggleModal, updateSortBy })(Switches);
+export default connect(getState, { getAll, create, edit, destroy, updateSortBy })(Switches);
