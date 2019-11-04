@@ -131,14 +131,14 @@ const defaultState = {
   ip: ''
 };
 
-const editRegExp = new RegExp(`/${ENTITY}/edit|delete/([0-9]+)`);
+const editRegExp = new RegExp(`/${ENTITY}[/|a-zA-Z]+([0-9]+)`);
 
 function getModel(state) {
   const pathname = get(state, 'ui.history.pathname')
   const editMatch = pathname.match(editRegExp)
   if (editMatch) {
     const id = editMatch[1];
-    const model = get(state, `entities.${ENTITY}.${id}`, {...defaultState});
+    const model = get(state, `entities.${ENTITY}.${id}`, {...defaultState, id});
     return model;
   }
   return {...defaultState};

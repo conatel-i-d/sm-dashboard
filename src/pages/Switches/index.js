@@ -9,12 +9,12 @@ import './index.css';
 import Modal from './Modal';
 import Table from './Table';
 import Toolbar from './Toolbar.js';
-import { getAll, create, edit, destroy, getState, updateSortBy } from '../../state/switches'
+import { get, create, edit, destroy, getState, updateSortBy } from '../../state/switches'
 
-export function Switches({ model, sortBy, getAll, create, edit, destroy, updateSortBy }) {
+export function Switches({ model, sortBy, get, create, edit, destroy, updateSortBy }) {
   React.useEffect(() => {
-    getAll();
-  }, [getAll]);
+    get();
+  }, [get]);
 
   return (
     <>
@@ -29,4 +29,4 @@ export function Switches({ model, sortBy, getAll, create, edit, destroy, updateS
   );
 }
 
-export default connect(getState, { getAll, create, edit, destroy, updateSortBy })(Switches);
+export default connect(getState, { get, create, edit, destroy, updateSortBy })(Switches);

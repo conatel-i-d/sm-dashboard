@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import {
@@ -37,20 +38,24 @@ function Table({ items, sortBy, onSort }) {
         ]}
       >
         <TableHeader />
-        <TableBody rowKey={({rowData}) => rowData.cells[0]} />
+        <TableBody rowKey={({rowData}) => rowData.cells[0].key} />
       </PatternflyTable>
     );
 }
 
 function onActionFactory(action) {
   return function(_, __, rowData) {
-    const id = get(rowData, 'id.title', '');
+    const id = get(rowData, 'cells.0.key', '');
     history.push(`/${ENTITY}/${action}/${id}`);
   };
 }
 
 function calculateRows(items) {
-  return items.map(item => ({ cells: COLUMNS.map(column => get(item, column.key)) }));
+  return items.map(item => ({ cells: COLUMNS.map(column => (
+    column.key === 'id'
+      ? { key: item.id, title: <Link to={`/switches/${item.id}`}>{item.id}</Link> }
+      : get(item, column.key)
+  ))}));
 }
 
 export default connect(selectAll)(Table);

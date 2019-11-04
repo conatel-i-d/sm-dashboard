@@ -6,7 +6,7 @@ function actionCreator(type) {
   };
 }
 
-export const getAll = actionCreator(`@${ENTITY}/GET_REQUEST`);
+export const get = actionCreator(`@${ENTITY}/GET_REQUEST`);
 export const create = actionCreator(`@${ENTITY}/POST_REQUEST`);
 export const edit = actionCreator(`@${ENTITY}/PUT_REQUEST`);
 export const destroy = actionCreator(`@${ENTITY}/DELETE_REQUEST`);
