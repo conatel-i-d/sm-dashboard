@@ -1,19 +1,25 @@
 import { of, merge, concat, race } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, debounceTime, map, switchMap, mapTo } from "rxjs/operators";
+import {
+  catchError,
+  debounceTime,
+  map,
+  switchMap,
+  mapTo
+} from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import isFunction from 'lodash/isFunction';
 
 export const defaultRestOptions = {
-  create: true, 
-  read: true, 
-  update: true, 
+  create: true,
+  read: true,
+  update: true,
   delete: true,
-  parseResponse: (response) => Array.isArray(response) ? response : [response],
+  parseResponse: response => (Array.isArray(response) ? response : [response]),
   headers: {
     'Content-Type': 'application/json'
   }
-}
+};
 /**
  * Crea una lista de epicas para interactuar con un recurso de una API REST
  * @param {object} options Opciones de Configuración
@@ -28,66 +34,94 @@ export function rest$(options = {}) {
   options = Object.assign(defaultRestOptions, options);
   const epics = [];
   if (options.create) {
-    epics.push(restEpicFactory({...options, ...{
-      method: 'POST',
-    }}));
+    epics.push(
+      restEpicFactory({
+        ...options,
+        ...{
+          method: 'POST'
+        }
+      })
+    );
   }
   if (options.read) {
-    epics.push(restEpicFactory({...options, ...{
-      method: 'GET',
-    }}));
+    epics.push(
+      restEpicFactory({
+        ...options,
+        ...{
+          method: 'GET'
+        }
+      })
+    );
   }
   if (options.update) {
-    epics.push(restEpicFactory({...options, ...{
-      method: 'PUT',
-    }}));
+    epics.push(
+      restEpicFactory({
+        ...options,
+        ...{
+          method: 'PUT'
+        }
+      })
+    );
   }
   if (options.delete) {
-    epics.push(restEpicFactory({...options, ...{
-      method: 'DELETE',
-    }}));
+    epics.push(
+      restEpicFactory({
+        ...options,
+        ...{
+          method: 'DELETE'
+        }
+      })
+    );
   }
   return epics;
 }
 
 export function restEpicFactory(options) {
-  return function (action$, state$) {
+  return function(action$, state$) {
     return action$.pipe(
-      ofType(`@${options.prefix}/${options.method}_REQUEST`), 
+      ofType(`@${options.prefix}/${options.method}_REQUEST`),
       debounceTime(options.debounceTime || 0),
       switchMap(({ payload }) => {
         const ajax$ = ajax({
-          url: `${resolveUrl(options.url, state$.value)}${payload && payload.id ? `/${payload.id}` : ''}`,
+          url: `${resolveUrl(options.url, state$.value)}${
+            payload && payload.id ? `/${payload.id}` : ''
+          }`,
           method: options.method,
           headers: options.headers || {},
-          body: options.method === 'POST' || options.method === 'PUT' ? payload : undefined
+          body:
+            options.method === 'POST' || options.method === 'PUT'
+              ? payload
+              : undefined
         }).pipe(
-          map(({response}) => {
+          map(({ response }) => {
             return {
               type: `@${options.prefix}/${options.method}_SUCCESS`,
               payload: options.parseResponse(response, options, payload)
-            }
+            };
           }),
-          catchError(err => of({
-            type: `@${options.prefix}/${options.method}_FAILURE`,
-            payload: err.response && err.response.message
-              ? err.response.message
-              : err
-          }))
+          catchError(err =>
+            of({
+              type: `@${options.prefix}/${options.method}_FAILURE`,
+              payload:
+                err.response && err.response.message
+                  ? err.response.message
+                  : err
+            })
+          )
         );
         const blocker$ = merge(
-          action$.pipe(
-            ofType(`@${options.prefix}/${options.method}_CANCEL`)
-          ),
-        ).pipe(mapTo({type: `@${options.prefix}/${options.method}_CANCELED`}));
-  
+          action$.pipe(ofType(`@${options.prefix}/${options.method}_CANCEL`))
+        ).pipe(
+          mapTo({ type: `@${options.prefix}/${options.method}_CANCELED` })
+        );
+
         return concat(
           of({ type: `@${options.prefix}/${options.method}_REQUEST_SENT` }),
           race(ajax$, blocker$)
         );
       })
-    )
-  }
+    );
+  };
 }
 
 function resolveUrl(url, state) {
