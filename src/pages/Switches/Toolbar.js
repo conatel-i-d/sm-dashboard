@@ -23,7 +23,7 @@ function Toolbar({ updateFilterInput }) {
       </ToolbarItem>
       <ToolbarItem>
         <InputGroup>
-          <TextInput onChange={updateFilterInput} name="filterInput" type="search" aria-label="filter input" />
+          <TextInput onChange={ updateFilterInput } name="filterInput" type="search" aria-label="filter input" />
           <Button variant={ButtonVariant.control} aria-label="search button for fitler input">
             <SearchIcon />
           </Button>
