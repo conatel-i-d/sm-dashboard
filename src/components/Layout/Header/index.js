@@ -4,7 +4,6 @@ import { PageHeader, Brand, Avatar } from '@patternfly/react-core';
 
 import PageToolbar from './PageToolbar'
 import logo from './logo.png';
-import avatar from './avatar.svg';
 import { navToggle } from '../../../state/ui';
 
 export function Header({navToggle}) {
@@ -12,7 +11,6 @@ export function Header({navToggle}) {
     <PageHeader
       logo={<Brand src={logo} alt="Conatel Logo" />}
       toolbar={<PageToolbar />}
-      avatar={<Avatar src={avatar} alt="Avatar image" />}
       showNavToggle
       onNavToggle={navToggle}
     />
