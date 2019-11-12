@@ -2,17 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 
-import { get, getState } from '../../state/switches';
+import { get as getSwitch, getState } from '../../state/switches';
+import { get as getInterfaces } from '../../state/nics';
 import SwitchDetails from './SwitchDetails.js';
 import Table from './Table.js';
 import './index.css'
 
 const ENTITY = 'switches';
 
-export function Switch({ location, model, get }) {
+export function Switch({ location, model, getSwitch, getInterfaces }) {
   React.useEffect(() => {
-    get({ id: location.pathname.replace(`/${ENTITY}/`, '') });
-  }, [get, location]);
+    const switchId = location.pathname.replace(`/${ENTITY}/`, '')
+    getSwitch({ id: switchId });
+    getInterfaces({ switchId });
+  }, [getSwitch, getInterfaces, location]);
 
   return (
     <>
@@ -21,12 +24,12 @@ export function Switch({ location, model, get }) {
       </PageSection>
       <PageSection variant={PageSectionVariants.light} className="Switch__Page">
         <Table />
-      </PageSection>ß
+      </PageSection>
     </>
   );
 }
 
 export default connect(
   getState,
-  { get }
+  { getSwitch, getInterfaces }
 )(Switch);

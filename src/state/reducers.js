@@ -3,11 +3,13 @@ import { combineReducers } from 'redux';
 import { reducer as uiReducer } from './ui'
 import { reducer as switchesReducer } from './switches';
 import { reducer as entitiesReducer } from './entities';
+import { reducer as nicsReducer } from './nics';
 
 export const rootReducer = combineReducers({
-  ui: uiReducer,
+  entities: entitiesReducer,
+  nics: nicsReducer,
   switches: switchesReducer,
-  entities: entitiesReducer
+  ui: uiReducer,
 });
 
 export default rootReducer;

@@ -9,7 +9,7 @@ import {
 
 function SwitchDetails({ model }) {
   return (
-    <Split gutter="xs">
+    <Split gutter="sm">
         <SplitItem isFilled>
           <Form isHorizontal>
             <FormGroup

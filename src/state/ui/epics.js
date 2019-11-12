@@ -26,4 +26,4 @@ export function historyEpic() {
   }))
 }
 
-export const uiEpics = combineEpics(initEpic, historyEpic);
+export const epics = combineEpics(initEpic, historyEpic);

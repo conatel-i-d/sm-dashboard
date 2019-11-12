@@ -1,8 +1,9 @@
 import { combineEpics } from 'redux-observable';
 
-import { switchesEpics } from './switches';
-import { uiEpics } from './ui'
+import { epics as switchesEpics } from './switches';
+import { epics as nicsEpics } from './nics';
+import { epics as uiEpics } from './ui'
 
-export const rootEpic = combineEpics(uiEpics, switchesEpics);
+export const rootEpic = combineEpics(uiEpics, switchesEpics, nicsEpics);
 
 export default rootEpic;

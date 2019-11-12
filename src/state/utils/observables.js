@@ -83,7 +83,7 @@ export function restEpicFactory(options) {
       debounceTime(options.debounceTime || 0),
       switchMap(({ payload }) => {
         const ajax$ = ajax({
-          url: `${resolveUrl(options.url, state$.value)}${
+          url: `${resolveUrl(options.url, state$.value, payload)}${
             payload && payload.id ? `/${payload.id}` : ''
           }`,
           method: options.method,
@@ -96,7 +96,7 @@ export function restEpicFactory(options) {
           map(({ response }) => {
             return {
               type: `@${options.prefix}/${options.method}_SUCCESS`,
-              payload: options.parseResponse(response, options, payload)
+              payload: options.parseResponse(response, options, payload, state$.value)
             };
           }),
           catchError(err =>
@@ -124,9 +124,9 @@ export function restEpicFactory(options) {
   };
 }
 
-function resolveUrl(url, state) {
+function resolveUrl(url, state, payload) {
   if (isFunction(url)) {
-    return url(state);
+    return url(state, payload);
   }
   return url;
 }

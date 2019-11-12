@@ -21,4 +21,4 @@ export const restEpic = rest$({
   }
 });
 
-export const switchesEpics = combineEpics(...restEpic);
+export const epics = combineEpics(...restEpic);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import {
@@ -9,17 +8,15 @@ import {
   sortable
 } from '@patternfly/react-table';
 
-import { selectAll } from '../../state/switches';
-import { history } from '../../modules/history.js';
+import { selectSwitchNics } from '../../state/nics';
 
-const ENTITY = 'switches';
 const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
   { key: 'description', title: 'Descripción', transforms: [sortable] },
-  { key: 'state', title: 'Estado', transforms: [sortable] }
+  { key: 'state', title: 'Estado', transforms: [sortable] },
+  { key: 'switchport', title: 'Switchport', transforms: [sortable] },
+  { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] },
 ];
-
-const onEdit = onActionFactory('edit');
 
 function Table({ items, sortBy, onSort }) {
   return (
@@ -31,7 +28,7 @@ function Table({ items, sortBy, onSort }) {
       }
       cells={COLUMNS}
       rows={calculateRows(items, sortBy)}
-      actions={[{ title: 'Reiniciar', onClick: onEdit }]}
+      actions={[{ title: 'Reiniciar', onClick: onReboot }]}
     >
       <TableHeader />
       <TableBody rowKey={({ rowData }) => rowData.cells[0].key} />
@@ -39,24 +36,15 @@ function Table({ items, sortBy, onSort }) {
   );
 }
 
-function onActionFactory(action) {
-  return function(_, __, rowData) {
-    const id = get(rowData, 'cells.0.key', '');
-    history.push(`/${ENTITY}/${action}/${id}`);
-  };
+function onReboot(...args) {
+  console.log(args);
 }
 
 function calculateRows(items) {
+  if (items === undefined) return [];
   return items.map(item => ({
-    cells: COLUMNS.map(column =>
-      column.key === 'id'
-        ? {
-            key: item.id,
-            title: <Link to={`/switches/${item.id}`}>{item.id}</Link>
-          }
-        : get(item, column.key)
-    )
+    cells: COLUMNS.map(column => get(item, column.key) )
   }));
 }
 
-export default connect(selectAll)(Table);
+export default connect(selectSwitchNics)(Table);

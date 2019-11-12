@@ -1,13 +1,12 @@
 import union from 'lodash/union';
 import get from 'lodash/get';
-import isFunction from 'lodash/isFunction';
 import lodashSortBy from 'lodash/sortBy';
 import Fuse from 'fuse.js';
 import {
   SortByDirection
 } from '@patternfly/react-table';
 
-import { createReducer, updateObject } from '../utils';
+import { createReducer, updateObject, updateState } from '../utils';
 
 const ENTITY = 'switches'
 
@@ -37,16 +36,6 @@ export const reducer = createReducer(initialState, {
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
 });
-
-function updateState(key, stateTransform) {
-  return function (state, payload) {
-    return updateObject(state, {
-      [key]: isFunction(stateTransform) 
-        ? stateTransform(state, payload) 
-        : payload 
-    });
-  };
-}
 
 function updateIds(state, payload) {
   return updateObject(state, {
@@ -128,17 +117,18 @@ const defaultState = {
   name: '',
   description: '',
   model: '',
-  ip: ''
+  ip: '',
+  nics: []
 };
 
-const editRegExp = new RegExp(`/${ENTITY}[/|a-zA-Z]+([0-9]+)`);
+const EXISTING_SWITCH_REG_EXP = new RegExp(`/${ENTITY}[/|a-zA-Z]+([0-9]+)`);
 
 function getModel(state) {
-  const pathname = get(state, 'ui.history.pathname')
-  const editMatch = pathname.match(editRegExp)
-  if (editMatch) {
-    const id = editMatch[1];
-    const model = get(state, `entities.${ENTITY}.${id}`, {...defaultState, id});
+  const pathname = get(state, 'ui.history.pathname');
+  const existingSwitch = pathname.match(EXISTING_SWITCH_REG_EXP)
+  if (existingSwitch) {
+    const switchId = existingSwitch[1];
+    const model = get(state, `entities.${ENTITY}.${switchId}`, {...defaultState, id: switchId});
     return model;
   }
   return {...defaultState};
