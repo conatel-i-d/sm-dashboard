@@ -2,7 +2,7 @@ const ENTITY = 'switches';
 
 function actionCreator(type) {
   return function (...payload) {
-    return { type, payload: payload.length > 1 ? payload[0] : payload };
+    return { type, payload: payload.length > 1 ? payload : payload[0] };
   };
 }
 
