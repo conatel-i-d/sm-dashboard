@@ -1,0 +1,3 @@
+.Switch__Page.Switch__Page-Details {
+  padding: var(--pf-c-page__main-section--PaddingTop) calc(var(--pf-c-page__main-section--PaddingRight)*2) var(--pf-c-page__main-section--PaddingBottom) calc(var(--pf-c-page__main-section--PaddingLeft)*2);
+}

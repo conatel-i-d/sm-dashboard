@@ -5,6 +5,7 @@ import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 import { get, getState } from '../../state/switches';
 import SwitchDetails from './SwitchDetails.js';
 import Table from './Table.js';
+import './index.css'
 
 const ENTITY = 'switches';
 
@@ -15,10 +16,12 @@ export function Switch({ location, model, get }) {
 
   return (
     <>
-      <PageSection variant={PageSectionVariants.light} className="Switch__Page">
+      <PageSection variant={PageSectionVariants.light} className="Switch__Page Switch__Page-Details">
         <SwitchDetails model={model} />
-        <Table />
       </PageSection>
+      <PageSection variant={PageSectionVariants.light} className="Switch__Page">
+        <Table />
+      </PageSection>ß
     </>
   );
 }
