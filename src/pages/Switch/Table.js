@@ -20,7 +20,6 @@ const COLUMNS = [
 ];
 
 const onEdit = onActionFactory('edit');
-const onDelete = onActionFactory('delete');
 
 function Table({ items, sortBy, onSort }) {
   return (

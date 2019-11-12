@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PageHeader, Brand, Avatar } from '@patternfly/react-core';
+import { PageHeader, Brand, } from '@patternfly/react-core';
 
 import PageToolbar from './PageToolbar'
 import logo from './logo.png';
