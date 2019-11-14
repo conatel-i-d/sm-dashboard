@@ -96,7 +96,12 @@ export function restEpicFactory(options) {
           map(({ response }) => {
             return {
               type: `@${options.prefix}/${options.method}_SUCCESS`,
-              payload: options.parseResponse(response, options, payload, state$.value)
+              payload: options.parseResponse(
+                response,
+                options,
+                payload,
+                state$.value
+              )
             };
           }),
           catchError(err =>
@@ -122,6 +127,32 @@ export function restEpicFactory(options) {
       })
     );
   };
+}
+
+export function rebootEpic(action$, state$) {
+  return action$.pipe(
+    ofType('@nics/REBOOT_REQUEST'),
+    switchMap(({ payload: { name, switchId } }) => {
+      const ajax$ = ajax({
+        url: `/api/switch/${switchId}/nics/reset?nic_name=${name}`,
+        method: 'POST'
+      }).pipe(
+        map(() => {
+          return {
+            type: `@nics/REBOOT_SUCCESS`
+          };
+        }),
+        catchError(err =>
+          of({
+            type: `@nics/REBOOT_FAILURE`,
+            payload:
+              err.response && err.response.message ? err.response.message : err
+          })
+        )
+      );
+      return ajax$;
+    })
+  );
 }
 
 function resolveUrl(url, state, payload) {

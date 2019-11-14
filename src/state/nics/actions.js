@@ -4,3 +4,7 @@ export function get(payload) {
     payload
   };
 }
+
+export function reboot(payload) {
+  return { type: '@nics/REBOOT_REQUEST', payload };
+}

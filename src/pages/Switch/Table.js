@@ -8,17 +8,21 @@ import {
   sortable
 } from '@patternfly/react-table';
 
-import { selectSwitchNics } from '../../state/nics';
+import { selectSwitchNics, reboot } from '../../state/nics';
 
 const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
   { key: 'description', title: 'Descripción', transforms: [sortable] },
   { key: 'state', title: 'Estado', transforms: [sortable] },
   { key: 'switchport', title: 'Switchport', transforms: [sortable] },
-  { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] },
+  { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] }
 ];
 
-function Table({ items, sortBy, onSort }) {
+function Table({ items, sortBy, onSort, reboot, switchId }) {
+  function onReboot(_, __, rowData) {
+    const name = get(rowData, 'cells.0', '');
+    reboot({ name, switchId });
+  }
   return (
     <PatternflyTable
       aria-label="Switches Table"
@@ -36,15 +40,11 @@ function Table({ items, sortBy, onSort }) {
   );
 }
 
-function onReboot(...args) {
-  console.log(args);
-}
-
 function calculateRows(items) {
   if (items === undefined) return [];
   return items.map(item => ({
-    cells: COLUMNS.map(column => get(item, column.key) )
+    cells: COLUMNS.map(column => get(item, column.key))
   }));
 }
 
-export default connect(selectSwitchNics)(Table);
+export default connect(selectSwitchNics, { reboot })(Table);
