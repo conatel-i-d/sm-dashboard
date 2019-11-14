@@ -1,27 +1,22 @@
 import React from 'react';
-import { Provider } from 'react-redux'
-import { Router, Route, Switch as RouterSwitch } from "react-router-dom";
+import { Provider } from 'react-redux';
+import { Router, Route, Switch as RouterSwitch } from 'react-router-dom';
 
 import { history } from '../modules/history.js';
-import Layout from '../components/Layout';
-import Home from './Home';
-import Switches from './Switches';
-import Switch from './Switch';
+import Main from './Main'
+import Login from './Login';
 
-export function Root({store}) {
+export function Root({ store }) {
   return (
     <Provider store={store}>
       <Router history={history}>
-        <Layout>
-          <RouterSwitch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/switches/:id(\d+)" component={Switch} />
-            <Route path="/switches" component={Switches} />
-          </RouterSwitch>
-        </Layout>
+        <RouterSwitch>
+          <Route exact path="/login" component={Login} />
+          <Route component={Main} />
+        </RouterSwitch>
       </Router>
     </Provider>
-  )
+  );
 }
 
 export default Root;

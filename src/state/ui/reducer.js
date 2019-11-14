@@ -1,45 +1,76 @@
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
 
-import {INIT, HISTORY_PUSH, NAV_TOGGLE} from './actions.js';
+import { INIT, HISTORY_PUSH, NAV_TOGGLE, LOGIN_REQUEST } from './actions.js';
 import { createReducer, updateObject } from '../utils';
 
-const historyReducer = createReducer({pathname: ''}, {
-  [HISTORY_PUSH]: historyPush
-});
+const historyReducer = createReducer(
+  { pathname: '' },
+  {
+    [HISTORY_PUSH]: historyPush
+  }
+);
 
 function historyPush(state, payload) {
-  return updateObject(state, {...payload.location});
+  return updateObject(state, { ...payload.location });
 }
 
-const appReducer = createReducer({ready: false}, {
-  [INIT]: init
-});
+const appReducer = createReducer(
+  { ready: false, user: {}, errors: {} },
+  {
+    [INIT]: init
+  }
+);
+
+const loginReducer = createReducer(
+  { loading: false },
+  {
+    [LOGIN_REQUEST]: login
+  }
+);
+
+function login(state) {
+  return {
+    ...state,
+    loading: true
+  };
+}
 
 function init(state) {
-  return updateObject(state, { ready: true })
-} 
+  return updateObject(state, { ready: true });
+}
 
-const globalUiReducer = createReducer({isNavOpen: false}, {
-  [NAV_TOGGLE]: navToggle
-});
+const globalUiReducer = createReducer(
+  { isNavOpen: false },
+  {
+    [NAV_TOGGLE]: navToggle
+  }
+);
 
 function navToggle(state) {
-  return updateObject(state, {isNavOpen: !state.isNavOpen});
+  return updateObject(state, { isNavOpen: !state.isNavOpen });
 }
 
 export function navState(state) {
-  return {isNavOpen: get(state, 'ui.global.isNavOpen')};
+  return { isNavOpen: get(state, 'ui.global.isNavOpen') };
 }
 
 export function selectPathname(state) {
-  return {pathname: get(state, 'ui.history.pathname')};
+  return { pathname: get(state, 'ui.history.pathname') };
+}
+
+export function getLoginState(state) {
+  return {
+    loading: get(state, `login.loading`),
+    error: get(state, 'app.errors.login')
+  };
 }
 
 export const reducer = combineReducers({
   history: historyReducer,
   app: appReducer,
-  global: globalUiReducer
+  global: globalUiReducer,
+  login: loginReducer
 });
 
 export default reducer;
