@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Toolbar,
   ToolbarGroup,
   ToolbarItem,
@@ -15,17 +16,7 @@ import accessibleStyles from '@patternfly/react-styles/css/utilities/Accessibili
 import spacingStyles from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import { css } from '@patternfly/react-styles';
 
-export const userDropdownItems = [
-  <DropdownItem key="1">Cerrar Sesión</DropdownItem>,
-  // <DropdownItem key="2" component="button">Action</DropdownItem>,
-  // <DropdownItem key="3" isDisabled>Disabled Link</DropdownItem>,
-  // <DropdownItem key="4" isDisabled component="button">
-  //   Disabled Action
-  // </DropdownItem>,
-  // <DropdownSeparator key="5" />,
-  // <DropdownItem key="6">Separated Link</DropdownItem>,
-  // <DropdownItem key="7" component="button">Separated Action</DropdownItem>
-];
+import { logout } from '../../../../state/ui';
 
 export const kebabDropdownItems = [
   <DropdownItem key="1">
@@ -36,9 +27,12 @@ export const kebabDropdownItems = [
   </DropdownItem>
 ];
 
-export function PageToolbar() {
+export function PageToolbar({ logout }) {
   const [isKebabDropdownOpen, setIsKebabDropdownOpen] = React.useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const userDropdownItems = React.useMemo(() => [
+    <DropdownItem key="1" onClick={logout}>Logout</DropdownItem>
+  ], [ logout ]);
 
   return (
     <Toolbar>
@@ -96,4 +90,4 @@ export function PageToolbar() {
   }
 }
 
-export default PageToolbar;
+export default connect(() => ({}), { logout })(PageToolbar);

@@ -14,4 +14,6 @@ function init() {
     realm: 'sm',
     clientId: 'dashboard'
   });
+
+  window.k = keycloak;
 }
