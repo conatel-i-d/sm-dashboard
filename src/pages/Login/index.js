@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import {
   LoginForm,
   LoginMainFooterBandItem,
@@ -7,11 +7,10 @@ import {
 } from '@patternfly/react-core';
 import { ExclamationCircleIcon } from '@patternfly/react-icons';
 
-import { connect } from 'react-redux';
 
 import { getLoginState, loginSubmit } from '../../state/ui';
-
 import { useCustomState } from '../../modules/setStateHook';
+import backgroundImgSrc from './backgroundImgSrc.jpg';
 
 const SimpleLoginPage = ({ loginSubmit }) => {
   const helperText = (
@@ -75,6 +74,7 @@ const SimpleLoginPage = ({ loginSubmit }) => {
       loginTitle="Inicie Sesión"
       signUpForAccountMessage={signUpForAccountMessage}
       forgotCredentials={forgotCredentials}
+      backgroundImgSrc={backgroundImgSrc}
     >
       {loginForm()}
     </LoginPage>

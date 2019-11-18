@@ -40,6 +40,8 @@ function Table({ items, sortBy, onSort, reboot, switchId }) {
   );
 }
 
+function onSort() {}
+
 function calculateRows(items) {
   if (items === undefined) return [];
   return items.map(item => ({

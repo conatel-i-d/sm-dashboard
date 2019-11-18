@@ -13,7 +13,9 @@ import {
   LOGIN_REFRESH,
   LOGIN_ERROR,
   LOGIN_REQUEST,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
 } from './actions.js';
 
 import { ofType } from 'redux-observable';
@@ -115,7 +117,6 @@ export function login(action$) {
         map(({ response }) => {
           const accessToken = get(response, 'access_token', '');
           const refreshToken = get(response, 'refresh_token', '');
-
           window.localStorage.setItem('accessToken', accessToken);
           window.localStorage.setItem('refreshToken', refreshToken);
           toHomePage();
@@ -137,6 +138,19 @@ export function login(action$) {
   );
 }
 
+export function logout(action$) {
+  return action$.pipe(
+    ofType(LOGOUT_REQUEST),
+    switchMap(() => {
+      window.localStorage.clear();
+      history.push('/login');
+      return of({
+        type: LOGOUT_SUCCESS
+      });
+    })
+  );
+}
+
 export function historyEpic() {
   return history$.pipe(
     switchMap(payload => {
@@ -148,4 +162,4 @@ export function historyEpic() {
   );
 }
 
-export const epics = combineEpics(initEpic, historyEpic, handleInit, login);
+export const epics = combineEpics(initEpic, historyEpic);

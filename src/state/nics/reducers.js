@@ -17,6 +17,12 @@ export const reducer = createReducer(initialState, {
   [`@${ENTITY}/FAILURE`]: toggleLoading
 });
 
+export function getLoading(state) {
+  return {
+    loading: get(state, 'nics.loading')
+  };
+}
+
 export function selectSwitchNics(state) {
   const pathname = get(state, 'ui.history.pathname', '');
   const switchId = pathname.replace(`/switches/`, '');
