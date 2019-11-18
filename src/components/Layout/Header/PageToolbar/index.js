@@ -7,7 +7,7 @@ import { Toolbar,
   KebabToggle,
   Dropdown,
   DropdownItem,
-  DropdownSeparator,
+  // DropdownSeparator,
   DropdownToggle
 } from '@patternfly/react-core';
 import { BellIcon, CogIcon } from '@patternfly/react-icons';
@@ -16,15 +16,15 @@ import spacingStyles from '@patternfly/react-styles/css/utilities/Spacing/spacin
 import { css } from '@patternfly/react-styles';
 
 export const userDropdownItems = [
-  <DropdownItem key="1">Link</DropdownItem>,
-  <DropdownItem key="2" component="button">Action</DropdownItem>,
-  <DropdownItem key="3" isDisabled>Disabled Link</DropdownItem>,
-  <DropdownItem key="4" isDisabled component="button">
-    Disabled Action
-  </DropdownItem>,
-  <DropdownSeparator key="5" />,
-  <DropdownItem key="6">Separated Link</DropdownItem>,
-  <DropdownItem key="7" component="button">Separated Action</DropdownItem>
+  <DropdownItem key="1">Cerrar Sesión</DropdownItem>,
+  // <DropdownItem key="2" component="button">Action</DropdownItem>,
+  // <DropdownItem key="3" isDisabled>Disabled Link</DropdownItem>,
+  // <DropdownItem key="4" isDisabled component="button">
+  //   Disabled Action
+  // </DropdownItem>,
+  // <DropdownSeparator key="5" />,
+  // <DropdownItem key="6">Separated Link</DropdownItem>,
+  // <DropdownItem key="7" component="button">Separated Action</DropdownItem>
 ];
 
 export const kebabDropdownItems = [
