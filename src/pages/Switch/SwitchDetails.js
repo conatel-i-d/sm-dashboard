@@ -1,72 +1,48 @@
 import React from 'react';
 import {
-  Form,
-  FormGroup,
-  TextInput,
+  TextVariants,
+  TextContent,
+  Text,
   Split,
-  SplitItem,
+  SplitItem
 } from '@patternfly/react-core';
 
 function SwitchDetails({ model }) {
   return (
     <Split gutter="sm">
-        <SplitItem isFilled>
-          <Form isHorizontal>
-            <FormGroup
-              label="Nombre:"
-              type="text"
-              fieldId="name"
-            >
-              <TextInput 
-                value={model.name}
-                id="name"
-                aria-describedby="name"
-                readOnly
-              />
-            </FormGroup>
-            <FormGroup
-              label="Model:"
-              type="text"
-              fieldId="model"
-            >
-              <TextInput 
-                value={model.model}
-                id="model"
-                aria-describedby="model"
-                readOnly
-              />
-            </FormGroup>
-          </Form>
-        </SplitItem>
-        <SplitItem isFilled>
-          <Form isHorizontal>
-            <FormGroup
-              label="Descripción:"
-              type="text"
-              fieldId="description"
-              >
-              <TextInput 
-                value={model.description}
-                id="description"
-                aria-describedby="description"
-                readOnly
-                />
-            </FormGroup>
-            <FormGroup
-              label="IP:"
-              type="text"
-              fieldId="ip"
-              >
-              <TextInput 
-                value={model.ip}
-                id="ip"
-                aria-describedby="ip"
-                readOnly
-                />
-            </FormGroup>
-          </Form>
-        </SplitItem>
-      </Split>
+      <SplitItem>
+        <TextContent>
+          <Text component={TextVariants.h5}>Nombre:</Text>
+        </TextContent>
+      </SplitItem>
+      <SplitItem isFilled>
+        <Text>{model.name}</Text>
+      </SplitItem>
+      <SplitItem>
+        <TextContent>
+          <Text component={TextVariants.h5}>Modelo:</Text>
+        </TextContent>
+      </SplitItem>
+      <SplitItem isFilled>
+        <Text>{model.model}</Text>
+      </SplitItem>
+      <SplitItem>
+        <TextContent>
+          <Text component={TextVariants.h5}>Descripción:</Text>
+        </TextContent>
+      </SplitItem>
+      <SplitItem isFilled>
+        <Text>{model.description}</Text>
+      </SplitItem>
+      <SplitItem>
+        <TextContent>
+          <Text component={TextVariants.h5}>IP:</Text>
+        </TextContent>
+      </SplitItem>
+      <SplitItem isFilled>
+        <Text>{model.ip}</Text>
+      </SplitItem>
+    </Split>
   );
 }
 

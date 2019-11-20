@@ -8,6 +8,10 @@ import {
   sortable
 } from '@patternfly/react-table';
 
+import { Label } from '@patternfly/react-core';
+
+import { history } from '../../modules/history.js';
+
 import { selectSwitchNics, reboot } from '../../state/nics';
 
 const COLUMNS = [
@@ -18,10 +22,10 @@ const COLUMNS = [
   { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] }
 ];
 
-function Table({ items, sortBy, onSort, reboot, switchId }) {
+function Table({ items, sortBy, onSort, switchId }) {
   function onReboot(_, __, rowData) {
     const name = get(rowData, 'cells.0', '');
-    reboot({ name, switchId });
+    history.push(`/switches/${switchId}/reboot?name=${name}`);
   }
   return (
     <PatternflyTable
@@ -35,17 +39,39 @@ function Table({ items, sortBy, onSort, reboot, switchId }) {
       actions={[{ title: 'Reiniciar', onClick: onReboot }]}
     >
       <TableHeader />
-      <TableBody rowKey={({ rowData }) => rowData.cells[0].key} />
+      <TableBody rowKey={({ rowData }) => rowData.cells[0]} />
     </PatternflyTable>
   );
 }
 
-function onSort() {}
-
 function calculateRows(items) {
   if (items === undefined) return [];
   return items.map(item => ({
-    cells: COLUMNS.map(column => get(item, column.key))
+    cells: COLUMNS.map(column => {
+      if (column.key === 'state') {
+        const label = get(item, column.key);
+        const className = label === 'up' ? 'successLabel' : 'normalLabel';
+        return {
+          title: <Label className={className}>{label}</Label>
+        };
+      } else if (column.key === 'switchport') {
+        const label = get(item, column.key);
+        const className = label === 'Enabled' ? 'greenLabel' : 'normalLabel';
+        return {
+          title: <Label className={className}>{label}</Label>
+        };
+      } else if (column.key === 'adminisrtative_mode') {
+        const label = get(item, column.key);
+        const className = label === 'trunk' ? 'redLabel' : 'successLabel';
+        return {
+          title: <Label className={className}>{label}</Label>
+        };
+      } else return get(item, column.key);
+    }),
+    disableActions:
+      item.state === 'down' || item['adminisrtative_mode'] === 'trunk'
+        ? true
+        : false
   }));
 }
 

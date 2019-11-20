@@ -1,12 +1,9 @@
 import union from 'lodash/union';
 import get from 'lodash/get';
-import lodashSortBy from 'lodash/sortBy';
 import Fuse from 'fuse.js';
-import {
-  SortByDirection
-} from '@patternfly/react-table';
 
-import { createReducer, updateObject, updateState } from '../utils';
+
+import { createReducer, updateObject, updateState, sortItems } from '../utils';
 
 const ENTITY = 'switches'
 
@@ -84,12 +81,7 @@ export function filterItems(items, filterInput, options) {
   return fuse.search(filterInput);
 }
 
-export function sortItems(items, sortBy = {}) {
-  if (sortBy.key === undefined || sortBy.direction === undefined) return items;
-  const { key, direction } = sortBy;
-  items = lodashSortBy(items, key);
-  return direction === SortByDirection.asc ? items : items.reverse();
-}
+
 
 export function selectAll(state) {
   const ids = get(state, `${ENTITY}.ids`, []);

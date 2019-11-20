@@ -1,3 +1,9 @@
+import { actionCreator } from '../utils';
+
+const ENTITY = 'nics';
+
+export const updateSortBy = actionCreator(`@${ENTITY}/UPDATE_SORT_BY`);
+
 export function get(payload) {
   return {
     type: '@nics/GET_REQUEST',
