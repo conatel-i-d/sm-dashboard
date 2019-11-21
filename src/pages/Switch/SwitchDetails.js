@@ -1,73 +1,42 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
-  Form,
-  FormGroup,
-  TextInput,
-  Split,
-  SplitItem,
+  TextVariants,
+  TextContent,
+  Text,
+  Flex,
+  FlexItem
 } from '@patternfly/react-core';
+
+import { selectModel } from '../../state/switches';
 
 function SwitchDetails({ model }) {
   return (
-    <Split gutter="sm">
-        <SplitItem isFilled>
-          <Form isHorizontal>
-            <FormGroup
-              label="Nombre:"
-              type="text"
-              fieldId="name"
-            >
-              <TextInput 
-                value={model.name}
-                id="name"
-                aria-describedby="name"
-                readOnly
-              />
-            </FormGroup>
-            <FormGroup
-              label="Model:"
-              type="text"
-              fieldId="model"
-            >
-              <TextInput 
-                value={model.model}
-                id="model"
-                aria-describedby="model"
-                readOnly
-              />
-            </FormGroup>
-          </Form>
-        </SplitItem>
-        <SplitItem isFilled>
-          <Form isHorizontal>
-            <FormGroup
-              label="Descripción:"
-              type="text"
-              fieldId="description"
-              >
-              <TextInput 
-                value={model.description}
-                id="description"
-                aria-describedby="description"
-                readOnly
-                />
-            </FormGroup>
-            <FormGroup
-              label="IP:"
-              type="text"
-              fieldId="ip"
-              >
-              <TextInput 
-                value={model.ip}
-                id="ip"
-                aria-describedby="ip"
-                readOnly
-                />
-            </FormGroup>
-          </Form>
-        </SplitItem>
-      </Split>
+    <Flex gutter="sm"
+      breakpointMods={[{modifier: "justify-content-space-between"}]}
+    >
+      <FlexItem>
+        <TextContent>
+          <Text component={TextVariants.h5}><b>Nombre:</b> {model.name}</Text>
+        </TextContent>
+      </FlexItem>
+      <FlexItem>
+        <TextContent>
+          <Text component={TextVariants.h5}><b>Modelo</b>: {model.model}</Text>
+        </TextContent>
+      </FlexItem>
+      <FlexItem>
+        <TextContent>
+          <Text component={TextVariants.h5}><b>Descripción</b>: {model.description}</Text>
+        </TextContent>
+      </FlexItem>
+      <FlexItem>
+        <TextContent>
+          <Text component={TextVariants.h5}><b>IP</b>: {model.ip}</Text>
+        </TextContent>
+      </FlexItem>
+    </Flex>
   );
 }
 
-export default SwitchDetails;
+export default connect(selectModel)(SwitchDetails);

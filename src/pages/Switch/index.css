@@ -1,7 +1,36 @@
+.Switches__Page {
+  padding: 0 1em;
+}
+
+.Switch__Toolbar {
+  padding: 0.5em 0;
+  justify-content: space-between;
+}
+
 .Switch__Page.Switch__Page-Details {
-  padding: var(--pf-c-page__main-section--PaddingTop) calc(var(--pf-c-page__main-section--PaddingRight)*2) var(--pf-c-page__main-section--PaddingBottom) calc(var(--pf-c-page__main-section--PaddingLeft)*2);
+  padding: var(--pf-c-page__main-section--PaddingTop) calc(var(--pf-c-page__main-section--PaddingRight)*2) calc(var(--pf-c-page__main-section--PaddingBottom)/4) calc(var(--pf-c-page__main-section--PaddingLeft)*2);
+}
+
+.Switch__Page.Switch__Page-InterfacesTable {
+  padding: calc(var(--pf-c-page__main-section--PaddingTop)/4) var(--pf-c-page__main-section--PaddingRight) var(--pf-c-page__main-section--PaddingBottom) var(--pf-c-page__main-section--PaddingLeft);
 }
 
 .Switch--TrunkInterface {
   border-left: 3px solid var(--pf-global--primary-color--100);
+}
+
+.redLabel {
+  background: var(--pf-global--danger-color--100);
+}
+
+.greenLabel {
+  background: var(--pf-global--success-color--100);
+}
+
+.successLabel {
+  background: var(--pf-global--info-color--100);
+}
+
+.normalLabel {
+  background: rgba(3,3,3,0.32);
 }

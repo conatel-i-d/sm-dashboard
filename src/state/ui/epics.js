@@ -10,7 +10,8 @@ import { history$, history } from '../../modules/history.js';
 import {
   INIT,
   HISTORY_PUSH,
-  LOGIN_REFRESH,
+  APP_REFRESH,
+  REFRESH_REQUEST,
   LOGIN_ERROR,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -41,20 +42,18 @@ export function initEpic() {
   ]);
 }
 
-export function handleInit(action$, state$) {
+export function handleInit(action$, _) {
   return action$.pipe(
-    ofType(INIT),
+    ofType(INIT, APP_REFRESH),
     switchMap(() => {
-      const { email } = state$.value.ui.app.user;
-      var refresh = localStorage.getItem('refreshToken');
+      const refresh = localStorage.getItem('refreshToken');
 
-      if (refresh === undefined || refresh === null || email === undefined)
-        return toLoginPage();
+      if (refresh === undefined || refresh === null) return toLoginPage();
 
       const ajax$ = ajax({
         url: 'api/auth/token_refresh/',
         method: 'POST',
-        header: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: {
           refresh_token: refresh
         }
@@ -67,17 +66,15 @@ export function handleInit(action$, state$) {
           window.localStorage.setItem('refreshToken', refreshToken);
 
           return {
-            type: LOGIN_REFRESH,
+            type: REFRESH_REQUEST,
             payload: { accessToken, refreshToken }
           };
         }),
-        catchError(err =>
-          of({
-            type: LOGIN_ERROR,
-            payload:
-              err.response && err.response.message ? err.response.message : err
-          })
-        )
+        catchError(err => {
+          console.error(err);
+          window.localStorage.clear();
+          return toLoginPage();
+        })
       );
       return ajax$;
     })

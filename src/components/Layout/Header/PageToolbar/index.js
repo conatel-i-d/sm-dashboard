@@ -8,7 +8,7 @@ import { Toolbar,
   KebabToggle,
   Dropdown,
   DropdownItem,
-  DropdownSeparator,
+  // DropdownSeparator,
   DropdownToggle
 } from '@patternfly/react-core';
 import { BellIcon, CogIcon } from '@patternfly/react-icons';

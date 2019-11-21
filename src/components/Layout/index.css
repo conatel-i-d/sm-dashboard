@@ -1,0 +1,3 @@
+.Layout .Breadcrumb {
+  padding: calc(var(--pf-c-page__main-section--PaddingTop) / 4) var(--pf-c-page__main-section--PaddingRight) calc(var(--pf-c-page__main-section--PaddingBottom)/4) var(--pf-c-page__main-section--PaddingLeft);
+}

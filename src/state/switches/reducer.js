@@ -1,14 +1,15 @@
 import union from 'lodash/union';
 import get from 'lodash/get';
-import lodashSortBy from 'lodash/sortBy';
-import Fuse from 'fuse.js';
+
 import {
-  SortByDirection
-} from '@patternfly/react-table';
+  createReducer,
+  updateObject,
+  updateState,
+  sortItems,
+  filterItems
+} from '../utils';
 
-import { createReducer, updateObject, updateState } from '../utils';
-
-const ENTITY = 'switches'
+const ENTITY = 'switches';
 
 export const initialState = {
   ids: [],
@@ -18,9 +19,9 @@ export const initialState = {
     key: 'id',
     direction: 'asc'
   }
-}
+};
 
-const toggleLoading = updateState('loading', (state) => !state.loading);
+const toggleLoading = updateState('loading', state => !state.loading);
 
 export const reducer = createReducer(initialState, {
   [`@${ENTITY}/GET_SUCCESS`]: updateIds,
@@ -34,7 +35,7 @@ export const reducer = createReducer(initialState, {
   [`@${ENTITY}/CANCELED`]: toggleLoading,
   [`@${ENTITY}/FAILURE`]: toggleLoading,
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
-  [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
+  [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy')
 });
 
 function updateIds(state, payload) {
@@ -71,25 +72,8 @@ const FUSE_OPTIONS = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: [
-    "name",
-    "description",
-    "model",
-    "ip"
-  ]
-}
-
-export function filterItems(items, filterInput, options) {
-  const fuse = new Fuse(items, options);
-  return fuse.search(filterInput);
-}
-
-export function sortItems(items, sortBy = {}) {
-  if (sortBy.key === undefined || sortBy.direction === undefined) return items;
-  const { key, direction } = sortBy;
-  items = lodashSortBy(items, key);
-  return direction === SortByDirection.asc ? items : items.reverse();
-}
+  keys: ['name', 'description', 'model', 'ip']
+};
 
 export function selectAll(state) {
   const ids = get(state, `${ENTITY}.ids`, []);
@@ -109,8 +93,12 @@ export function getState(state) {
   return {
     loading: get(state, `${ENTITY}.loading`),
     sortBy: get(state, `${ENTITY}.sortBy`),
-    model: getModel(state),
+    model: getModel(state)
   };
+}
+
+export function selectModel(state) {
+  return { model: getModel(state) };
 }
 
 const defaultState = {
@@ -125,11 +113,14 @@ const EXISTING_SWITCH_REG_EXP = new RegExp(`/${ENTITY}[/|a-zA-Z]+([0-9]+)`);
 
 function getModel(state) {
   const pathname = get(state, 'ui.history.pathname');
-  const existingSwitch = pathname.match(EXISTING_SWITCH_REG_EXP)
+  const existingSwitch = pathname.match(EXISTING_SWITCH_REG_EXP);
   if (existingSwitch) {
     const switchId = existingSwitch[1];
-    const model = get(state, `entities.${ENTITY}.${switchId}`, {...defaultState, id: switchId});
+    const model = get(state, `entities.${ENTITY}.${switchId}`, {
+      ...defaultState,
+      id: switchId
+    });
     return model;
   }
-  return {...defaultState};
+  return { ...defaultState };
 }

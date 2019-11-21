@@ -1,28 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
   Button,
   ButtonVariant,
   Toolbar as PatternflyToolbar,
   ToolbarItem,
   InputGroup,
-  TextInput
+  TextInput,
+  TextContent,
+  TextVariants,
+  Text
 } from '@patternfly/react-core';
-import { PlusCircleIcon, SearchIcon } from '@patternfly/react-icons';
+import { SearchIcon } from '@patternfly/react-icons';
 
-import { updateFilterInput } from '../../state/switches';
+import { updateFilterInput, selectSwitchNicsCount } from '../../state/nics';
 
-function Toolbar({ updateFilterInput }) {
+function Toolbar({ updateFilterInput, count }) {
   return (
-    <PatternflyToolbar className="Switches__Toolbar">
-      <ToolbarItem>
-        <Link to="/switches/create">
-          <Button variant="link" icon={<PlusCircleIcon />}>
-            Crear un nuevo Switch
-          </Button>
-        </Link>
-      </ToolbarItem>
+    <PatternflyToolbar className="Switch__Toolbar">
       <ToolbarItem>
         <InputGroup>
           <TextInput
@@ -39,8 +34,13 @@ function Toolbar({ updateFilterInput }) {
           </Button>
         </InputGroup>
       </ToolbarItem>
+      <ToolbarItem>
+        <TextContent>
+          <Text component={TextVariants.h5}><b>Número de Interfaces:</b> {count}</Text>
+        </TextContent>
+      </ToolbarItem>
     </PatternflyToolbar>
   );
 }
 
-export default connect(() => ({}), { updateFilterInput })(Toolbar);
+export default connect(selectSwitchNicsCount, { updateFilterInput })(Toolbar);

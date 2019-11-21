@@ -11,20 +11,23 @@ import {
   sortable
 } from '@patternfly/react-table';
 
+import { Label } from '@patternfly/react-core';
+
+import { history } from '../../modules/history.js';
+
 import { selectSwitchNics, reboot } from '../../state/nics';
 
 const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
   { key: 'description', title: 'Descripción', transforms: [sortable] },
-  { key: 'state', title: 'Estado', transforms: [sortable] },
-  { key: 'switchport', title: 'Switchport', transforms: [sortable] },
+  { key: 'protocol', title: 'Estado', transforms: [sortable] },
   { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] }
 ];
 
 function Table({ items, sortBy, onSort=() => {}, reboot, switchId }) {
   function onReboot(_, __, rowData) {
     const name = get(rowData, 'cells.0', '');
-    reboot({ name, switchId });
+    history.push(`/switches/${switchId}/reboot?name=${name}`);
   }
   return (
     <PatternflyTable
@@ -40,13 +43,13 @@ function Table({ items, sortBy, onSort=() => {}, reboot, switchId }) {
       rowWrapper={TableRowWrapper}
     >
       <TableHeader />
-      <TableBody rowKey={({ rowData }) => rowData.cells[0].key} />
+      <TableBody rowKey={({ rowData }) => rowData.cells[0]} />
     </PatternflyTable>
   );
 }
 
 function TableRowWrapper({trRef, className, rowProps, row: {isExpanded, isHeightAuto, cells}, ...props}) {
-  const isTrunk = cells[4] === 'trunk';
+  const isTrunk = get(cells, '[4].title.props.children', '') === 'trunk';
   return (
     <tr
       {...props}
@@ -62,12 +65,28 @@ function TableRowWrapper({trRef, className, rowProps, row: {isExpanded, isHeight
   )
 }
 
-function onSort() {}
-
 function calculateRows(items) {
   if (items === undefined) return [];
   return items.map(item => ({
-    cells: COLUMNS.map(column => get(item, column.key))
+    cells: COLUMNS.map(column => {
+      if (column.key === 'protocol') {
+        const label = get(item, column.key);
+        const className = label === 'up (connected) ' ? 'greenLabel' : 'normalLabel';
+        return {
+          title: <Label className={className}>{label}</Label>
+        };
+      } else if (column.key === 'adminisrtative_mode') {
+        const label = get(item, column.key);
+        const className = label === 'trunk' ? 'redLabel' : 'successLabel';
+        return {
+          title: <Label className={className}>{label}</Label>
+        };
+      } else return get(item, column.key);
+    }),
+    disableActions:
+      item.state === 'down' || item['adminisrtative_mode'] === 'trunk'
+        ? true
+        : false
   }));
 }
 

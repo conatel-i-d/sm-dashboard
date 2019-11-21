@@ -5,6 +5,7 @@ import {
   PageSectionVariants
 } from '@patternfly/react-core';
 
+import './index.css';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Breadcrumb from './Breadcrumb';
@@ -15,9 +16,10 @@ export function Layout({children}) {
       header={<Header />}
       sidebar={<Sidebar />}
       isManagedSidebar={false}
+      className="Layout"
     >
       <>
-      <PageSection variant={PageSectionVariants.darker}>
+      <PageSection variant={PageSectionVariants.darker} noPadding={true} className="Breadcrumb">
         <Breadcrumb />
       </PageSection>
       {children}

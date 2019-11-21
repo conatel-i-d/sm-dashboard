@@ -12,7 +12,7 @@ export function Main() {
     <Layout>
       <RouterSwitch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/switches/:id(\d+)" component={Switch} />
+        <Route path="/switches/:id(\d+)" component={Switch} />
         <Route path="/switches" component={Switches} />
       </RouterSwitch>
     </Layout>

@@ -1,41 +1,85 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PageSection, PageSectionVariants, Bullseye } from '@patternfly/react-core';
+import { Route, Switch } from 'react-router-dom';
+
+import {
+  PageSection,
+  PageSectionVariants,
+  Bullseye
+} from '@patternfly/react-core';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
 import './index.css'
 import { get as getSwitch, getState } from '../../state/switches';
-import { get as getInterfaces, getLoading } from '../../state/nics';
+import {
+  get as getInterfaces,
+  getLoading,
+  getState as getNicsState,
+  updateSortBy,
+  reboot
+} from '../../state/nics';
 import { combineStateSelectors } from '../../state/utils';
 import SwitchDetails from './SwitchDetails.js';
 import Table from './Table.js';
+import Modal from './Modal.js';
+import Toolbar from './Toolbar.js';
+
+import './index.css';
 
 const ENTITY = 'switches';
 
-export function Switch({ loading, location, model, getSwitch, getInterfaces }) {
+export function SwitchPage({
+  loading,
+  location,
+  model,
+  reboot,
+  getSwitch,
+  getInterfaces,
+  sortBy,
+  updateSortBy
+}) {
+  const [switchId] = React.useState(
+    location.pathname.replace(`/${ENTITY}/`, '')
+  );
+
   React.useEffect(() => {
-    const switchId = location.pathname.replace(`/${ENTITY}/`, '')
     getSwitch({ id: switchId });
     getInterfaces({ switchId });
-  }, [getSwitch, getInterfaces, location]);
+  }, [getSwitch, getInterfaces, switchId]);
 
   return (
     <>
-      <PageSection variant={PageSectionVariants.light} className="Switch__Page Switch__Page-Details">
-        <SwitchDetails model={model} />
+      <PageSection
+        variant={PageSectionVariants.light}
+        className="Switch__Page Switch__Page-Details"
+      >
+        <Switch>
+          <Route
+            path="/switches/:id/reboot"
+            render={() => <Modal onReboot={reboot} location={location} />}
+          />
+        </Switch>
+        <SwitchDetails />
+        <Toolbar />
       </PageSection>
-      <PageSection variant={PageSectionVariants.light} className="Switch__Page">
-        {loading
+      <PageSection 
+        variant={PageSectionVariants.light} 
+        className="Switch__Page Switch__Page-InterfacesTable">
+        {loading 
           ? <Bullseye><Spinner /></Bullseye>
-          : <Table />
+          : <Table sortBy={sortBy} onSort={updateSortBy} />
         }
-        
       </PageSection>
     </>
   );
 }
 
 export default connect(
-  combineStateSelectors(getState, getLoading),
-  { getSwitch, getInterfaces }
-)(Switch);
+  combineStateSelectors(getState, getNicsState, getLoading),
+  {
+    getSwitch,
+    getInterfaces,
+    updateSortBy,
+    reboot
+  }
+)(SwitchPage);
