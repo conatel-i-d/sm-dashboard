@@ -21,6 +21,7 @@ import { combineStateSelectors } from '../../state/utils';
 import SwitchDetails from './SwitchDetails.js';
 import Table from './Table.js';
 import Modal from './Modal.js';
+import Toolbar from './Toolbar.js';
 
 import './index.css';
 
@@ -36,7 +37,7 @@ export function SwitchPage({
   sortBy,
   updateSortBy
 }) {
-  const [switchId, _] = React.useState(
+  const [switchId] = React.useState(
     location.pathname.replace(`/${ENTITY}/`, '')
   );
 
@@ -59,6 +60,7 @@ export function SwitchPage({
         </Switch>
 
         <SwitchDetails model={model} />
+        <Toolbar />
       </PageSection>
       <PageSection variant={PageSectionVariants.light} className="Switch__Page">
         {loading ? (

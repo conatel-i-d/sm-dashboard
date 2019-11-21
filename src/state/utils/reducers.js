@@ -1,8 +1,7 @@
 import isFunction from 'lodash/isFunction';
-import {
-  SortByDirection
-} from '@patternfly/react-table';
+import { SortByDirection } from '@patternfly/react-table';
 import lodashSortBy from 'lodash/sortBy';
+import Fuse from 'fuse.js';
 
 import { updateObject } from '.';
 /**
@@ -34,8 +33,14 @@ export function updateState(key, stateTransform) {
 
 export function actionCreator(type) {
   return function(...payload) {
+    console.log(payload);
     return { type, payload: payload.length > 1 ? payload : payload[0] };
   };
+}
+
+export function filterItems(items, filterInput, options) {
+  const fuse = new Fuse(items, options);
+  return fuse.search(filterInput);
 }
 
 export function sortItems(items, sortBy = {}) {

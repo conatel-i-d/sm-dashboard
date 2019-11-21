@@ -18,5 +18,6 @@ export function loginSubmit(payload) {
 }
 
 export function logout() {
-  return { type: LOGOUT_REQUEST }
+  window.k.logout();
+  return { type: LOGOUT_REQUEST };
 }
