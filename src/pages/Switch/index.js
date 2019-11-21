@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { PageSection, PageSectionVariants, Bullseye } from '@patternfly/react-core';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
+import './index.css'
 import { get as getSwitch, getState } from '../../state/switches';
 import { get as getInterfaces, getLoading } from '../../state/nics';
 import { combineStateSelectors } from '../../state/utils';
 import SwitchDetails from './SwitchDetails.js';
 import Table from './Table.js';
-import './index.css'
 
 const ENTITY = 'switches';
 
