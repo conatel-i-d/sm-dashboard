@@ -31,7 +31,6 @@ const ENTITY = 'switches';
 export function SwitchPage({
   loading,
   location,
-  model,
   reboot,
   getSwitch,
   getInterfaces,

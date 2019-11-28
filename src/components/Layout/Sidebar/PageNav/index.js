@@ -15,6 +15,9 @@ export function PageNav({pathname}) {
         <NavItem itemId={1} isActive={/^\/switches/.test(pathname)}>
           <Link to="/switches">Switches</Link>
         </NavItem>
+        <NavItem itemId={1} isActive={/^\/logs/.test(pathname)}>
+          <Link to="/logs">Logs</Link>
+        </NavItem>
       </NavList>
     </Nav>
   );

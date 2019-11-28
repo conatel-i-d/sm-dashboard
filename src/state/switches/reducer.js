@@ -1,4 +1,3 @@
-import union from 'lodash/union';
 import get from 'lodash/get';
 
 import {
@@ -6,7 +5,8 @@ import {
   updateObject,
   updateState,
   sortItems,
-  filterItems
+  filterItems,
+  updateIds
 } from '../utils';
 
 const ENTITY = 'switches';
@@ -37,13 +37,6 @@ export const reducer = createReducer(initialState, {
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy')
 });
-
-function updateIds(state, payload) {
-  return updateObject(state, {
-    loading: false,
-    ids: union(state.ids, payload.result)
-  });
-}
 
 function removeId(state, payload) {
   return updateObject(state, {

@@ -1,46 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Toolbar,
+import {
+  Toolbar,
   ToolbarGroup,
   ToolbarItem,
   Button,
   ButtonVariant,
-  KebabToggle,
   Dropdown,
   DropdownItem,
-  // DropdownSeparator,
-  DropdownToggle
+  DropdownToggle,
+  NotificationBadge
 } from '@patternfly/react-core';
 import { BellIcon, CogIcon } from '@patternfly/react-icons';
 import accessibleStyles from '@patternfly/react-styles/css/utilities/Accessibility/accessibility';
-import spacingStyles from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import { css } from '@patternfly/react-styles';
 
 import { logout } from '../../../../state/ui';
+import Notifications from '../../../Notifications';
 
 export const kebabDropdownItems = [
   <DropdownItem key="1">
-    <BellIcon /> Notifications
+    <NotificationBadge isRead={false} aria-label="Notifications">
+      <BellIcon />
+    </NotificationBadge>
   </DropdownItem>,
-  <DropdownItem key="2">
-    <CogIcon /> Settings
-  </DropdownItem>
+  <DropdownItem key="2"></DropdownItem>
 ];
 
 export function PageToolbar({ logout }) {
-  const [isKebabDropdownOpen, setIsKebabDropdownOpen] = React.useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-  const userDropdownItems = React.useMemo(() => [
-    <DropdownItem key="1" onClick={logout}>Logout</DropdownItem>
-  ], [ logout ]);
+  const userDropdownItems = React.useMemo(
+    () => [
+      <DropdownItem key="1" onClick={logout}>
+        Logout
+      </DropdownItem>
+    ],
+    [logout]
+  );
 
   return (
     <Toolbar>
-      <ToolbarGroup className={css(accessibleStyles.screenReader, accessibleStyles.visibleOnLg)}>
+      <ToolbarGroup
+        className={css(
+          accessibleStyles.screenReader,
+          accessibleStyles.visibleOnLg,
+          accessibleStyles.visibleOnMd
+        )}
+      >
         <ToolbarItem>
-          <Button aria-label="Notifications actions" variant={ButtonVariant.plain}>
-            <BellIcon />
-          </Button>
+          <Notifications />
         </ToolbarItem>
         <ToolbarItem>
           <Button aria-label="Settings actions" variant={ButtonVariant.plain}>
@@ -49,37 +57,28 @@ export function PageToolbar({ logout }) {
         </ToolbarItem>
       </ToolbarGroup>
       <ToolbarGroup>
-        <ToolbarItem className={css(accessibleStyles.hiddenOnLg, spacingStyles.mr_0)}>
-          <Dropdown
-            isPlain
-            position="right"
-            onSelect={onKebabDropdownSelect}
-            toggle={<KebabToggle onToggle={onKebabDropdownToggle} />}
-            isOpen={isKebabDropdownOpen}
-            dropdownItems={kebabDropdownItems}
-          />
-        </ToolbarItem>
-        <ToolbarItem className={css(accessibleStyles.screenReader, accessibleStyles.visibleOnMd)}>
+        <ToolbarItem
+          className={css(
+            accessibleStyles.screenReader,
+            accessibleStyles.visibleOnMd
+          )}
+        >
           <Dropdown
             isPlain
             position="right"
             onSelect={onDropdownSelect}
             isOpen={isDropdownOpen}
-            toggle={<DropdownToggle onToggle={onDropdownToggle}>CONATEL S.A.</DropdownToggle>}
+            toggle={
+              <DropdownToggle onToggle={onDropdownToggle}>
+                CONATEL S.A.
+              </DropdownToggle>
+            }
             dropdownItems={userDropdownItems}
           />
         </ToolbarItem>
       </ToolbarGroup>
     </Toolbar>
   );
-
-  function onKebabDropdownSelect () {
-    setIsKebabDropdownOpen(!isKebabDropdownOpen);
-  }
-
-  function onKebabDropdownToggle(isKebabDropdownOpen) {
-    setIsKebabDropdownOpen(isKebabDropdownOpen);
-  }
 
   function onDropdownSelect() {
     setIsDropdownOpen(!isDropdownOpen);
