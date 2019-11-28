@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
 
-import { INIT, HISTORY_PUSH, NAV_TOGGLE, LOGIN_REQUEST } from './actions.js';
+import { INIT, HISTORY_PUSH, NAV_TOGGLE } from './actions.js';
 import { createReducer, updateObject } from '../utils';
 
 const historyReducer = createReducer(
@@ -21,20 +21,6 @@ const appReducer = createReducer(
     [INIT]: init
   }
 );
-
-const loginReducer = createReducer(
-  { loading: false },
-  {
-    [LOGIN_REQUEST]: login
-  }
-);
-
-function login(state) {
-  return {
-    ...state,
-    loading: true
-  };
-}
 
 function init(state) {
   return updateObject(state, { ready: true });
@@ -69,8 +55,7 @@ export function getLoginState(state) {
 export const reducer = combineReducers({
   history: historyReducer,
   app: appReducer,
-  global: globalUiReducer,
-  login: loginReducer
+  global: globalUiReducer
 });
 
 export default reducer;

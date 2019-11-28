@@ -9,23 +9,28 @@ export function updateObject(oldObject, newValues) {
   return {
     ...oldObject,
     ...newValues
-  }
+  };
 }
 /**
  * Opciones por defecto de la función updateItemInArray.
  */
 export const updateItemInArrayDefaultOptions = {
   objectIdentifier: 'id'
-}
+};
 /**
- * 
+ *
  * @param {any[]} array Lista donde se encuentra el item a modificar.
  * @param {any} itemIdentifier Valor del identificador del item en el array de
  * @param {function} updateItemCallback Función que modifica el item.
  * @param {object} [options] Opciones que modifican el comportamiento de la función
  * @property {string} [objectIdentifier] Nombre del identificador del item.
  */
-export function updateItemInArray(array, itemIdentifier, updateItemCallback, options) {
+export function updateItemInArray(
+  array,
+  itemIdentifier,
+  updateItemCallback,
+  options
+) {
   options = updateObject(updateItemInArrayDefaultOptions, options);
   return array.map(item => {
     if (item[options.objectIdentifier] !== itemIdentifier) {
@@ -49,11 +54,16 @@ export function appendItemInArray(array, newItem) {
  * @param {function[]} handlers Mapa entre `action types` y funciones que cambien el estado
  */
 export function createReducer(initialState, handlers) {
-  return function reducer(state = initialState, {type, payload}) {
+  return function reducer(state = initialState, { type, payload }) {
     if (handlers.hasOwnProperty(type)) {
       return handlers[type](state, payload);
     } else {
       return state;
     }
-  }
+  };
+}
+
+export function getToken() {
+  if (window.k !== undefined) return window.k.idToken;
+  return '';
 }

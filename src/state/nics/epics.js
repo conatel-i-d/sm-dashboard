@@ -1,13 +1,14 @@
 import { combineEpics } from 'redux-observable';
 import get from 'lodash/get';
 
-import { rest$, rebootEpic } from '../utils';
+import { rest$, rebootEpic, getToken } from '../utils';
 
 const DISALLOWED_INTERFACES = ['', 'failed', 'changed'];
 
 export const restEpic = rest$({
   url,
   prefix: 'nics',
+  headers: () => ({ Token: getToken(), 'Content-Type': 'application/json' }),
   parseResponse: ({ item }, _, { switchId }) => {
     return {
       entities: {

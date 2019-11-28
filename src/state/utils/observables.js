@@ -87,7 +87,7 @@ export function restEpicFactory(options) {
             payload && payload.id ? `/${payload.id}` : ''
           }`,
           method: options.method,
-          headers: options.headers || {},
+          headers: options.headers.call() || {},
           body:
             options.method === 'POST' || options.method === 'PUT'
               ? payload
@@ -129,7 +129,7 @@ export function restEpicFactory(options) {
   };
 }
 
-export function rebootEpic(action$, state$) {
+export function rebootEpic(action$) {
   return action$.pipe(
     ofType('@nics/REBOOT_REQUEST'),
     switchMap(({ payload: { name, switchId } }) => {

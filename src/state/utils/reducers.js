@@ -2,6 +2,7 @@ import isFunction from 'lodash/isFunction';
 import { SortByDirection } from '@patternfly/react-table';
 import lodashSortBy from 'lodash/sortBy';
 import Fuse from 'fuse.js';
+import union from 'lodash/union';
 
 import { updateObject } from '.';
 /**
@@ -47,4 +48,11 @@ export function sortItems(items, sortBy = {}) {
   const { key, direction } = sortBy;
   items = lodashSortBy(items, key);
   return direction === SortByDirection.asc ? items : items.reverse();
+}
+
+export function updateIds(state, payload) {
+  return updateObject(state, {
+    loading: false,
+    ids: union(state.ids, payload.result)
+  });
 }

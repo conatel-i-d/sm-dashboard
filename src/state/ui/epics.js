@@ -1,25 +1,11 @@
 import { of, from } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { combineEpics } from 'redux-observable';
 
 import pick from 'lodash/pick';
-import get from 'lodash/get';
 
-import { history$, history } from '../../modules/history.js';
-import {
-  INIT,
-  HISTORY_PUSH,
-  APP_REFRESH,
-  REFRESH_REQUEST,
-  LOGIN_ERROR,
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGOUT_REQUEST,
-  LOGOUT_SUCCESS,
-} from './actions.js';
-
-import { ofType } from 'redux-observable';
+import { history$ } from '../../modules/history.js';
+import { INIT, HISTORY_PUSH } from './actions.js';
 
 export function initEpic() {
   return from([
@@ -40,112 +26,6 @@ export function initEpic() {
       }
     }
   ]);
-}
-
-export function handleInit(action$, _) {
-  return action$.pipe(
-    ofType(INIT, APP_REFRESH),
-    switchMap(() => {
-      const refresh = localStorage.getItem('refreshToken');
-
-      if (refresh === undefined || refresh === null) return toLoginPage();
-
-      const ajax$ = ajax({
-        url: 'api/auth/token_refresh/',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: {
-          refresh_token: refresh
-        }
-      }).pipe(
-        map(({ response }) => {
-          const accessToken = get(response, 'access_token', '');
-          const refreshToken = get(response, 'refresh_token', '');
-
-          window.localStorage.setItem('accessToken', accessToken);
-          window.localStorage.setItem('refreshToken', refreshToken);
-
-          return {
-            type: REFRESH_REQUEST,
-            payload: { accessToken, refreshToken }
-          };
-        }),
-        catchError(err => {
-          console.error(err);
-          window.localStorage.clear();
-          return toLoginPage();
-        })
-      );
-      return ajax$;
-    })
-  );
-}
-
-export function toLoginPage() {
-  history.push('/login');
-  return of({
-    type: '@history/PUSH',
-    payload: {
-      location: { pathname: '/login' }
-    }
-  });
-}
-
-export function toHomePage() {
-  history.push('/');
-  return of({
-    type: '@history/PUSH',
-    payload: {
-      location: { pathname: '/' }
-    }
-  });
-}
-
-export function login(action$) {
-  return action$.pipe(
-    ofType(LOGIN_REQUEST),
-    switchMap(({ payload: { username, password } }) => {
-      const ajax$ = ajax({
-        url: 'api/auth/token_login/',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: { username, password }
-      }).pipe(
-        map(({ response }) => {
-          const accessToken = get(response, 'access_token', '');
-          const refreshToken = get(response, 'refresh_token', '');
-          window.localStorage.setItem('accessToken', accessToken);
-          window.localStorage.setItem('refreshToken', refreshToken);
-          toHomePage();
-          return {
-            type: LOGIN_SUCCESS,
-            payload: { accessToken, refreshToken }
-          };
-        }),
-        catchError(err =>
-          of({
-            type: LOGIN_ERROR,
-            payload:
-              err.response && err.response.message ? err.response.message : err
-          })
-        )
-      );
-      return ajax$;
-    })
-  );
-}
-
-export function logout(action$) {
-  return action$.pipe(
-    ofType(LOGOUT_REQUEST),
-    switchMap(() => {
-      window.localStorage.clear();
-      history.push('/login');
-      return of({
-        type: LOGOUT_SUCCESS
-      });
-    })
-  );
 }
 
 export function historyEpic() {
