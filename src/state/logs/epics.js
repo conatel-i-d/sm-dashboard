@@ -34,8 +34,6 @@ export function logsEpic(action$) {
         payload: event_type !== 'GET' ? JSON.stringify(payload) : undefined
       };
 
-      console.log(payload);
-
       const ajax$ = ajax({
         url: '/api/logs/',
         method: 'POST',
