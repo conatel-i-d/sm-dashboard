@@ -76,4 +76,4 @@ export const restEpic = rest$({
   }
 });
 
-export const epics = combineEpics(logsEpic, ...restEpic);
+export const epics = combineEpics(...restEpic);

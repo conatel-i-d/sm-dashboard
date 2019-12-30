@@ -9,7 +9,8 @@ export const restEpic = rest$({
   url,
   prefix: 'nics',
   headers: () => ({ Token: getToken(), 'Content-Type': 'application/json' }),
-  parseResponse: ({ item }, _, { switchId }) => {
+  parseResponse: (response, _, { switchId }) => {
+    const item = get(response, 'item', {});
     return {
       entities: {
         switches: {
