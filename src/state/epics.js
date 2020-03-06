@@ -9,7 +9,8 @@ export const rootEpic = combineEpics(
   uiEpics,
   switchesEpics,
   nicsEpics,
-  logsEpics
+  logsEpics,
+  alertsEpics
 );
 
 export default rootEpic;
