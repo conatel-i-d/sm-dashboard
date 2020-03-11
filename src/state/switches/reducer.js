@@ -21,19 +21,11 @@ export const initialState = {
   }
 };
 
-const toggleLoading = updateState('loading', state => !state.loading);
-
 export const reducer = createReducer(initialState, {
-  [`@${ENTITY}/GET_SUCCESS`]: updateIds,
-  [`@${ENTITY}/POST_SUCCESS`]: updateIds,
-  [`@${ENTITY}/PUT_SUCCESS`]: updateIds,
-  [`@${ENTITY}/DELETE_SUCCESS`]: removeId,
-  [`@${ENTITY}/GET_REQUEST_SENT`]: toggleLoading,
-  [`@${ENTITY}/POST_REQUEST_SENT`]: toggleLoading,
-  [`@${ENTITY}/PUT_REQUEST_SENT`]: toggleLoading,
-  [`@${ENTITY}/DELETE_REQUEST_SENT`]: toggleLoading,
-  [`@${ENTITY}/CANCELED`]: toggleLoading,
-  [`@${ENTITY}/FAILURE`]: toggleLoading,
+  [`@${ENTITY}/GET_REQUEST`]: updateIds,
+  [`@${ENTITY}/POST_REQUEST`]: updateIds,
+  [`@${ENTITY}/PUT_REQUEST`]: updateIds,
+  [`@${ENTITY}/DELETE_REQUEST`]: removeId,
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy')
 });
@@ -82,14 +74,6 @@ export function selectAll(state) {
   return { items };
 }
 
-export function getState(state) {
-  return {
-    loading: get(state, `${ENTITY}.loading`),
-    sortBy: get(state, `${ENTITY}.sortBy`),
-    model: getModel(state)
-  };
-}
-
 export function selectModel(state) {
   return { model: getModel(state) };
 }
@@ -104,7 +88,7 @@ const defaultState = {
 
 const EXISTING_SWITCH_REG_EXP = new RegExp(`/${ENTITY}[/|a-zA-Z]+([0-9]+)`);
 
-function getModel(state) {
+export function getModel(state) {
   const pathname = get(state, 'ui.history.pathname');
   const existingSwitch = pathname.match(EXISTING_SWITCH_REG_EXP);
   if (existingSwitch) {

@@ -8,6 +8,7 @@
     "@patternfly/react-styles": "^3.5.22",
     "@patternfly/react-table": "^2.20.15",
     "@patternfly/react-virtualized-extension": "^1.2.23",
+    "axios": "^0.19.2",
     "clsx": "^1.0.4",
     "fuse.js": "^3.4.5",
     "lodash": "^4.17.15",
@@ -19,8 +20,7 @@
     "react-scripts": "3.1.1",
     "react-virtualized": "^9.21.1",
     "redux": "^4.0.4",
-    "redux-observable": "^1.1.0",
-    "rxjs": "^6.5.3"
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
