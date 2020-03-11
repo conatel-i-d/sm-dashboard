@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { createReducer, updateState, sortItems, filterItems } from '../utils';
+import { createReducer, updateState, sortItems, filterItems, updateIds } from '../utils';
 
 const ENTITY = 'nics';
 
@@ -23,20 +23,32 @@ const FUSE_OPTIONS = {
   keys: ['name', 'description', 'protocol', 'adminisrtative_mode']
 };
 
-const toggleLoading = updateState('loading', state => !state.loading);
+const handleLoading = updateState(`${ENTITY}.loading`, true);
+
+const shouldBeCleanBadNic = () => {
+  console.log("pending see how to reorganize nics info");
+}
+
 
 export const reducer = createReducer(initialState, {
-  [`@${ENTITY}/GET_SUCCESS`]: toggleLoading,
-  [`@${ENTITY}/GET_REQUEST_SENT`]: toggleLoading,
-  [`@${ENTITY}/CANCELED`]: toggleLoading,
-  [`@${ENTITY}/FAILURE`]: toggleLoading,
+  [`@${ENTITY}/LOADING`]: handleLoading,
+  [`@${ENTITY}/GET_REQUEST`]: (state, { entities, result }) => {
+    updateIds(state, result)
+    return {
+      ...state,
+      entities: { ...state.entities, ...entities },
+      [`${ENTITY}.loading`]: false
+    }
+  },
+  [`@${ENTITY}/REBOOT_REQUEST`]: shouldBeCleanBadNic(),
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput')
 });
 
+
 export function getLoading(state) {
   return {
-    loading: get(state, 'nics.loading')
+    loading: get(state, `${ENTITY}.loading`)
   };
 }
 
