@@ -10,7 +10,8 @@ import {
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
 import './index.css'
-import { get as getSwitch, getState } from '../../state/switches';
+import { getState } from '../Switches';
+import { get as getSwitch } from '../../state/switches'
 import {
   get as getInterfaces,
   getLoading,
@@ -37,8 +38,9 @@ export function SwitchPage({
   sortBy,
   updateSortBy
 }) {
-  const [switchId] = React.useState(
-    location.pathname.replace(`/${ENTITY}/`, '')
+  
+  const switchId = React.useMemo(
+    () => location.pathname.replace(`/${ENTITY}/`, ''), []
   );
 
   React.useEffect(() => {

@@ -3,10 +3,12 @@ import { Button, Modal as PatternflyModal } from '@patternfly/react-core';
 import { history } from '../../modules/history.js';
 
 function ResetModal({ onReboot, location }) {
-  const switchId = location.pathname
-    .replace(`/switches/`, '')
-    .replace('/reboot', '');
-  const name = location.search.replace('?name=', '');
+  const switchId = React.useMemo(() =>
+    location.pathname.replace(`/switches/`, '').replace('/reboot', ''), []
+  );
+  const name = React.useMemo(() => location.search.replace('?name=', ''), []);
+  
+  console.log(`switchId: ${switchId},  switchName: ${name}`);
 
   return (
     <PatternflyModal

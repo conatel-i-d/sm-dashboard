@@ -1,7 +1,8 @@
-import { Observable } from 'rxjs';
 import { createBrowserHistory } from 'history';
-
+import { historyPush } from '../state/ui';
+import { store } from '../' 
 export const history = createBrowserHistory();
-export const history$ = Observable.create(function(observer) {
-  return history.listen((location, action) => observer.next({location, action}));
+
+history.listen((location, action) => {
+  store.dispatch(historyPush({ location, action }));
 });

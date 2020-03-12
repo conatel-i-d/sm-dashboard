@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
 
-import { INIT, HISTORY_PUSH, NAV_TOGGLE } from './actions.js';
+import { INIT, HISTORY_PUSH, NAV_TOGGLE, APP_READY } from './actions.js';
 import { createReducer, updateObject } from '../utils';
 
 const historyReducer = createReducer(
@@ -15,16 +15,16 @@ function historyPush(state, payload) {
   return updateObject(state, { ...payload.location });
 }
 
-const appReducer = createReducer(
-  { ready: false, user: {}, errors: {} },
+const initAppStatus = createReducer(
+  { },
   {
-    [INIT]: init
+    [INIT]: (state) => ({ ...state, ready: false }),
+    [APP_READY]: (state, payload) => {
+      console.log("papayl", payload)
+      return { ...state, ...payload }
+    }
   }
 );
-
-function init(state) {
-  return updateObject(state, { ready: true });
-}
 
 const globalUiReducer = createReducer(
   { isNavOpen: false },
@@ -54,7 +54,7 @@ export function getLoginState(state) {
 
 export const reducer = combineReducers({
   history: historyReducer,
-  app: appReducer,
+  status: initAppStatus,
   global: globalUiReducer
 });
 
