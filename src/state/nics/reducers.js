@@ -25,8 +25,8 @@ const FUSE_OPTIONS = {
 
 const handleLoading = updateState(`${ENTITY}.loading`, true);
 
-const shouldBeCleanBadNic = () => {
-  console.log("pending see how to reorganize nics info");
+const resetNic = (state, payload) => {
+  return state;
 }
 
 
@@ -39,7 +39,7 @@ export const reducer = createReducer(initialState, {
       [`${ENTITY}.loading`]: false
     }
   },
-  [`@${ENTITY}/REBOOT_REQUEST`]: shouldBeCleanBadNic(),
+  [`@${ENTITY}/REBOOT_REQUEST`]: resetNic,
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput')
 });
@@ -80,7 +80,6 @@ export function selectSwitchNics(state) {
 
 function getNics(state) {
   const switchId = getSwitchId(state);
-  console.log("switchid get nics", switchId)
   return get(state, `entities.switches.${switchId}.nics`, []);
 }
 
