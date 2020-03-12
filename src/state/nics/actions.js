@@ -7,8 +7,6 @@ const ENTITY = 'nics';
 
 const DISALLOWED_INTERFACES = ['', 'failed', 'changed'];
 
-;
-
 export const updateSortBy = actionCreator(`@${ENTITY}/UPDATE_SORT_BY`);
 export const updateFilterInput = actionCreator(
   `@${ENTITY}/UPDATE_FILTER_INPUT`
@@ -53,12 +51,9 @@ function isValid(nic) {
   );
 }
 
-export const reboot = ({ switchId, name }) => {
-  return async dispatch => {
-    const axRes = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
-      headers: { Token: getToken(), 'Content-Type': 'application/json' }
-    });
-    const payload = axRes.data;
-    return dispatch({ type: `@${ENTITY}/REBOOT_REQUEST` });
-  };
+export const reboot = ({ switchId, name }) => async dispatch => {
+  await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
+    headers: { Token: getToken(), 'Content-Type': 'application/json' }
+  });
+  return dispatch({ type: `@${ENTITY}/REBOOT_REQUEST` });
 };

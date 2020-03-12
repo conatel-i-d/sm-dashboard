@@ -14,7 +14,7 @@ import {
   updateSortBy,
   getModel
 } from '../../state/switches';
-import _ from 'lodash'
+import get from 'lodash/get'
 
 
 const ENTITY = 'switches';
@@ -28,9 +28,7 @@ export function Switches({
   destroy,
   updateSortBy
 }) {
-  React.useEffect(() => {
-    get();
-  }, [get]);
+  React.useEffect(() => { get() }, [get]);
 
   return (
     <>
@@ -57,8 +55,8 @@ export function Switches({
 }
 
 export const getState = state => ({
-  loading: _.get(state, `${ENTITY}.loading`),
-  sortBy: _.get(state, `${ENTITY}.sortBy`),
+  loading: get(state, `${ENTITY}.loading`),
+  sortBy: get(state, `${ENTITY}.sortBy`),
   model: getModel(state)
 });
 

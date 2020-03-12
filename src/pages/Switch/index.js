@@ -39,9 +39,7 @@ export function SwitchPage({
   updateSortBy
 }) {
   
-  const switchId = React.useMemo(
-    () => location.pathname.replace(`/${ENTITY}/`, ''), []
-  );
+  const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, ''), [location]);
 
   React.useEffect(() => {
     getSwitch({ id: switchId });

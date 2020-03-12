@@ -6,8 +6,11 @@ const ENTITY = 'switches';
 const switchesSchema = new schema.Entity(ENTITY);
 export const API = '/api/switch/';
 
-export const updateFilterInput = {
-  type: `@${ENTITY}/UPDATE_FILTER_INPUT`
+export const updateFilterInput = (filterInput) => (dispatch) => {
+  return dispatch({
+    type: `@${ENTITY}/UPDATE_FILTER_INPUT`,
+    filterInput
+  });
 };
 export const updateSortBy = {
   type: `@${ENTITY}/UPDATE_SORT_BY`

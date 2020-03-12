@@ -17,7 +17,7 @@ export function Main({ ready, initializingApp }) {
   
   React.useEffect(() => {
     initializingApp()
-  }, [])
+  }, [initializingApp]);
 
   return (
     <>
