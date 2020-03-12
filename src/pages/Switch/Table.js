@@ -29,7 +29,6 @@ function Table({ items, sortBy, onSort=() => {}, reboot, switchId }) {
     const name = get(rowData, 'cells.0', '');
     history.push(`/switches/${switchId}/reboot?name=${name}`);
   }
-  console.count("==================>>>>>>>>>> table render");
   return (
     <PatternflyTable
       aria-label="Switches Table"
