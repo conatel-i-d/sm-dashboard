@@ -11,3 +11,10 @@ export function logout() {
   window.k.logout();
   return { type: LOGOUT_REQUEST };
 }
+
+export function historyPush(payload) {
+  return {
+    type: HISTORY_PUSH,
+    payload
+  }
+}

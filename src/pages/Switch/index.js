@@ -10,7 +10,8 @@ import {
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
 import './index.css'
-import { get as getSwitch, getState } from '../../state/switches';
+import { getState } from '../Switches';
+import { get as getSwitch } from '../../state/switches'
 import {
   get as getInterfaces,
   getLoading,

@@ -1,4 +1,3 @@
-export * from './observables.js';
 export * from './reducers.js';
 /**
  * Simplifica la actualización de un objeto de forma inmutable.
