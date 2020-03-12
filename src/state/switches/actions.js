@@ -9,9 +9,10 @@ export const API = '/api/switch/';
 export const updateFilterInput = (filterInput) => (dispatch) => {
   return dispatch({
     type: `@${ENTITY}/UPDATE_FILTER_INPUT`,
-    filterInput
+    payload: filterInput
   });
 };
+
 export const updateSortBy = {
   type: `@${ENTITY}/UPDATE_SORT_BY`
 };
@@ -50,13 +51,9 @@ export const create = payload => {
 
 export const edit = payload => {
   return async dispatch => {
-    const axRes = await axios.put(
-      API + (payload && payload.id ? `/${payload.id}` : ''),
-      payload,
-      {
-        headers: { Token: getToken(), 'Content-Type': 'application/json' }
-      }
-    );
+    const axRes = await axios.put(API + (payload && payload.id ? `/${payload.id}` : ''), payload, {
+      headers: { Token: getToken(), 'Content-Type': 'application/json' }
+    });
     const response = axRes.data;
     const result = response ? normalize(response, [switchesSchema]) : undefined;
     return dispatch({
@@ -68,12 +65,9 @@ export const edit = payload => {
 
 export const destroy = payload => {
   return async dispatch => {
-    const axRes = await axios.delete(
-      API + (payload && payload.id ? `/${payload.id}` : ''),
-      {
-        headers: { Token: getToken(), 'Content-Type': 'application/json' }
-      }
-    );
+    const axRes = await axios.delete(API + (payload && payload.id ? `/${payload.id}` : ''), {
+      headers: { Token: getToken(), 'Content-Type': 'application/json' }
+    });
     console.log('destroy delete result', axRes.data);
     return dispatch({
       type: `@${ENTITY}/DELETE_REQUEST`,
