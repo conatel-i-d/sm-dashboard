@@ -33,9 +33,8 @@ const shouldBeCleanBadNic = () => {
 export const reducer = createReducer(initialState, {
   [`@${ENTITY}/LOADING`]: handleLoading,
   [`@${ENTITY}/GET_REQUEST`]: (state, { entities, result }) => {
-    updateIds(state, result)
     return {
-      ...state,
+      ...updateIds(state, result),
       entities: { ...state.entities, ...entities },
       [`${ENTITY}.loading`]: false
     }
@@ -81,6 +80,7 @@ export function selectSwitchNics(state) {
 
 function getNics(state) {
   const switchId = getSwitchId(state);
+  console.log("switchid get nics", switchId)
   return get(state, `entities.switches.${switchId}.nics`, []);
 }
 

@@ -29,7 +29,6 @@ export function Switches({
   updateSortBy
 }) {
   React.useEffect(() => {
-    console.log("deberia ejecutarse el get")
     get();
   }, [get]);
 
