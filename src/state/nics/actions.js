@@ -55,10 +55,10 @@ function isValid(nic) {
 
 export const reboot = ({ switchId, name }) => {
   return async dispatch => {
-    const axRes = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, payload, {
+    const axRes = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
     });
     const payload = axRes.data;
-    return { type: `@${ENTITY}/REBOOT_REQUEST`, payload };
+    return dispatch({ type: `@${ENTITY}/REBOOT_REQUEST` });
   };
 };

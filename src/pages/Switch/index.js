@@ -40,7 +40,7 @@ export function SwitchPage({
 }) {
   
   const switchId = React.useMemo(
-    () => location.pathname.replace(`/${ENTITY}/`, '')
+    () => location.pathname.replace(`/${ENTITY}/`, ''), []
   );
 
   React.useEffect(() => {
