@@ -5,18 +5,23 @@ import { getToken } from './index.js';
 
 var REST_DEFAULT_CONFIG = {
   endpoint: '/',
+  parseItem: item => [item],
+  parseItems: items => items,
+  requestPayload: undefined,
 }
 
 export default function Rest(config) {
-  var { entity, endpoint, schema } = {...REST_DEFAULT_CONFIG, ...config};
+  config = {...REST_DEFAULT_CONFIG, ...config}
+  var { entity, endpoint, schema } = config;
 
-  var options = () => ({ headers: { Token: getToken(), 'Content-Type': 'application/json' } });
+  var requestParams = () => ({ headers: { Token: getToken(), 'Content-Type': 'application/json' } });
   
-  var create = (payload={}) => async (dispatch) => {
-    dispatch({ type: `@${entity}/POST_REQUEST` });
+  var create = (payload={}, options={}) => async (dispatch) => {
+    var { parseItem, requestPayload } = {...config, ...options};
+    dispatch({ type: `@${entity}/POST_REQUEST`, payload: requestPayload});
 
     try {
-      var { data: { item } } = await axios.post(endpoint, payload, options());
+      var { data: { item } } = await axios.post(endpoint, payload, requestParams());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/POST_ERROR`, payload: error });
@@ -24,56 +29,58 @@ export default function Rest(config) {
 
     if (item !== undefined) {
       console.log(item);
-      return dispatch({ type: `@${entity}/POST_SUCCESS`, payload: normalize([item], [schema]) });
+      return dispatch({ type: `@${entity}/POST_SUCCESS`, payload: normalize(parseItem(item), [schema]) });
     }
     
     dispatch({ type: `@${entity}/POST_SUCCESS` });
   }
 
-  var read = (id) => async (dispatch) => {
-    dispatch({ type: `@${entity}/GET_REQUEST` });
+  var read = (id, options={}) => async (dispatch) => {
+    var { parseItem, parseItems, requestPayload } = {...config, ...options};
+    dispatch({ type: `@${entity}/GET_REQUEST`, payload: requestPayload });
     
     try {
-      console.log(id, id !== undefined ? `${endpoint}/${id}` : endpoint);
-      var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}${id}` : endpoint, options());
+      var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}${id}` : endpoint, requestParams());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/GET_ERROR`, payload: error });
     }
-    
+
     if (items !== undefined) 
-      return dispatch({ type: `@${entity}/GET_SUCCESS`, payload: normalize(items, [schema]) });
+      return dispatch({ type: `@${entity}/GET_SUCCESS`, payload: normalize(parseItems(items), [schema]) });
     if (item !== undefined)
-      return dispatch({ type: `@${entity}/GET_SUCCESS`, payload: normalize([item], [schema]) });
+      return dispatch({ type: `@${entity}/GET_SUCCESS`, payload: normalize(parseItem(item), [schema]) });
     
     dispatch({ type: `@${entity}/GET_ERROR`, payload: new Error('No `item` or `items` key found on response') });
   }
 
-  var update = (payload) => async (dispatch) => {
-    dispatch({ type: `@${entity}/PUT_REQUEST` });
+  var update = (payload, options={}) => async (dispatch) => {
+    var { parseItem, requestPayload } = {...config, ...options};
+    dispatch({ type: `@${entity}/PUT_REQUEST`, payload: requestPayload });
     var { id } = payload;
 
     if (id === undefined) 
       return dispatch({ type: `@${entity}/PUT_ERROR`, payload: new Error('id is undefined') });
 
     try {
-      var { data: { item } } = await axios.put(`${endpoint}${id}`, payload, options());
+      var { data: { item } } = await axios.put(`${endpoint}${id}`, payload, requestParams());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/PUT_ERROR`, payload: error });
     }
 
     if (item !== undefined)
-      return dispatch({ type: `@${entity}/PUT_SUCCESS`, payload: normalize([item], [schema]) });
+      return dispatch({ type: `@${entity}/PUT_SUCCESS`, payload: normalize(parseItem(item), [schema]) });
 
     dispatch({ type: `@${entity}/PUT_SUCCESS` });
   }
   
-  var destroy = (id) => async (dispatch) => {
-    dispatch({ type: `@${entity}/DELETE_REQUEST` });
+  var destroy = (id, options={}) => async (dispatch) => {
+    var { requestPayload } = {...config, ...options};
+    dispatch({ type: `@${entity}/DELETE_REQUEST`, payload: requestPayload });
 
     try {
-      await axios.get(`${endpoint}/${id}`, options());
+      await axios.get(`${endpoint}/${id}`, requestParams());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: error });

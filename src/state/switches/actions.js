@@ -3,7 +3,6 @@ import { schema } from 'normalizr';
 
 const ENTITY = 'switches';
 const switchesSchema = new schema.Entity(ENTITY);
-export const API = '/api/switch/';
 
 export const updateFilterInput = (filterInput) => (dispatch) => {
   return dispatch({

@@ -22,6 +22,7 @@ export const initialState = {
 };
 
 export const reducer = createReducer(initialState, {
+  [`@${ENTITY}/GET_REQUEST`]: updateState(`loading`, () => true),
   [`@${ENTITY}/GET_SUCCESS`]: updateIds,
   [`@${ENTITY}/POST_SUCCESS`]: updateIds,
   [`@${ENTITY}/PUT_SUCCESS`]: updateIds,

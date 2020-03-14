@@ -43,7 +43,7 @@ export function SwitchPage({
 
   React.useEffect(() => {
     getSwitch(switchId);
-    getInterfaces({ switchId });
+    getInterfaces(switchId);
   }, [getSwitch, getInterfaces, switchId]);
 
   return (
@@ -64,7 +64,7 @@ export function SwitchPage({
       <PageSection 
         variant={PageSectionVariants.light} 
         className="Switch__Page Switch__Page-InterfacesTable">
-        {loading 
+        {loading
           ? <Bullseye><Spinner /></Bullseye>
           : <Table sortBy={sortBy} onSort={updateSortBy} />
         }
