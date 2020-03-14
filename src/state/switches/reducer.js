@@ -22,7 +22,7 @@ export const initialState = {
 };
 
 export const reducer = createReducer(initialState, {
-  [`@${ENTITY}/GET_REQUEST`]: updateIds,
+  [`@${ENTITY}/GET_SUCCESS`]: updateIds,
   [`@${ENTITY}/POST_REQUEST`]: updateIds,
   [`@${ENTITY}/PUT_REQUEST`]: updateIds,
   [`@${ENTITY}/DELETE_REQUEST`]: removeId,

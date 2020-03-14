@@ -42,7 +42,7 @@ export function SwitchPage({
   const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, ''), [location]);
 
   React.useEffect(() => {
-    getSwitch({ id: switchId });
+    getSwitch(switchId);
     getInterfaces({ switchId });
   }, [getSwitch, getInterfaces, switchId]);
 
