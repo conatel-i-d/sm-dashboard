@@ -16,14 +16,16 @@ export default function Rest(config) {
     dispatch({ type: `@${entity}/POST_REQUEST` });
 
     try {
-      var { data } = await axios.post(endpoint, payload, options());
+      var { data: { item } } = await axios.post(endpoint, payload, options());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/POST_ERROR`, payload: error });
     }
 
-    if (data !== undefined) 
-      return dispatch({ type: `@${entity}/POST_SUCCESS`, payload: normalize([data], [schema]) });
+    if (item !== undefined) {
+      console.log(item);
+      return dispatch({ type: `@${entity}/POST_SUCCESS`, payload: normalize([item], [schema]) });
+    }
     
     dispatch({ type: `@${entity}/POST_SUCCESS` });
   }
@@ -33,7 +35,7 @@ export default function Rest(config) {
     
     try {
       console.log(id, id !== undefined ? `${endpoint}/${id}` : endpoint);
-      var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}/${id}` : endpoint, options());
+      var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}${id}` : endpoint, options());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/GET_ERROR`, payload: error });
@@ -47,11 +49,15 @@ export default function Rest(config) {
     dispatch({ type: `@${entity}/GET_ERROR`, payload: new Error('No `item` or `items` key found on response') });
   }
 
-  var update = (id, payload) => async (dispatch) => {
+  var update = (payload) => async (dispatch) => {
     dispatch({ type: `@${entity}/PUT_REQUEST` });
+    var { id } = payload;
+
+    if (id === undefined) 
+      return dispatch({ type: `@${entity}/PUT_ERROR`, payload: new Error('id is undefined') });
 
     try {
-      var { data: { item } } = await axios.put(`${endpoint}/${id}`, payload, options());
+      var { data: { item } } = await axios.put(`${endpoint}${id}`, payload, options());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/PUT_ERROR`, payload: error });
