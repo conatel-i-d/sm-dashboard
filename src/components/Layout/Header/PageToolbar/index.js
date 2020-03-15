@@ -15,7 +15,6 @@ import accessibleStyles from '@patternfly/react-styles/css/utilities/Accessibili
 import { css } from '@patternfly/react-styles';
 
 import { logout } from '../../../../state/ui';
-import Notifications from '../../../Notifications';
 
 export const kebabDropdownItems = [
   <DropdownItem key="1">
