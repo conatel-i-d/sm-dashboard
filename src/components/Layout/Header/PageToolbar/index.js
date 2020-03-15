@@ -47,9 +47,6 @@ export function PageToolbar({ logout }) {
         )}
       >
         <ToolbarItem>
-          <Notifications />
-        </ToolbarItem>
-        <ToolbarItem>
           <Link to="/settings">
             <CogIcon color="white"/>
           </Link>
