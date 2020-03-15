@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Toolbar,
   ToolbarGroup,
   ToolbarItem,
-  Button,
-  ButtonVariant,
   Dropdown,
   DropdownItem,
   DropdownToggle,
@@ -51,9 +50,9 @@ export function PageToolbar({ logout }) {
           <Notifications />
         </ToolbarItem>
         <ToolbarItem>
-          <Button aria-label="Settings actions" variant={ButtonVariant.plain}>
-            <CogIcon />
-          </Button>
+          <Link to="/settings">
+            <CogIcon color="white"/>
+          </Link>
         </ToolbarItem>
       </ToolbarGroup>
       <ToolbarGroup>
