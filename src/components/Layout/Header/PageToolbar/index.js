@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Toolbar,
   ToolbarGroup,
   ToolbarItem,
-  Button,
-  ButtonVariant,
   Dropdown,
   DropdownItem,
   DropdownToggle,
@@ -16,7 +15,6 @@ import accessibleStyles from '@patternfly/react-styles/css/utilities/Accessibili
 import { css } from '@patternfly/react-styles';
 
 import { logout } from '../../../../state/ui';
-import Notifications from '../../../Notifications';
 
 export const kebabDropdownItems = [
   <DropdownItem key="1">
@@ -48,12 +46,9 @@ export function PageToolbar({ logout }) {
         )}
       >
         <ToolbarItem>
-          <Notifications />
-        </ToolbarItem>
-        <ToolbarItem>
-          <Button aria-label="Settings actions" variant={ButtonVariant.plain}>
-            <CogIcon />
-          </Button>
+          <Link to="/settings">
+            <CogIcon color="white"/>
+          </Link>
         </ToolbarItem>
       </ToolbarGroup>
       <ToolbarGroup>
