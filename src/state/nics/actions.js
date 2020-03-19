@@ -1,13 +1,11 @@
 import { actionCreator } from '../utils';
-import axios from 'axios'
-import { getToken } from '../utils'
-import _ from 'lodash'
+import axios from 'axios';
+import { getToken } from '../utils';
+import _ from 'lodash';
 
 const ENTITY = 'nics';
 
 const DISALLOWED_INTERFACES = ['', 'failed', 'changed'];
-
-;
 
 export const updateSortBy = actionCreator(`@${ENTITY}/UPDATE_SORT_BY`);
 export const updateFilterInput = actionCreator(
@@ -21,18 +19,29 @@ const loading = () => ({
 export const get = ({ switchId }) => {
   return async dispatch => {
     dispatch(loading);
-    const url = `/api/switch/${switchId}/nics` 
-    const axRes = await axios.get(url , {
+    const url = `/api/switch/${switchId}/nics`;
+    const axRes = await axios.get(url, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
     });
     const response = axRes.data;
-    const result = response.items
-      ? response.items
-      : response.item
+    const result = response.items ? response.items : response.item;
     const payload = {
       entities: {
         switches: {
-          [switchId]: { nics: Object.values(result).filter(isValid) }
+          [switchId]: {
+            nics: Object.values(result)
+              .filter(isValid)
+              .map(nic =>
+                nic.mac_entries !== undefined
+                  ? {
+                      ...nic,
+                      mac_entries: nic.mac_entries
+                        .map(mac => mac.mac_address)
+                        .join(',')
+                    }
+                  : nic
+              )
+          }
         }
       },
       result: [switchId]
@@ -55,9 +64,13 @@ function isValid(nic) {
 
 export const reboot = ({ switchId, name }) => {
   return async dispatch => {
-    const axRes = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
-      headers: { Token: getToken(), 'Content-Type': 'application/json' }
-    });
+    const axRes = await axios.post(
+      `/api/switch/${switchId}/nics/reset?nic_name=${name}`,
+      {},
+      {
+        headers: { Token: getToken(), 'Content-Type': 'application/json' }
+      }
+    );
     const payload = axRes.data;
     return dispatch({ type: `@${ENTITY}/REBOOT_REQUEST` });
   };

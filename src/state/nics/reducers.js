@@ -17,10 +17,10 @@ const FUSE_OPTIONS = {
   shouldSort: true,
   threshold: 0.2,
   location: 0,
-  distance: 100,
+  distance: 10000,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ['name', 'description', 'protocol', 'adminisrtative_mode']
+  keys: ['name', 'description', 'protocol', 'adminisrtative_mode', 'mac_entries']
 };
 
 const handleLoading = updateState(`${ENTITY}.loading`, true);
