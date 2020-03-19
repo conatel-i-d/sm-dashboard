@@ -1,6 +1,7 @@
 import merge from 'lodash/merge';
 
 export const initialState = {
+  nics: {},
   switches: {}
 }
 

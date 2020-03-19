@@ -22,10 +22,11 @@ export const initialState = {
 };
 
 export const reducer = createReducer(initialState, {
-  [`@${ENTITY}/GET_REQUEST`]: updateIds,
-  [`@${ENTITY}/POST_REQUEST`]: updateIds,
-  [`@${ENTITY}/PUT_REQUEST`]: updateIds,
-  [`@${ENTITY}/DELETE_REQUEST`]: removeId,
+  [`@${ENTITY}/GET_REQUEST`]: updateState(`loading`, () => true),
+  [`@${ENTITY}/GET_SUCCESS`]: updateIds,
+  [`@${ENTITY}/POST_SUCCESS`]: updateIds,
+  [`@${ENTITY}/PUT_SUCCESS`]: updateIds,
+  [`@${ENTITY}/DELETE_SUCCESS`]: removeId,
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy')
 });

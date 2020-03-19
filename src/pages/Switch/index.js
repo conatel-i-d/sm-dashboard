@@ -39,13 +39,11 @@ export function SwitchPage({
   updateSortBy
 }) {
   
-  const switchId = React.useMemo(
-    () => location.pathname.replace(`/${ENTITY}/`, ''), []
-  );
+  const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, ''), [location]);
 
   React.useEffect(() => {
-    getSwitch({ id: switchId });
-    getInterfaces({ switchId });
+    getSwitch(switchId);
+    getInterfaces(switchId);
   }, [getSwitch, getInterfaces, switchId]);
 
   return (
@@ -66,7 +64,7 @@ export function SwitchPage({
       <PageSection 
         variant={PageSectionVariants.light} 
         className="Switch__Page Switch__Page-InterfacesTable">
-        {loading 
+        {loading
           ? <Bullseye><Spinner /></Bullseye>
           : <Table sortBy={sortBy} onSort={updateSortBy} />
         }

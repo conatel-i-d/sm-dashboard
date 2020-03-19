@@ -2,8 +2,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 
 import rootReducer from './reducers.js';
 
-import { loggerMiddleware } from './middleware';
-import { monitorEnhancer } from './enhancers';
 import thunk from 'redux-thunk';
 
 const composeEnhancers =
@@ -15,10 +13,9 @@ const composeEnhancers =
   compose;
 
 export function configureStore() {
-  const middlewareEnhancer = applyMiddleware(thunk, loggerMiddleware);
+  const middlewareEnhancer = applyMiddleware(thunk);
   const composedEnhancers = composeEnhancers(
     middlewareEnhancer,
-    monitorEnhancer
   );
 
   const store = createStore(rootReducer, undefined, composedEnhancers);
