@@ -74,7 +74,7 @@ function calculateRows(items) {
         const label = get(item, column.key);
         const className = label === 'up (connected) ' ? 'greenLabel' : 'normalLabel';
         return {
-          title: <Label className={className}>{label}</Label>
+          title: <Label className={className}>{label || "unknown"}</Label>
         };
       } else if (column.key === 'adminisrtative_mode') {
         const label = get(item, column.key);
