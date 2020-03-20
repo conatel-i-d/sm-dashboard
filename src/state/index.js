@@ -6,12 +6,8 @@ import thunk from 'redux-thunk';
 
 const composeEnhancers =
   (typeof window !== 'undefined' &&
-<<<<<<< HEAD
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-=======
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
->>>>>>> c3e503faf1d09de8328d54682c404544a3ba48af
-  compose;
+  compose);
 
 export function configureStore() {
   const middlewareEnhancer = applyMiddleware(thunk);
