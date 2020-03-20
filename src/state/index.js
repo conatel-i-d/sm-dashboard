@@ -6,10 +6,7 @@ import thunk from 'redux-thunk';
 
 const composeEnhancers =
   (typeof window !== 'undefined' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      trace: true,
-      traceLimit: 25
-    })) ||
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
   compose;
 
 export function configureStore() {
