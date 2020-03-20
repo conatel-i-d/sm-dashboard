@@ -80,7 +80,7 @@ function calculateRows(items) {
         const label = get(item, column.key);
         const className = label === 'trunk' ? 'redLabel' : 'successLabel';
         return {
-          title: <Label className={className}>{label}</Label>
+          title: <Label className={className}>{label || "unknown"}</Label>
         };
       } else return get(item, column.key);
     }),
