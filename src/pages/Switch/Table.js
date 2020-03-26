@@ -20,7 +20,7 @@ import { selectSwitchNics, reboot } from '../../state/nics';
 import NicsModal from './NicsModal';
 
 const FILTER_RESET_ENABLES = ['trunk']
-const FILTER_ITEMS_BY_NAME = ['te']
+const FILTER_ITEMS_BY_NAME = ['Te']
 
 const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
@@ -104,7 +104,7 @@ function validateResetNic(item) {
 
 function filterItemsByName(item) {
   return (item.name !== undefined && item.name !== null)
-  ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.toLowerCase().includes(cond))
+  ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
   : true
 }
 
