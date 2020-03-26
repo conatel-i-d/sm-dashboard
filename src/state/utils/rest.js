@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 
-import { getToken } from './index.js';
+import { getToken, updateToken } from './index.js';
 
 var REST_DEFAULT_CONFIG = {
   endpoint: '/',
@@ -17,6 +17,7 @@ export default function Rest(config) {
   var requestParams = () => ({ headers: { Token: getToken(), 'Content-Type': 'application/json' } });
   
   var create = (payload={}, options={}) => async (dispatch) => {
+    updateToken()
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/POST_REQUEST`, payload: requestPayload});
 
@@ -36,6 +37,7 @@ export default function Rest(config) {
   }
 
   var read = (id, options={}) => async (dispatch) => {
+    updateToken()
     var { parseItem, parseItems, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/GET_REQUEST`, payload: requestPayload });
     
@@ -55,6 +57,7 @@ export default function Rest(config) {
   }
 
   var update = (payload, options={}) => async (dispatch) => {
+    updateToken()
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/PUT_REQUEST`, payload: requestPayload });
     var { id } = payload;
@@ -75,6 +78,7 @@ export default function Rest(config) {
   }
   
   var destroy = (id, options={}) => async (dispatch) => {
+    updateToken()
     var { requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/DELETE_REQUEST`, payload: requestPayload });
 

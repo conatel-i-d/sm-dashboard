@@ -66,3 +66,12 @@ export function getToken() {
   if (window.k !== undefined) return window.k.idToken;
   return '';
 }
+
+export function updateToken() {
+  try {
+    if (window.k !== undefined) window.k.updateToken(45)
+  }
+  catch {
+    alert('Failed to refresh token');
+  }
+}

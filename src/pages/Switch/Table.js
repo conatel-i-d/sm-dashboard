@@ -19,6 +19,9 @@ import { selectSwitchNics, reboot } from '../../state/nics';
 
 import NicsModal from './NicsModal';
 
+const FILTER_RESET_ENABLES = ['trunk']
+const FILTER_ITEMS_BY_NAME = ['te']
+
 const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
   { key: 'description', title: 'Descripción', transforms: [sortable] },
@@ -88,9 +91,25 @@ function TableRowWrapper({
   );
 }
 
+
+function validateResetNic(item) {
+  const administrativeMode = get(item, 'adminisrtative_mode');
+  const { state, description } = item;
+  return state === 'down' || 
+  administrativeMode === 'trunk' ||
+  !FILTER_RESET_ENABLES.every(cond => !description.includes(cond))
+}
+
+function filterItemsByName(item) {
+  return FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
+}
+
 function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
   if (items === undefined) return [];
-  return items.map(item => ({
+  console.log("before filter items", items);
+  const filteredItems = items.filter(filterItemsByName)
+  console.log("filtered items", filteredItems)
+  return filteredItems.map(item => ({
     cells: COLUMNS.map(column => {
       if (column.key === 'protocol') {
         const label = get(item, column.key);
@@ -122,10 +141,7 @@ function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
         };
       } else return get(item, column.key);
     }),
-    disableActions:
-      item.state === 'down' || item['adminisrtative_mode'] === 'trunk'
-        ? true
-        : false
+    disableActions: validateResetNic(item)
   }));
 }
 
