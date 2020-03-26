@@ -65,7 +65,6 @@ export default function Rest(config) {
     try {
       var { data: { item } } = await axios.put(`${endpoint}${id}`, payload, requestParams());
     } catch (error) {
-      console.error(error);
       return dispatch({ type: `@${entity}/PUT_ERROR`, payload: error });
     }
 

@@ -84,6 +84,9 @@ const defaultState = {
   description: '',
   model: '',
   ip: '',
+  ansible_user: '',
+  ansible_ssh_pass: '',
+  ansible_ssh_port: 22,
   nics: []
 };
 
