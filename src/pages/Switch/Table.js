@@ -97,13 +97,13 @@ function validateResetNic(item) {
   const { state, description } = item;
   return state === 'down' || 
   administrativeMode === 'trunk' ||
-  description !== undefined
+  ((description !== undefined && description !== null)
   ? !FILTER_RESET_ENABLES.every(cond => !description.includes(cond))
-  : false
+  : false)
 }
 
 function filterItemsByName(item) {
-  return item.name !== undefined
+  return (item.name !== undefined && item.name !== null)
   ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
   : true
 }
