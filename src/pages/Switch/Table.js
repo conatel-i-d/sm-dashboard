@@ -98,13 +98,13 @@ function validateResetNic(item) {
   return state === 'down' || 
   administrativeMode === 'trunk' ||
   ((description !== undefined && description !== null)
-  ? !FILTER_RESET_ENABLES.every(cond => !description.includes(cond))
+  ? !FILTER_RESET_ENABLES.every(cond => !description.toLowerCase().includes(cond))
   : false)
 }
 
 function filterItemsByName(item) {
   return (item.name !== undefined && item.name !== null)
-  ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
+  ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.toLowerCase().includes(cond))
   : true
 }
 
