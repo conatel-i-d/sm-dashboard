@@ -97,11 +97,15 @@ function validateResetNic(item) {
   const { state, description } = item;
   return state === 'down' || 
   administrativeMode === 'trunk' ||
-  !FILTER_RESET_ENABLES.every(cond => !description.includes(cond))
+  description !== undefined
+  ? !FILTER_RESET_ENABLES.every(cond => !description.includes(cond))
+  : false
 }
 
 function filterItemsByName(item) {
-  return FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
+  return item.name !== undefined
+  ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
+  : true
 }
 
 function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
