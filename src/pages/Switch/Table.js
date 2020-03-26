@@ -106,9 +106,7 @@ function filterItemsByName(item) {
 
 function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
   if (items === undefined) return [];
-  console.log("before filter items", items);
   const filteredItems = items.filter(filterItemsByName)
-  console.log("filtered items", filteredItems)
   return filteredItems.map(item => ({
     cells: COLUMNS.map(column => {
       if (column.key === 'protocol') {
