@@ -8,6 +8,7 @@ import Home from './Home';
 import Switches from './Switches';
 import Switch from './Switch';
 import Logs from './Logs';
+import SwitchTree from './SwitchTree'
 import Settings from './Settings';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 import { Bullseye } from '@patternfly/react-core';
@@ -32,6 +33,7 @@ export function Main({ ready, initializingApp }) {
         <Route path="/switches" component={Switches} />
         <Route exact path="/logs" component={Logs} />
         <Route exact path="/settings" component={Settings} />
+        <Route path="/switchTree" component={SwitchTree} />
       </RouterSwitch>
     </Layout>
     : <Bullseye><Spinner /></Bullseye>
