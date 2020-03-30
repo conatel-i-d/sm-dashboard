@@ -6,7 +6,7 @@ export const Leaf = (props) => {
   var handleOnClick = React.useCallback(e => e.stopPropagation(), []);
   return (
     <SimpleListItem onClick={handleOnClick}>
-        <LeafCard {...props} />
+        <LeafCard {...props}/>
     </SimpleListItem>
   );
 };

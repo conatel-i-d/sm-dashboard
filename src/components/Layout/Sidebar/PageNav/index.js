@@ -19,7 +19,7 @@ export function PageNav({pathname}) {
           <Link to="/logs">Logs</Link>
         </NavItem>
         <NavItem itemId={1} isActive={/^\/switchTree/.test(pathname)}>
-          <Link to="/switchTree">SwitchesTree</Link>
+          <Link to="/switchesTree">SwitchesTree</Link>
         </NavItem>
       </NavList>
     </Nav>

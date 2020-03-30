@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { Tree } from './TreeView'
+import Modal from './Modal';
+import Toolbar from './Toolbar.js';
 
 import {
   PageSection,
@@ -10,20 +13,18 @@ import {
 } from '@patternfly/react-core';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
-import './index.css'
-import { getState } from '../Switches';
-import { get as getSwitch } from '../../state/switches'
-import {
-  get as getInterfaces,
-  getLoading,
-  getState as getNicsState,
-  updateSortBy,
-  reboot
-} from '../../state/nics';
-
 import { combineStateSelectors } from '../../state/utils';
 
 import './index.css';
+
+import {
+  selectAllAsTree ,
+  get as getSwitches,
+  getModel,
+  create,
+  edit,
+  destroy
+} from '../../state/switches';
 
 const ENTITY = 'switches';
 
@@ -32,22 +33,13 @@ var treeState = [
     type: 'branch',
     name: 'Branch #1',
     branches: [
-      { 
-        type: 'leaf',
-        value: {
-          name: 'switch #1 branch #1',
-          ip: '11.11.11.11',
-          model: 'Cissco 11',
-          mac_entries: '1,qwe,22f.sd,23.sds,255'
-        }
-      },
       {
         type: 'leaf',
         value: {
-          name: 'switch #1 branch #3',
-          ip: '31.31.31.31',
-          model: 'Cissco 31',
-          mac_entries: '1,qwe,22f.sd,23.sds,255'
+          id: '2255',
+          name: 'switch #1 branch #1',
+          ip: '11.11.11.11',
+          model: 'Cissco 11'
         }
       },
       {
@@ -57,14 +49,23 @@ var treeState = [
           {
             type: 'leaf',
             value: {
-              name: 'switch #3 branch #3',
-              ip: '33.33.33.33',
-              model: 'Cissco 33',
-              mac_entries: '3,qwe,22f.sd,23.sds,255'
+              id: '355',
+              name: 'switch #1 branch #3',
+              ip: '31.31.31.31',
+              model: 'Cissco 31'
+            }
+          },
+          {
+            type: 'leaf',
+            value: {
+              id: '123',
+              name: 'switch #2 branch #3',
+              ip: '32.32.32.32',
+              model: 'Cissco 32'
             }
           }
         ]
-      }     
+      }
     ]
   },
   {
@@ -82,10 +83,10 @@ var treeState = [
               {
                 type: 'leaf',
                 value: {
+                  id: '1255',
                   name: 'switch #1 branch #2',
                   ip: '21.21.21.21',
-                  model: 'Cissco 21',
-                  mac_entries: '1,qwe,22f.sd,23.sds,255'
+                  model: 'Cissco 21'
                 }
               }
             ]
@@ -97,44 +98,57 @@ var treeState = [
 ];
 
 
-
 export function SwitchTreePage({
   loading,
-  location,
-  reboot,
-  getSwitch,
-  getInterfaces,
-  sortBy,
-  updateSortBy
+  getSwitchesAsTree,
+  model,
+  get,
+  create,
+  edit,
+  destroy
 }) {
   
-  const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, ''), [location]);
-
-  React.useEffect(() => {
-    getSwitch(switchId);
-    getInterfaces(switchId);
-  }, [getSwitch, getInterfaces, switchId]);
-
+  React.useEffect(() => { get() }, [get]);
+  
+  console.log("switches branches", getSwitchesAsTree);
   return (
     <>
+          <PageSection
+        variant={PageSectionVariants.light}
+        className="Switches__Page"
+      >
+        <Modal
+          model={model}
+          onAccept={create}
+          onEdit={edit}
+          onDelete={destroy}
+        />
+        <Toolbar />
+      </PageSection>
+
       <PageSection 
         variant={PageSectionVariants.light} 
         className="Switch__Page Switch__Page-InterfacesTable">
         {loading
-          ? <Tree branches={treeState}/>
-          : <Bullseye><Spinner /></Bullseye>
+          ? <Bullseye><Spinner /></Bullseye>
+          : <Tree branches={getSwitchesAsTree}/>
         }
       </PageSection>
     </>
   );
 }
 
-export default connect(
-  combineStateSelectors(getState, getNicsState, getLoading),
-  {
-    getSwitch,
-    getInterfaces,
-    updateSortBy,
-    reboot
-  }
-)(SwitchTreePage);
+export const getState = state => ({
+  loading: _.get(state, `${ENTITY}.loading`),
+  getSwitchesAsTree: selectAllAsTree(state),
+  model: getModel(state)
+});
+
+const getDispatchers = dispatch => ({
+  get: (state) => dispatch(getSwitches(state)),
+  create: (state) => dispatch(create(state)),
+  edit: (state) => dispatch(edit(state)),
+  destroy: (state) => dispatch(destroy(state)),
+});
+
+export default connect(getState, getDispatchers)(SwitchTreePage);

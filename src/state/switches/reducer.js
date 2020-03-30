@@ -75,6 +75,40 @@ export function selectAll(state) {
   return { items };
 }
 
+export function selectAllAsTree(state) {
+  const ids = get(state, `${ENTITY}.ids`, []);
+  const collection = get(state, `entities.${ENTITY}`, {});
+  const filterInput = get(state, `${ENTITY}.filterInput`, '');
+  const sortBy = get(state, `${ENTITY}.sortBy`, '');
+  let items = ids.map(id => ({ id, ...collection[id]})).filter(item => item !== undefined);
+  if (filterInput !== '') {
+    items = filterItems(items, filterInput, FUSE_OPTIONS);
+  } else {
+    items = sortItems(items, sortBy);
+  }
+
+  const buildings = {};
+  for (let item of items) {
+    const splitName = item.name.split("_");
+    const buildingName = isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0];
+    if (!(buildingName in buildings)) buildings[buildingName] = {
+      type: 'branch',
+      name: buildingName,
+      branches: []
+    }
+    buildings[buildingName].branches.push({
+        type: 'leaf',
+        value: item
+      }); 
+  }
+  const result = Object.values(buildings); 
+  return result.length > 0 ? result : {
+    type: 'branch',
+    name: 'CTMSG',
+    branches: []
+  }
+}
+
 export function selectModel(state) {
   return { model: getModel(state) };
 }
