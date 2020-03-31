@@ -11,7 +11,7 @@
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: scroll;
+  overflow: auto;
 }
 
 
