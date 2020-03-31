@@ -19,7 +19,7 @@ export const BranchCard = ({ value }) => {
           <div className={"list-view-pf-expand"}>
             <span className={isOpen ? "fa fa-angle-right fa-angle-down" : "fa fa-angle-right"}></span>
           </div>
-          <div className="list-view-pf-actions">
+          <div className="list-view-pf-actions recenter-icon">
             <span className="pficon pficon-search search-mac-icon"></span>
           </div>
           <div className="list-view-pf-main-info">

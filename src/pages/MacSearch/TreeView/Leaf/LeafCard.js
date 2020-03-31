@@ -13,14 +13,14 @@ export const LeafCard = ({ value, handleCheckVisible }) => {
     <>
       <div className="list-group-item">
         <div className="list-group-item-header">
-          <div className="list-view-pf-checkbox">
+          <div className="list-view-pf-checkbox recenter-icon">
             <input
               type="checkbox"
               checked={isVisibleForOperators}
               onClick={e => handleCheckVisible(id, e)}
             />
           </div>
-          <div className="list-view-pf-actions">
+          <div className="list-view-pf-actions recenter-icon">
             <span className="pficon pficon-search search-mac-icon"></span>
           </div>
           <div className="list-view-pf-main-info">

@@ -9,10 +9,13 @@
 
 .expand-all-row {
   width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: scroll;
 }
 
 
-.list-view-pf-checkbox,.list-view-pf-actions {
+.list-view-pf-actions.recenter-icon,.list-view-pf-checkbox.recenter-icon {
   margin-top: 30px;
   margin-bottom: 10px;
 }
