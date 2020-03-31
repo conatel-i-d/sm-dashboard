@@ -18,8 +18,8 @@ export function PageNav({pathname}) {
         <NavItem itemId={1} isActive={/^\/logs/.test(pathname)}>
           <Link to="/logs">Logs</Link>
         </NavItem>
-        <NavItem itemId={1} isActive={/^\/switchTree/.test(pathname)}>
-          <Link to="/switchesTree">SwitchesTree</Link>
+        <NavItem itemId={1} isActive={/^\/MacSearch/.test(pathname)}>
+          <Link to="/macSearch">macSearch</Link>
         </NavItem>
       </NavList>
     </Nav>

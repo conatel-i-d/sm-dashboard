@@ -7,12 +7,12 @@
   justify-content: space-between;
 }
 
-.Switch__Page.Switch__Page-Details {
+.FindSearch__Page.FindSearch__Page-Details {
   padding: var(--pf-c-page__main-section--PaddingTop) calc(var(--pf-c-page__main-section--PaddingRight)*2) calc(var(--pf-c-page__main-section--PaddingBottom)/4) calc(var(--pf-c-page__main-section--PaddingLeft)*2);
 }
 
-.Switch__Page.Switch__Page-InterfacesTable {
-  padding: calc(var(--pf-c-page__main-section--PaddingTop)/4) var(--pf-c-page__main-section--PaddingRight) var(--pf-c-page__main-section--PaddingBottom) var(--pf-c-page__main-section--PaddingLeft);
+.FindSearch__Page.FindSearch__Page-InterfacesTable {
+  padding: calc(var(--pf-c-page__main-section--PaddingTop)/4) var(--pf-c-page__main-section--PaddingRight) var(--pf-c-page__main-section--PaddingBottom) 0;
 }
 
 .Switch--TrunkInterface {
@@ -33,4 +33,8 @@
 
 .normalLabel {
   background: rgba(3,3,3,0.32);
+}
+
+.list-group-item-header {
+  padding: 0 15px; /* Items list padding - se podría ahorrar mas espacio a la izquierda */
 }

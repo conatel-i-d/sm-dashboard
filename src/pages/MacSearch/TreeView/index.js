@@ -1,4 +1,4 @@
-import './overrides.css';
+import './tree.css';
 
 import React from 'react';
 import { SimpleList } from '@patternfly/react-core';
@@ -6,7 +6,8 @@ import { SimpleList } from '@patternfly/react-core';
 import { Leaf } from './Leaf';
 import { Branch } from './Branch';
 
-
+// Todo: esto debería salirse para documentación
+/*
 var treeState = [
   {
     type: 'branch',
@@ -75,13 +76,14 @@ var treeState = [
     ]
   }
 ];
+*/
 
 export const Tree = ({ branches }) => {
   const handleCheckVisible = (id) => {
     console.log("algog123",id);
   }
   return (
-    <SimpleList aria-label="SwitchesTree">
+    <SimpleList aria-label="macSearch">
       { branches.length > 0
       ? branches.map((branch, index) =>
         branch.type === 'leaf' ? (

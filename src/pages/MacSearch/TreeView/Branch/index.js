@@ -1,6 +1,7 @@
 import React from 'react';
 import { SimpleListGroup } from '@patternfly/react-core';
 
+
 import { BranchCard } from './BranchCard';
 import { Leaf } from '../Leaf'
 export const Branch = ({ name, branches = [], handleCheckVisible }) => {
@@ -13,8 +14,6 @@ export const Branch = ({ name, branches = [], handleCheckVisible }) => {
     },
     [open, setOpen]
   );
-
-  console.log("branches", branches);
 
   return (
     <SimpleListGroup title={<BranchCard value={{name, isOpen: open, branches}}/>} onClick={handleOnClick}>

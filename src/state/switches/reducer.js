@@ -88,7 +88,7 @@ export function selectAllAsTree(state) {
   }
 
   const buildings = {};
-  for (let item of items) {
+  items.map(item => {
     const splitName = item.name.split("_");
     const buildingName = isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0];
     if (!(buildingName in buildings)) buildings[buildingName] = {
@@ -99,8 +99,9 @@ export function selectAllAsTree(state) {
     buildings[buildingName].branches.push({
         type: 'leaf',
         value: item
-      }); 
-  }
+      });
+      return true;
+  })
   const result = Object.values(buildings); 
   return result.length > 0 ? result : {
     type: 'branch',
