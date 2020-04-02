@@ -3,7 +3,7 @@ import 'patternfly/dist/css/patternfly.min.css';
 import '../tree.css';
 import swIcon from './sw-icon.png';
 import React from 'react';
-
+import { history } from '../../../../modules/history';
 
 
 export const LeafCard = ({ value, handleCheckVisible }) => {
@@ -21,7 +21,7 @@ export const LeafCard = ({ value, handleCheckVisible }) => {
             />
           </div>
           <div className="list-view-pf-actions recenter-icon">
-            <span className="pficon pficon-search search-mac-icon"></span>
+            <span onClick={e => handleFindBySwitch(id, e)} className="pficon pficon-search search-mac-icon"></span>
           </div>
           <div className="list-view-pf-main-info">
             <div className="list-view-pf-left">
@@ -53,3 +53,7 @@ export const LeafCard = ({ value, handleCheckVisible }) => {
     </>
   );
 };
+
+const handleFindBySwitch = id => {
+  history.push(`/macSearch/findbymac/${id}?type=switch`)
+}

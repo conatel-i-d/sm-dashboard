@@ -28,6 +28,7 @@ import {
 const ENTITY = 'switches';
 
 export function MacSearchPage({
+  location,
   loading,
   getSwitchesAsTree,
   model,
@@ -52,6 +53,7 @@ export function MacSearchPage({
           onEdit={edit}
           onDelete={destroy}
           onFind={findMac}
+          location={location}
         />
         <Toolbar />
       </PageSection>

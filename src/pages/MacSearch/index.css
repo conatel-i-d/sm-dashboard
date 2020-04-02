@@ -36,5 +36,5 @@
 }
 
 .list-group-item-header {
-  padding: 0 15px; /* Items list padding - se podría ahorrar mas espacio a la izquierda */
+  padding: 0 0px; /* Items list padding - se podría ahorrar mas espacio a la izquierda */
 }

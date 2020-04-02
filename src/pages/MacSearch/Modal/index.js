@@ -11,7 +11,7 @@ function Modal(props) {
       <Route exact path="/macSearch/edit/:id" render={() => <EditModal {...props} />} />
       <Route exact path="/macSearch/delete/:id" render={() => <DeleteModal {...props} />} />
       <Route exact path="/macSearch/create" render={() => <CreateModal {...props} />} />
-      <Route exact path="/macSearch/find" render={() => <FindModal {...props} />} />
+      <Route exact path="/macSearch/findbymac/:id" render={() => <FindModal {...props} />} />
     </Switch>
   )
 }

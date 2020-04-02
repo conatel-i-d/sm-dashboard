@@ -4,8 +4,12 @@ import { history } from '../../../modules/history.js';
 
 import { onClose } from './helpers.js';
 
-function CreateModal({ onFind }) {
-  const [findMac, setFindMac] = React.useState('');
+function CreateModal({ location, onFind }) {
+  const searchId = React.useMemo(() => location.pathname.replace(`/macSearch/findbymac/`, ''), [location]);
+  const searchType = React.useMemo(() => location.search.replace('?type=', ''), [location]);
+  const [state, setState] = React.useState({ findMac: '', searchId, searchType });
+  
+  console.log(`searchId: ${searchId},  searchType: ${searchType}`);
 
   return (
     <PatternflyModal
@@ -31,9 +35,9 @@ function CreateModal({ onFind }) {
             id="switch-form-name"
             name="switch-form-name"
             aria-describedby="switch-form-name-helper"
-            value={findMac}
+            value={state.findMac}
             onChange={value => {
-              setFindMac(value);
+              setState({ ...state, findMac: value });
             }}
           />
         </FormGroup>

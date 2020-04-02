@@ -1,7 +1,7 @@
 import 'patternfly/dist/css/patternfly-additions.min.css';
 import 'patternfly/dist/css/patternfly.min.css';
 import '../tree.css';
-
+import { history } from '../../../../modules/history';
 import React from 'react';
 
 export const BranchCard = ({ value }) => {
@@ -20,7 +20,7 @@ export const BranchCard = ({ value }) => {
             <span className={isOpen ? "fa fa-angle-right fa-angle-down" : "fa fa-angle-right"}></span>
           </div>
           <div className="list-view-pf-actions recenter-icon">
-            <span className="pficon pficon-search search-mac-icon"></span>
+            <span onClick={e => handleFindByBuilding(name, e)} className="pficon pficon-search search-mac-icon"></span>
           </div>
           <div className="list-view-pf-main-info">
             <div className="list-view-pf-left">
@@ -42,3 +42,6 @@ export const BranchCard = ({ value }) => {
       </div>
   );
 };
+const handleFindByBuilding = name => {
+  history.push(`/macSearch/findbymac/${name}?type=building`)
+}
