@@ -24,6 +24,10 @@ import {
   edit,
   destroy
 } from '../../state/switches';
+import FindWizard from './Wizard';
+import { IS_SCROLLING_TIMEOUT } from 'react-virtualized';
+
+import { findByMac, cancelFindByMac } from '../../state/macs'
 
 const ENTITY = 'switches';
 
@@ -36,7 +40,9 @@ export function MacSearchPage({
   create,
   edit,
   destroy,
-  findMac
+  findByMac,
+  findIsLoading,
+  findResult
 }) {
   
   React.useEffect(() => { get() }, [get]);
@@ -52,8 +58,16 @@ export function MacSearchPage({
           onAccept={create}
           onEdit={edit}
           onDelete={destroy}
-          onFind={findMac}
           location={location}
+        />
+
+      <FindWizard
+          location={location}
+          onFind={findByMac}
+          isLoading={findIsLoading}
+          findResult={findResult}
+          switchesTree={getSwitchesAsTree}
+          cancelFindByMac={cancelFindByMac}
         />
         <Toolbar />
       </PageSection>
@@ -73,7 +87,9 @@ export function MacSearchPage({
 export const getState = state => ({
   loading: _.get(state, `${ENTITY}.loading`),
   getSwitchesAsTree: selectAllAsTree(state),
-  model: getModel(state)
+  model: getModel(state),
+  findIsLoading: _.get(state, `macs.findLoading`, false),
+  findResult: _.get(state, `macs.findResult`, false)
 });
 
 const getDispatchers = dispatch => ({
@@ -81,6 +97,7 @@ const getDispatchers = dispatch => ({
   create: (state) => dispatch(create(state)),
   edit: (state) => dispatch(edit(state)),
   destroy: (state) => dispatch(destroy(state)),
+  findByMac: (state) => dispatch(findByMac(state))
 });
 
 export default connect(getState, getDispatchers)(MacSearchPage);

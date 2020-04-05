@@ -34,7 +34,7 @@ export const reducer = createReducer(initialState, {
 function removeId(state, payload) {
   return updateObject(state, {
     loading: false,
-    ids: state.ids.filter(id => id !== payload)
+    ids: state.ids.filter((id) => id !== payload)
   });
 }
 
@@ -66,7 +66,9 @@ export function selectAll(state) {
   const collection = get(state, `entities.${ENTITY}`, {});
   const filterInput = get(state, `${ENTITY}.filterInput`, '');
   const sortBy = get(state, `${ENTITY}.sortBy`, '');
-  let items = ids.map(id => collection[id]).filter(item => item !== undefined);
+  let items = ids
+    .map((id) => collection[id])
+    .filter((item) => item !== undefined);
   if (filterInput !== '') {
     items = filterItems(items, filterInput, FUSE_OPTIONS);
   } else {
@@ -74,6 +76,7 @@ export function selectAll(state) {
   }
   return { items };
 }
+
 
 export function selectAllAsTree(state) {
   const ids = get(state, `${ENTITY}.ids`, []);
@@ -90,7 +93,9 @@ export function selectAllAsTree(state) {
   const buildings = {};
   items.map(item => {
     const splitName = item.name.split("_");
-    const buildingName = isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0];
+    const buildingName = splitName.length > 0 
+    ? isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0]
+    : item;
     if (!(buildingName in buildings)) buildings[buildingName] = {
       type: 'branch',
       name: buildingName,
