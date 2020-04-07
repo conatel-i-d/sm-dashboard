@@ -77,19 +77,25 @@ export default function Rest(config) {
     dispatch({ type: `@${entity}/PUT_SUCCESS` });
   }
   
-  var destroy = (id, options={}) => async (dispatch) => {
+  var destroy = (payload, options={}) => async (dispatch) => {
     updateToken()
+
+    var { id } = payload;
+
+    if (id === undefined) 
+      return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: new Error('id is undefined') });
+
     var { requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/DELETE_REQUEST`, payload: requestPayload });
 
     try {
-      await axios.get(`${endpoint}/${id}`, requestParams());
+      await axios.delete(`${endpoint}${id}`, requestParams());
     } catch (error) {
       console.error(error);
       return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: error });
     }
 
-    dispatch({ type: `@${entity}/DELETE_SUCCESS` });
+    dispatch({ type: `@${entity}/DELETE_SUCCESS`, payload: id });
   }
 
   return {create, read, update, destroy};

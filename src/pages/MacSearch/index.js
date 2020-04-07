@@ -53,14 +53,6 @@ export function MacSearchPage({
         variant={PageSectionVariants.light}
         className="Switches__Page"
       >
-        <Modal
-          model={model}
-          onAccept={create}
-          onEdit={edit}
-          onDelete={destroy}
-          location={location}
-        />
-
       <FindWizard
           location={location}
           onFind={findByMac}
@@ -89,7 +81,7 @@ export const getState = state => ({
   getSwitchesAsTree: selectAllAsTree(state),
   model: getModel(state),
   findIsLoading: _.get(state, `macs.findLoading`, false),
-  findResult: _.get(state, `macs.findResult`, false)
+  findResult: _.get(state, `macs.findResult`, [])
 });
 
 const getDispatchers = dispatch => ({

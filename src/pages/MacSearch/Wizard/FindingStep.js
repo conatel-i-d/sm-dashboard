@@ -3,33 +3,46 @@ import React from 'react';
 
 import workingIcon from './working-icon.gif';
 
-export const FindingStep = (props) => {
-  const {
-    switchesTree,
-    onFind,
-    searchType,
-    searchId,
-    isLoading,
-    findResult
-  } = props;
+export const FindingStep = ({
+  switchesTree,
+  onFind,
+  findMac,
+  searchType,
+  searchId,
+  isLoading,
+  findResult
+}) => {
+
+  const [errorToLoadSwitches, setErrorToLoadSwitches] = React.useState(false);
 
   React.useEffect(() => {
     if (searchType == 'switch') {
-      onFind({ switchesToFindIds: [searchId] });
+      onFind({ switchesToFindIds: [searchId], mac: findMac });
     } else {
-      const switchesToFindIds = switchesTree
-        .filter((x) => x.name === searchId)[0]
-        .branches.map((y) => y.value.id);
-      onFind({ switchesToFindIds });
+      const switchesToFind = switchesTree.filter(x => x.name === searchId);
+      if (switchesToFind !== undefined) {
+        if (switchesToFind[0].branches !== undefined) {
+          var switchesToFindIds = switchesToFind[0].branches.map((y) => y.value.id);
+        }
+      }
+      if  (switchesToFindIds.length > 0) {
+        onFind({ switchesToFindIds, mac: findMac });
+      }
+      else {
+        setErrorToLoadSwitches(true);
+      }
     }
-  }, [switchesTree, onFind, searchType, searchId]);
+  }, []);
 
-  return isLoading ? (
+  return errorToLoadSwitches 
+  ? <p className="error-load-sws-paragraph">Ha habido un error a cargar los swtiches, debe asegurarse que el nombre del edicicio es correcto y
+  que dentro del edificio se encuentra es switch seleccionado, o que el edificio contiene al menos un switch</p>
+  : isLoading ? (
     <div className="pf-l-bullseye">
       <div className="pf-c-empty-state pf-m-lg">
         <h1 className="pf-c-title pf-m-lg">Buscando...</h1>
         <div className="pf-c-empty-state__body">
-          <img class="working-icon" src={workingIcon} />
+          <img className="working-icon" src={workingIcon} />
         </div>
         <div className="pf-c-empty-state__body">
           Puede tardar alunos minutos!!!
@@ -47,8 +60,23 @@ export const FindingStep = (props) => {
       </div>
     </div>
   ) : (
-    <>
-
-    </>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Switch ID</th>
+            <th>Swtich Inteface</th>
+          </tr>
+        </thead>
+        <tbody>
+          {findResult.map((x) => (
+            <tr key={x.interface}>
+              <td>{x.switch_id}</td>
+              <td>{x.interface}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

@@ -93,9 +93,9 @@ export function selectAllAsTree(state) {
   const buildings = {};
   items.map(item => {
     const splitName = item.name.split("_");
-    const buildingName = splitName.length > 0 
+    const buildingName = splitName.length > 1
     ? isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0]
-    : item;
+    : item.name;
     if (!(buildingName in buildings)) buildings[buildingName] = {
       type: 'branch',
       name: buildingName,

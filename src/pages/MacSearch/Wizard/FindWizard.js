@@ -5,10 +5,12 @@ import { history } from '../../../modules/history.js';
 import { FindingStep } from './FindingStep.js';
 import { InsertMacStep } from './InsertMacStep';
 
-import { isFunction } from '../../../modules/utils'
+import { isFunction } from '../../../modules/utils';
 
 export const FindWizard = (props) => {
   const { location, cancelFindByMac } = props;
+
+  const [findMac, setFindMac] = React.useState('');
 
   const searchId = React.useMemo(
     () => location.pathname.replace(`/macSearch/findbymac/`, ''),
@@ -23,15 +25,22 @@ export const FindWizard = (props) => {
     if (isFunction(cancelFindByMac)) {
       cancelFindByMac(text);
     }
-  }
+  };
   const close = () => {
-    cancelFind("Cancel find by close find wizard!");
+    cancelFind('Cancel find by close find wizard!');
     history.push('/macSearch');
   };
   const steps = [
     {
       name: 'Insert mac',
-      component: (() => <InsertMacStep {...props} searchId={searchId} searchType={searchType} />
+      component: (
+        <InsertMacStep
+          {...props}
+          searchId={searchId}
+          searchType={searchType}
+          findMac={findMac}
+          handleFinMacChange={(value) => setFindMac(value)}
+        />
       ),
       nextButtonText: 'Buscar'
     },
@@ -41,6 +50,7 @@ export const FindWizard = (props) => {
         <FindingStep
           searchId={searchId}
           searchType={searchType}
+          findMac={findMac}
           {...props}
         />
       ),
@@ -54,7 +64,9 @@ export const FindWizard = (props) => {
         isOpen={true}
         onClose={close}
         title="Busqueda por Mac"
-        onBack={() => { cancelFind("Cancel find by back to first step (insert mac form)") }}
+        onBack={() => {
+          cancelFind('Cancel find by back to first step (insert mac form)');
+        }}
         description={
           searchType === 'switch'
             ? `Buscar mac en el switch ${searchId}`

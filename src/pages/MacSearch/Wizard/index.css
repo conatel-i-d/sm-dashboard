@@ -2,3 +2,9 @@
   width: 50%;
   height: 50%;
 }
+
+.error-load-sws-paragraph {
+  color: red;
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 1.2rem;
+}

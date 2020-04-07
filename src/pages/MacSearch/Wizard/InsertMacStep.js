@@ -1,9 +1,7 @@
 import React from 'react';
 import { FormGroup, Form as PatternflyForm, TextInput } from '@patternfly/react-core';
 
-export const InsertMacStep = (props) => {
-  const [state, setState] = React.useState({});
-
+export const InsertMacStep = ({ findMac, handleFinMacChange}) => {
   return (
     <PatternflyForm>
       <FormGroup label="Mac address" isRequired fieldId="switch-form-mac">
@@ -13,9 +11,9 @@ export const InsertMacStep = (props) => {
           id="switch-form-mac"
           name="switch-form-mac"
           aria-describedby="switch-form-mac-helper"
-          value={state.findMac}
-          onChange={(value) => {
-            setState({ ...state, findMac: value });
+          value={findMac}
+          onChange={value => {
+            handleFinMacChange(value)
           }}
         />
       </FormGroup>

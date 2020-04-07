@@ -6,7 +6,7 @@ import { reducer as entitiesReducer } from './entities';
 import { reducer as nicsReducer } from './nics';
 import { reducer as logsReducer } from './logs';
 import { reducer as settingsReducer } from './settings';
-
+import { reducer as macsReducer } from './macs'
 export const rootReducer = combineReducers({
   entities: entitiesReducer,
   nics: nicsReducer,
@@ -14,6 +14,7 @@ export const rootReducer = combineReducers({
   logs: logsReducer,
   ui: uiReducer,
   settings: settingsReducer,
+  macs: macsReducer
 });
 
 export default rootReducer;
