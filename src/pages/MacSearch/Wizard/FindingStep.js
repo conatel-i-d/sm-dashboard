@@ -3,6 +3,8 @@ import React from 'react';
 
 import workingIcon from './working-icon.gif';
 
+import { Table } from './Table'
+
 export const FindingStep = ({
   switchesTree,
   onFind,
@@ -10,7 +12,8 @@ export const FindingStep = ({
   searchType,
   searchId,
   isLoading,
-  findResult
+  findResult,
+  rebootInterface
 }) => {
 
   const [errorToLoadSwitches, setErrorToLoadSwitches] = React.useState(false);
@@ -60,23 +63,6 @@ export const FindingStep = ({
       </div>
     </div>
   ) : (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Switch ID</th>
-            <th>Swtich Inteface</th>
-          </tr>
-        </thead>
-        <tbody>
-          {findResult.map((x) => (
-            <tr key={x.interface}>
-              <td>{x.switch_id}</td>
-              <td>{x.interface}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Table items={findResult} reboot={rebootInterface} />
   );
 };

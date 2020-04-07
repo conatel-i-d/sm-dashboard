@@ -22,10 +22,10 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     });  } catch (error) {
     console.error(error);
     if (axios.isCancel(error)) {
-      cancelFindByMacAwxTasks({ switchesToFindIds, errorType: "cancel"});
+      dispatch(cancelFindByMacAwxTasks({ switchesToFindIds, errorType: "cancel"}));
       return dispatch({ type: `@${ENTITY}/POST_CANCELED`, payload: error });
     }
-    cancelFindByMacAwxTasks({ switchesToFindIds, errorType: "error"});
+    dispatch(cancelFindByMacAwxTasks({ switchesToFindIds, errorType: "error"}));
     return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: error });
   }
 
