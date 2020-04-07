@@ -18,8 +18,8 @@ const FILTER_RESET_ENABLES = ['trunk'];
 const FILTER_ITEMS_BY_NAME = ['Te'];
 
 const COLUMNS = [
-  { key: 'switch_Id', title: 'SW ID', transforms: [sortable] },
-  { key: 'switch', title: 'SW Name', transforms: [sortable] },
+  { key: 'switch_id', title: 'SW ID', transforms: [sortable] },
+  { key: 'switch_name', title: 'SW Name', transforms: [sortable] },
   { key: 'name', title: 'NIC Name', transforms: [sortable] },
   { key: 'description', title: 'Description', transforms: [sortable] },
   { key: 'protocol', title: 'Status', transforms: [sortable] },
