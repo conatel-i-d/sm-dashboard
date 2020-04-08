@@ -67,11 +67,22 @@ export function getToken() {
   return '';
 }
 
-export function updateToken() {
+export async function updateToken() {
   try {
-    if (window.k !== undefined) window.k.updateToken(45)
+    if (window.k !== undefined) 
+      if (window.k.isTokenExpired()) {
+        await window.k.updateToken(60)
+      }
   }
   catch {
     alert('Failed to refresh token');
   }
+}
+
+export const getUserRoles = () => {
+  const base64Payload = window.k.token.split('.')[1];
+  const payload = JSON.parse(atob(base64Payload))
+  return payload.realm_access.roles !== undefined
+    ? payload.realm_access.roles
+    : []
 }

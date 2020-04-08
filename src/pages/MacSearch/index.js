@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { Tree } from './TreeView'
-import Modal from './Modal';
 import Toolbar from './Toolbar.js';
 
 import {
@@ -15,17 +14,14 @@ import {
 } from '@patternfly/react-core';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
+import { updateFilterInput } from '../../state/nics';
 
 import {
   selectAllAsTree ,
   get as getSwitches,
-  getModel,
-  create,
-  edit,
-  destroy
+  edit
 } from '../../state/switches';
 import FindWizard from './Wizard';
-import { IS_SCROLLING_TIMEOUT } from 'react-virtualized';
 
 import { findByMac, cancelFindByMac } from '../../state/macs'
 
@@ -35,14 +31,12 @@ export function MacSearchPage({
   location,
   loading,
   getSwitchesAsTree,
-  model,
-  get,
-  create,
-  edit,
-  destroy,
-  findByMac,
   findIsLoading,
-  findResult
+  findResult,
+  get,
+  findByMac,
+  updateFilterInput,
+  handleCheckVisible
 }) {
   
   React.useEffect(() => { get() }, [get]);
@@ -60,6 +54,8 @@ export function MacSearchPage({
           findResult={findResult}
           switchesTree={getSwitchesAsTree}
           cancelFindByMac={cancelFindByMac}
+          updateFilterInput={updateFilterInput}
+
         />
         <Toolbar />
       </PageSection>
@@ -69,7 +65,7 @@ export function MacSearchPage({
         className="FindSearch__Page FindSearch__Page-InterfacesTable">
         {loading
           ? <Bullseye><Spinner /></Bullseye>
-          : <Tree branches={getSwitchesAsTree}/>
+          : <Tree branches={getSwitchesAsTree} handleCheckVisible={handleCheckVisible} />
         }
       </PageSection>
     </>
@@ -79,17 +75,15 @@ export function MacSearchPage({
 export const getState = state => ({
   loading: _.get(state, `${ENTITY}.loading`),
   getSwitchesAsTree: selectAllAsTree(state),
-  model: getModel(state),
   findIsLoading: _.get(state, `macs.findLoading`, false),
   findResult: _.get(state, `macs.findResult`, [])
 });
 
 const getDispatchers = dispatch => ({
   get: (state) => dispatch(getSwitches(state)),
-  create: (state) => dispatch(create(state)),
-  edit: (state) => dispatch(edit(state)),
-  destroy: (state) => dispatch(destroy(state)),
-  findByMac: (state) => dispatch(findByMac(state))
+  findByMac: (state) => dispatch(findByMac(state)),
+  updateFilterInput: (state) => dispatch(updateFilterInput(state)),
+  handleCheckVisible: (state) => dispatch(edit(state))
 });
 
 export default connect(getState, getDispatchers)(MacSearchPage);

@@ -20,9 +20,9 @@ export const Branch = ({ name, branches = [], handleCheckVisible }) => {
       {open &&
         branches.map((branch, index) =>
           branch.type === 'leaf' ? (
-            <Leaf key={index} value={branch.value} handleCheckVisible={handleCheckVisible}/>
+            <Leaf key={index} value={branch.value} handleCheckVisible={handleCheckVisible} />
           ) : (
-            <Branch key={index} name={branch.name} branches={branch.branches} handleCheckVisible={handleCheckVisible} />
+            <Branch key={index} name={branch.name} branches={branch.branches} handleCheckVisible={handleCheckVisible}  />
           )
         )}
     </SimpleListGroup>

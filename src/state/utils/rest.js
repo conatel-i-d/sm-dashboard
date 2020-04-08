@@ -17,10 +17,10 @@ export default function Rest(config) {
   var requestParams = () => ({ headers: { Token: getToken(), 'Content-Type': 'application/json' } });
   
   var create = (payload={}, options={}) => async (dispatch) => {
-    updateToken()
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/POST_REQUEST`, payload: requestPayload});
-
+    await updateToken()
+    
     try {
       var { data: { item } } = await axios.post(endpoint, payload, requestParams());
     } catch (error) {
@@ -37,9 +37,9 @@ export default function Rest(config) {
   }
 
   var read = (id, options={}) => async (dispatch) => {
-    updateToken()
     var { parseItem, parseItems, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/GET_REQUEST`, payload: requestPayload });
+    await updateToken()
     
     try {
       var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}${id}` : endpoint, requestParams());
@@ -57,9 +57,11 @@ export default function Rest(config) {
   }
 
   var update = (payload, options={}) => async (dispatch) => {
-    updateToken()
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/PUT_REQUEST`, payload: requestPayload });
+    
+    await updateToken()
+    console.log(payload)
     var { id } = payload;
 
     if (id === undefined) 
@@ -78,16 +80,16 @@ export default function Rest(config) {
   }
   
   var destroy = (payload, options={}) => async (dispatch) => {
-    updateToken()
-
+    
     var { id } = payload;
-
+    
     if (id === undefined) 
-      return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: new Error('id is undefined') });
-
+    return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: new Error('id is undefined') });
+    
     var { requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/DELETE_REQUEST`, payload: requestPayload });
-
+    
+    await updateToken()
     try {
       await axios.delete(`${endpoint}${id}`, requestParams());
     } catch (error) {

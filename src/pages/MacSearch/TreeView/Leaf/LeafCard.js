@@ -5,23 +5,29 @@ import swIcon from './sw-icon.png';
 import React from 'react';
 import { history } from '../../../../modules/history';
 
-
+import { getUserRoles } from '../../../../state/utils';
 export const LeafCard = ({ value, handleCheckVisible }) => {
-
-  const { id, name, model, ip, isVisibleForOperators } = value;
+  const { id, name, model, ip, is_visible } = value;
   return (
     <>
       <div className="list-group-item">
         <div className="list-group-item-header">
-          <div className="list-view-pf-checkbox recenter-icon">
-            <input
-              type="checkbox"
-              checked={isVisibleForOperators}
-              onClick={e => handleCheckVisible(id, e)}
-            />
-          </div>
+          {getUserRoles().includes('administrator')  && (
+            <div className="list-view-pf-checkbox recenter-icon">
+              <input
+                type="checkbox"
+                checked={is_visible}
+                onChange={(e) => {
+                  console.log(value);
+                  handleCheckVisible({ ...value, is_visible: !is_visible})}}
+              />
+            </div>
+          )}
           <div className="list-view-pf-actions recenter-icon">
-            <span onClick={e => handleFindBySwitch(id, e)} className="pficon pficon-search search-mac-icon"></span>
+            <span
+              onClick={(e) => handleFindBySwitch(id, e)}
+              className="pficon pficon-search search-mac-icon"
+            ></span>
           </div>
           <div className="list-view-pf-main-info">
             <div className="list-view-pf-left">
@@ -54,6 +60,6 @@ export const LeafCard = ({ value, handleCheckVisible }) => {
   );
 };
 
-const handleFindBySwitch = id => {
-  history.push(`/macSearch/findbymac/${id}?type=switch`)
-}
+const handleFindBySwitch = (id) => {
+  history.push(`/macSearch/findbymac/${id}?type=switch`);
+};

@@ -13,34 +13,25 @@ export const FindingStep = ({
   searchId,
   isLoading,
   findResult,
-  rebootInterface
+  updateFilterInput
 }) => {
-
-  const [errorToLoadSwitches, setErrorToLoadSwitches] = React.useState(false);
-
   React.useEffect(() => {
-    if (searchType == 'switch') {
+    if (searchType === 'switch') {
       onFind({ switchesToFindIds: [searchId], mac: findMac });
     } else {
       const switchesToFind = switchesTree.filter(x => x.name === searchId);
       if (switchesToFind !== undefined) {
         if (switchesToFind[0].branches !== undefined) {
           var switchesToFindIds = switchesToFind[0].branches.map((y) => y.value.id);
+          if  (switchesToFindIds.length > 0) {
+            onFind({ switchesToFindIds, mac: findMac });
+          }
         }
-      }
-      if  (switchesToFindIds.length > 0) {
-        onFind({ switchesToFindIds, mac: findMac });
-      }
-      else {
-        setErrorToLoadSwitches(true);
       }
     }
   }, []);
 
-  return errorToLoadSwitches 
-  ? <p className="error-load-sws-paragraph">Ha habido un error a cargar los swtiches, debe asegurarse que el nombre del edicicio es correcto y
-  que dentro del edificio se encuentra es switch seleccionado, o que el edificio contiene al menos un switch</p>
-  : isLoading ? (
+  return isLoading ? (
     <div className="pf-l-bullseye">
       <div className="pf-c-empty-state pf-m-lg">
         <h1 className="pf-c-title pf-m-lg">Buscando...</h1>
@@ -63,6 +54,6 @@ export const FindingStep = ({
       </div>
     </div>
   ) : (
-    <Table items={findResult} reboot={rebootInterface} />
+    <Table items={findResult} findMac={findMac} updateFilterInput={updateFilterInput} />
   );
 };

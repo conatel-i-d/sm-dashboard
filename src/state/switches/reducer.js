@@ -6,7 +6,8 @@ import {
   updateState,
   sortItems,
   filterItems,
-  updateIds
+  updateIds,
+  getUserRoles
 } from '../utils';
 
 const ENTITY = 'switches';
@@ -96,15 +97,17 @@ export function selectAllAsTree(state) {
     const buildingName = splitName.length > 1
     ? isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0]
     : item.name;
-    if (!(buildingName in buildings)) buildings[buildingName] = {
-      type: 'branch',
-      name: buildingName,
-      branches: []
+    if (item.is_visible || getUserRoles().includes('administrator')) {
+      if (!(buildingName in buildings)) buildings[buildingName] = {
+        type: 'branch',
+        name: buildingName,
+        branches: []
+      }
+      buildings[buildingName].branches.push({
+          type: 'leaf',
+          value: item
+        });
     }
-    buildings[buildingName].branches.push({
-        type: 'leaf',
-        value: item
-      });
       return true;
   })
   const result = Object.values(buildings); 

@@ -10,10 +10,9 @@ var CancelToken = axios.CancelToken;
 export var cancelFindByMac;
 
 export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
-  updateToken()
   dispatch({ type: `@${ENTITY}/POST_REQUEST`, payload: {} });
+  await updateToken()
   try {
-    console.log("before send to macs/find", { switchesToFindIds, mac })
     var { data: { items } } = await axios.post(`/api/macs/find`, { switchesToFindIds, mac }, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' },
       cancelToken: new CancelToken(c => {
@@ -35,9 +34,9 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
   dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: new Error('No `items` key found on response') });
 }
 
-const cancelFindByMacAwxTasks = ({ switchesToFindIds, errorType }) => async (dispatch) => {
-  updateToken()
+const cancelFindByMacAwxTasks = ({ switchesToFindIds }) => async (dispatch) => {
   dispatch({ type: `@${ENTITY}/CANCEL_TASKS_POST_REQUEST`, payload: {} });
+  await updateToken()
   try {
     var resp = await axios.post(`/api/macs/cancel_find_tasks`, { switchesToFindIds }, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
