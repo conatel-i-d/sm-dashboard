@@ -32,7 +32,7 @@ export function Main({ ready, initializingApp }) {
       <RouterSwitch>
         <Route exact path="/" component={Home} />
         <Route path="/switches/:id(\d+)" component={Switch} />
-        <Route exact path="/switches" component={Switches} />
+        <Route path="/switches" component={Switches} />
         <Route exact path="/logs" component={Logs} />
         <Route exact path="/settings" component={Settings} />
         <Route path="/macSearch" component={MacSearch} />
