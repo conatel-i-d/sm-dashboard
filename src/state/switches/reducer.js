@@ -93,20 +93,25 @@ export function selectAllAsTree(state) {
 
   const buildings = {};
   items.map(item => {
-    const splitName = item.name.split("_");
-    const buildingName = splitName.length > 1
-    ? isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0]
-    : item.name;
-    if (item.is_visible || getUserRoles().includes('administrator')) {
-      if (!(buildingName in buildings)) buildings[buildingName] = {
-        type: 'branch',
-        name: buildingName,
-        branches: []
+    if (item.name !== undefined) {
+      const splitName = item.name.split("_");
+      const buildingName = splitName.length > 1
+      ? isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0]
+      : item.name;
+      if (item.is_visible || getUserRoles().includes('administrator')) {
+        if (!(buildingName in buildings)) buildings[buildingName] = {
+          type: 'branch',
+          name: buildingName,
+          branches: []
+        }
+        buildings[buildingName].branches.push({
+            type: 'leaf',
+            value: item
+          });
       }
-      buildings[buildingName].branches.push({
-          type: 'leaf',
-          value: item
-        });
+    }
+    else {
+      console.log(item)
     }
       return true;
   })
