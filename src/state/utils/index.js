@@ -82,7 +82,9 @@ export async function updateToken() {
 export const getUserRoles = () => {
   const base64Payload = window.k.token.split('.')[1];
   const payload = JSON.parse(atob(base64Payload))
-  return payload.realm_access.roles !== undefined
-    ? payload.realm_access.roles
-    : []
+  return payload.realm_access 
+  ? payload.realm_access.roles !== undefined
+      ? payload.realm_access.roles
+      : []
+  : []
 }

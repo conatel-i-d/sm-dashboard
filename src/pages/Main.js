@@ -37,11 +37,10 @@ export function Main({ ready, initializingApp }) {
         <Route exact path="/settings" component={Settings} />
         <Route path="/macSearch" component={MacSearch} />
       </RouterSwitch>
-
+      <Alerts />
     </Layout>
     : <Bullseye><Spinner /></Bullseye>
     }
-    <Alerts />
     </>
   );
 }

@@ -43,7 +43,6 @@ export function SwitchPage({
 
   React.useEffect(() => {
     if(!switchId.includes('reboot')) {
-
       getSwitch(switchId);
       getInterfaces(switchId);
     }
