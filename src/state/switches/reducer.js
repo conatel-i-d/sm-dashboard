@@ -93,6 +93,7 @@ export function selectAllAsTree(state) {
 
   const buildings = {};
   items.map(item => {
+    console.log("item", item)
     if (item.name !== undefined) {
       const splitName = item.name.split("_");
       const buildingName = splitName.length > 1
