@@ -33,6 +33,8 @@ export const reducer = createReducer(initialState, {
   [`@${ENTITY}/GET_SUCCESS`]: updateSwitchNicsIds,
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
+  [`@${ENTITY}/REBOOT_REQUEST_SUCCESS`]: state => state,
+  [`@${ENTITY}/REBOOT_REQUEST_ERROR`]: state => state
 });
 
 export function updateActiveSwitchId(state, payload) {

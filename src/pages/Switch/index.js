@@ -39,11 +39,14 @@ export function SwitchPage({
   updateSortBy
 }) {
   
-  const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, ''), [location]);
+  const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, '').replace('/reboot/nics', ''), [location]);
 
   React.useEffect(() => {
-    getSwitch(switchId);
-    getInterfaces(switchId);
+    if(!switchId.includes('reboot')) {
+
+      getSwitch(switchId);
+      getInterfaces(switchId);
+    }
   }, [getSwitch, getInterfaces, switchId]);
 
   return (

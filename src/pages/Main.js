@@ -15,6 +15,8 @@ import { Bullseye } from '@patternfly/react-core';
 import { initializingApp } from '../state/ui';
 import get from 'lodash/get';
 
+import Alerts from './Alerts'
+
 export function Main({ ready, initializingApp }) {
   
   React.useEffect(() => {
@@ -30,14 +32,16 @@ export function Main({ ready, initializingApp }) {
       <RouterSwitch>
         <Route exact path="/" component={Home} />
         <Route path="/switches/:id(\d+)" component={Switch} />
-        <Route path="/switches" component={Switches} />
+        <Route exact path="/switches" component={Switches} />
         <Route exact path="/logs" component={Logs} />
         <Route exact path="/settings" component={Settings} />
         <Route path="/macSearch" component={MacSearch} />
       </RouterSwitch>
+
     </Layout>
     : <Bullseye><Spinner /></Bullseye>
     }
+    <Alerts />
     </>
   );
 }
