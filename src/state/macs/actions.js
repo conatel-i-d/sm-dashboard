@@ -44,8 +44,8 @@ function isValid(nic) {
     !DISALLOWED_INTERFACES.includes(name) &&
     !name.includes('vlan') &&
     !name.includes('port-channel') &&
-    !name.includes('cpu') &&
-    type.includes('static')
+    !name.includes('cpu') 
+    // && type.includes('static')
   );
 }
 
