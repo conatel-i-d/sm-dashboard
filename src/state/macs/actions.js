@@ -6,7 +6,7 @@ const ENTITY = 'FIND_BY_MAC'
 
 var CancelToken = axios.CancelToken;
 
-
+import { DISALLOWED_INTERFACES } from '../nics'
 export var cancelFindByMac;
 
 export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
@@ -29,9 +29,21 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
   }
 
   if (items !== undefined) 
-    return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: items });
+    return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: items.filter(i => isValid(i)) });
 
   dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: new Error('No `items` key found on response') });
+}
+
+function isValid(nic) {
+  const name = getter(nic, 'name', '').toLowerCase();
+  const type = getter(nic, 'type', '').toLowerCase();
+  return (
+    !DISALLOWED_INTERFACES.includes(name) &&
+    !name.includes('vlan') &&
+    !name.includes('port-channel') &&
+    !name.includes('cpu') &&
+    type.includes('static')
+  );
 }
 
 const cancelFindByMacAwxTasks = ({ switchesToFindIds }) => async (dispatch) => {

@@ -9,7 +9,7 @@ import { addAlert } from '../alerts'
 const ENTITY = 'nics';
 const nicsSchema = new schema.Entity(ENTITY);
 
-const DISALLOWED_INTERFACES = ['', 'failed', 'changed', 'vlan', 'port-channel'];
+export const DISALLOWED_INTERFACES = ['', 'failed', 'changed', 'vlan', 'port-channel'];
 
 export const updateSortBy = actionCreator(`@${ENTITY}/UPDATE_SORT_BY`);
 export const updateFilterInput = actionCreator(
