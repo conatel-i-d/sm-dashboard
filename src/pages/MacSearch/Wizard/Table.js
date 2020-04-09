@@ -30,7 +30,7 @@ export const Table = ({ items, updateFilterInput, findMac }) => {
         variant={TableVariant.compact}
       >
         <TableHeader />
-        <TableBody rowKey={({ rowData }) => rowData.cells[0]} />
+        <TableBody rowKey={({ rowData }) => `${rowData.cells[0]}${rowData.cells[2]}`} />
       </PatternflyTable>
     </>
   );
