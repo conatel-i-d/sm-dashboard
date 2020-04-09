@@ -17,7 +17,8 @@ const addAlert = (state, payload) => {
 };
 
 const hideAlert = (state, payload) => {
-  const visiblesSinFilter = get(state, `${ENTITY}.visibles`);
+  console.log(payload)
+  const visiblesSinFilter = get(state, `visibles`);
   const visibles = visiblesSinFilter.filter((alert) => alert.title !== payload);
   return {
     ...state,

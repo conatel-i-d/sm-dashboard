@@ -9,6 +9,7 @@ const ENTITY = 'alerts';
  * "default", "info", "success", "warning", "danger"
  * @param { String } alert.title titulo unico para esta alerta, 
  * al ocultar una alerta se ocultar todas las del mismo titulo  
+ * @param { String } alert.description descripcion que aparece bajo el titulo de la alerta  
  */
 export const addAlert = (alert) => ({type: `@${ENTITY}/ADD`, payload: alert });
 /**

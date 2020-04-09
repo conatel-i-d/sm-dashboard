@@ -1,4 +1,4 @@
-import { actionCreator } from '../utils';
+import { actionCreator, updateToken } from '../utils';
 import axios from 'axios'
 import { getToken } from '../utils'
 import getter from 'lodash/get'
@@ -58,19 +58,20 @@ export const rebootSuccess = actionCreator(`@${ENTITY}/REBOOT_REQUEST_SUCCESS`);
 export const rebootError = actionCreator(`@${ENTITY}/REBOOT_REQUEST_ERROR`);
 export const reboot = ({ switchId, name }) => async dispatch => {
   dispatch({ type: `@${ENTITY}/REBOOT_REQUEST` });
+  await updateToken();
   try {
     var response = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
     });
   } catch (error) {
     dispatch(rebootError())
-    return dispatch(addAlert({ type: 'danger', title: "Error al resetear mac" }))
+    return dispatch(addAlert({ type: 'danger', title: `Error al resetear la NIC ${name}` }))
   }
   if (response.status !== 200) {
     dispatch(rebootError())
     return dispatch(addAlert({ type: 'danger', title: "Error al resetear mac" }))  
   } else {
     dispatch(rebootSuccess())
-    return dispatch(addAlert({ type: 'danger', title: "Mac reseteada correctamente" }))
+    return dispatch(addAlert({ type: 'success', title: `La NIC ${name} se reseteo correctamente` }))
   }
 };
