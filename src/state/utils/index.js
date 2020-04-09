@@ -71,7 +71,7 @@ export async function updateToken() {
   try {
     if (window.k !== undefined) 
       if (window.k.isTokenExpired()) {
-        await window.k.updateToken(60)
+        await window.k.updateToken(1800)
       }
   }
   catch {
