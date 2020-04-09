@@ -2,12 +2,14 @@ import axios from 'axios';
 
 import { getToken, updateToken } from '../utils';
 
-const ENTITY = 'FIND_BY_MAC'
 
-var CancelToken = axios.CancelToken;
 
 import { DISALLOWED_INTERFACES } from '../nics'
 import get from 'lodash/get';
+
+var CancelToken = axios.CancelToken;
+const ENTITY = 'FIND_BY_MAC'
+
 export var cancelFindByMac;
 
 export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
