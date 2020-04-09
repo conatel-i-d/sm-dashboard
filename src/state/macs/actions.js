@@ -7,6 +7,7 @@ const ENTITY = 'FIND_BY_MAC'
 var CancelToken = axios.CancelToken;
 
 import { DISALLOWED_INTERFACES } from '../nics'
+import get from 'lodash/get';
 export var cancelFindByMac;
 
 export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
@@ -35,8 +36,8 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
 }
 
 function isValid(nic) {
-  const name = getter(nic, 'name', '').toLowerCase();
-  const type = getter(nic, 'type', '').toLowerCase();
+  const name = get(nic, 'name', '').toLowerCase();
+  const type = get(nic, 'type', '').toLowerCase();
   return (
     !DISALLOWED_INTERFACES.includes(name) &&
     !name.includes('vlan') &&
