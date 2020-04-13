@@ -39,10 +39,12 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: error });
   }
   console.log("items", items);
+  const startTime  = new Date()
+  console.log(`Starting ${startTime}...`)
   if (items !== undefined) {
     const result = [];
     items.map((sw) => {
-      console.log("sw", sw.name);
+      console.log(`${new Date()} sw: `, sw.name);
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) => {
         isValid(nic_name);
@@ -63,6 +65,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
         }
       });
     });
+    console.log(`Loop time: ${startTime.getTime() - new Date().getTime()}...`)
     return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: result });
   }
 
