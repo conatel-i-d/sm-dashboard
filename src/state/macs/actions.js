@@ -47,7 +47,6 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       console.log(`${new Date()} sw: `, sw.name);
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name, nic_value])  => {
-        console.log(nic_name)
         isValid(nic_name);
       });
       console.log("filterNics", filterNics)
@@ -78,17 +77,18 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
 };
 
 function isValid(name) {
-  console.log("nic" + name, {
-    disalowed_interfaces: !DISALLOWED_INTERFACES.includes(name),
-    includesVlan: !name.includes('vlan'),
-    includesPortChannel: !name.includes('port-channel'),
-    includes_cpu: !name.includes('cpu')
+  const lowerName = name.toLowerCase();
+  console.log("nic: " + lowerName, {
+    disalowed_interfaces: !DISALLOWED_INTERFACES.includes(lowerName),
+    includesVlan: !lowerName.includes('vlan'),
+    includesPortChannel: !lowerName.includes('port-channel'),
+    includes_cpu: !lowerName.includes('cpu')
   });
   return (
-    !DISALLOWED_INTERFACES.includes(name) &&
-    !name.includes('vlan') &&
-    !name.includes('port-channel') &&
-    !name.includes('cpu')
+    !DISALLOWED_INTERFACES.includes(lowerName) &&
+    !lowerName.includes('vlan') &&
+    !lowerName.includes('port-channel') &&
+    !lowerName.includes('cpu')
   );
 }
 
