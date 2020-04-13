@@ -69,8 +69,7 @@ export function getToken() {
 
 export async function updateToken() {
   try {
-    if (window.k !== undefined) 
-      if (window.k.isTokenExpired()) {
+    if (window.k !== undefined) {
         await window.k.updateToken(1800)
       }
   }
