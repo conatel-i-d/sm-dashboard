@@ -47,7 +47,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       console.log(`${new Date()} sw: `, sw.name);
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) => {
-        connsole.log("filte nic name", nic_name)
+        console.log("filte nic name", nic_name)
         isValid(nic_name);
       });
       console.log("filterNics", filterNics)
