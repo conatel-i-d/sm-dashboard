@@ -46,7 +46,8 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     items.map((sw) => {
       console.log(`${new Date()} sw: `, sw.name);
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
-      const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) => {
+      const filterNics = Object.entries(sw.interfaces).filter(([nic_name, nic_value])  => {
+        console.log(nic_name)
         isValid(nic_name);
       });
       console.log("filterNics", filterNics)
@@ -76,8 +77,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
   });
 };
 
-function isValid(nic) {
-  const name = get(nic, 'name', '').toLowerCase();
+function isValid(name) {
   console.log("nic" + name, {
     disalowed_interfaces: !DISALLOWED_INTERFACES.includes(name),
     includesVlan: !name.includes('vlan'),
