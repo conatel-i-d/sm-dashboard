@@ -17,7 +17,8 @@ function Keycloak({children}) {
 				// Both do the same, except the first one
 				// redirects the user to the login page if
 				// he's not authenticated.
-				onLoad: 'login-required'
+				onLoad: 'login-required',
+				timeSkew: 0
 			})
 			.success((authenticated) => {
 				// We can continue rendering the app
