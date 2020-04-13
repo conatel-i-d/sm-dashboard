@@ -70,7 +70,7 @@ export function getToken() {
 export async function updateToken() {
   try {
     if (window.k !== undefined) {
-        await window.k.updateToken(600000)
+        await window.k.updateToken(70)
       }
   }
   catch {

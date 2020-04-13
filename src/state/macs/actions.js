@@ -38,10 +38,11 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     );
     return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: error });
   }
-
+  console.log("items", items);
   if (items !== undefined) {
     const result = [];
     items.map((sw) => {
+      console.log("sw", sw.name);
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) => {
         isValid(nic_name);
