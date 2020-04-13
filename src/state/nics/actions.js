@@ -58,8 +58,8 @@ export const rebootSuccess = actionCreator(`@${ENTITY}/REBOOT_REQUEST_SUCCESS`);
 export const rebootError = actionCreator(`@${ENTITY}/REBOOT_REQUEST_ERROR`);
 export const reboot = ({ switchId, name }) => async dispatch => {
   dispatch({ type: `@${ENTITY}/REBOOT_REQUEST` });
-  await updateToken();
   try {
+    await updateToken();
     var response = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
     });

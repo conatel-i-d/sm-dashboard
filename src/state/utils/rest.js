@@ -19,9 +19,9 @@ export default function Rest(config) {
   var create = (payload={}, options={}) => async (dispatch) => {
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/POST_REQUEST`, payload: requestPayload});
-    await updateToken()
     
     try {
+      await updateToken()
       var { data: { item } } = await axios.post(endpoint, payload, requestParams());
     } catch (error) {
       console.error(error);
@@ -39,9 +39,9 @@ export default function Rest(config) {
   var read = (id, options={}) => async (dispatch) => {
     var { parseItem, parseItems, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/GET_REQUEST`, payload: requestPayload });
-    await updateToken()
     
     try {
+      await updateToken()
       var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}${id}` : endpoint, requestParams());
     } catch (error) {
       console.error(error);
@@ -60,14 +60,14 @@ export default function Rest(config) {
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/PUT_REQUEST`, payload: requestPayload });
     
-    await updateToken()
     console.log(payload)
     var { id } = payload;
-
+    
     if (id === undefined) 
-      return dispatch({ type: `@${entity}/PUT_ERROR`, payload: new Error('id is undefined') });
-
+    return dispatch({ type: `@${entity}/PUT_ERROR`, payload: new Error('id is undefined') });
+    
     try {
+      await updateToken()
       var { data: { item } } = await axios.put(`${endpoint}${id}`, payload, requestParams());
     } catch (error) {
       return dispatch({ type: `@${entity}/PUT_ERROR`, payload: error });
@@ -89,8 +89,8 @@ export default function Rest(config) {
     var { requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/DELETE_REQUEST`, payload: requestPayload });
     
-    await updateToken()
     try {
+      await updateToken()
       await axios.delete(`${endpoint}${id}`, requestParams());
     } catch (error) {
       console.error(error);

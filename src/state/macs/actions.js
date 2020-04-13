@@ -14,8 +14,8 @@ export var cancelFindByMac;
 
 export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
   dispatch({ type: `@${ENTITY}/POST_REQUEST`, payload: {} });
-  await updateToken()
   try {
+    await updateToken()
     var { data: { items } } = await axios.post(`/api/macs/find`, { switchesToFindIds, mac }, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' },
       cancelToken: new CancelToken(c => {
@@ -51,8 +51,8 @@ function isValid(nic) {
 
 const cancelFindByMacAwxTasks = ({ switchesToFindIds }) => async (dispatch) => {
   dispatch({ type: `@${ENTITY}/CANCEL_TASKS_POST_REQUEST`, payload: {} });
-  await updateToken()
   try {
+    await updateToken()
     var resp = await axios.post(`/api/macs/cancel_find_tasks`, { switchesToFindIds }, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
     })
