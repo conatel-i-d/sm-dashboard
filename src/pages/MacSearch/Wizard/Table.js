@@ -17,7 +17,7 @@ import { history } from '../../../modules/history';
 const COLUMNS = [
   { key: 'switch_id', title: 'SW ID', transforms: [sortable] },
   { key: 'switch_name', title: 'SW Name', transforms: [sortable] },
-  { key: 'name', title: 'NIC Name', transforms: [sortable] }
+  { key: 'interface_name', title: 'NIC Name', transforms: [sortable] }
 ];
 
 export const Table = ({ items, updateFilterInput, findMac }) => {
@@ -40,7 +40,7 @@ function calculateRows(items, updateFilterInput, findMac) {
   if (items === undefined) return [];
   return items.map((item) => ({
     cells: COLUMNS.map((column) => {
-      if (column.key === 'name') {
+      if (column.key === 'interface_name') {
         return {
           title: (
             <Button
@@ -51,7 +51,7 @@ function calculateRows(items, updateFilterInput, findMac) {
               target="_blank"
               variant="primary"
             >
-              {item.name}
+              {item.interface_name}
             </Button>
           )
         };
