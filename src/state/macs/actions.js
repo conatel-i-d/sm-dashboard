@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getToken, updateToken } from '../utils';
 
 import { isValid } from '../nics';
+import { addAlert } from '../alerts';
 
 var CancelToken = axios.CancelToken;
 const ENTITY = 'FIND_BY_MAC';
@@ -24,18 +25,20 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
         })
       }
     );
-  } catch (error) {
-    console.error(error);
-    if (axios.isCancel(error)) {
+  } catch (err) {
+    console.error(err);
+    if (axios.isCancel(err)) {
       dispatch(
         cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'cancel' })
       );
-      return dispatch({ type: `@${ENTITY}/POST_CANCELED`, payload: error });
+      addAlert({ type: "warning", title: `Se ha cancelado la busqueda por mac para ${mac}`})
+      return dispatch({ type: `@${ENTITY}/POST_CANCELED`, payload: err });
     }
     dispatch(
       cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'error' })
     );
-    return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: error });
+    dispatch(addAlert({type: "danger", message: `Error al buscar por mac`, description: `Error: ${err.message}`}))
+    return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: err });
   }
 
   if (items !== undefined) {

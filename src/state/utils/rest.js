@@ -2,6 +2,7 @@ import axios from 'axios';
 import { normalize } from 'normalizr';
 
 import { getToken, updateToken } from './index.js';
+import { addAlert } from '../alerts/index.js';
 
 var REST_DEFAULT_CONFIG = {
   endpoint: '/',
@@ -23,9 +24,10 @@ export default function Rest(config) {
     try {
       await updateToken()
       var { data: { item } } = await axios.post(endpoint, payload, requestParams());
-    } catch (error) {
-      console.error(error);
-      return dispatch({ type: `@${entity}/POST_ERROR`, payload: error });
+    } catch (err) {
+      console.error(err);
+      dispatch(addAlert({ type: "danger", title: `Error al crear ${entity}`, description: `Error: ${err.message}`}))
+      return dispatch({ type: `@${entity}/POST_ERROR`, payload: err });
     }
 
     if (item !== undefined) {
@@ -43,9 +45,10 @@ export default function Rest(config) {
     try {
       await updateToken()
       var { data: { items, item } } = await axios.get(id !== undefined ? `${endpoint}${id}` : endpoint, requestParams());
-    } catch (error) {
-      console.error(error);
-      return dispatch({ type: `@${entity}/GET_ERROR`, payload: error });
+    } catch (err) {
+      console.error(err);
+      dispatch(addAlert({ type: "danger", title: `Error al cargar ${entity}`, description: `Error: ${err.message}`}))
+      return dispatch({ type: `@${entity}/GET_ERROR`, payload: err });
     }
 
     if (items !== undefined) 
@@ -69,8 +72,9 @@ export default function Rest(config) {
     try {
       await updateToken()
       var { data: { item } } = await axios.put(`${endpoint}${id}`, payload, requestParams());
-    } catch (error) {
-      return dispatch({ type: `@${entity}/PUT_ERROR`, payload: error });
+    } catch (err) {
+      dispatch(addAlert({ type: "danger", title: `Error al actualizar ${entity}`, description: `Error: ${err.message}`}))
+      return dispatch({ type: `@${entity}/PUT_ERROR`, payload: err });
     }
 
     if (item !== undefined)
@@ -92,9 +96,10 @@ export default function Rest(config) {
     try {
       await updateToken()
       await axios.delete(`${endpoint}${id}`, requestParams());
-    } catch (error) {
-      console.error(error);
-      return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: error });
+    } catch (err) {
+      console.error(err);
+      dispatch(addAlert({ type: "danger", title: `Error al eliminar ${entity}`, description: `Error: ${err.message}`}))
+      return dispatch({ type: `@${entity}/DELETE_ERROR`, payload: err });
     }
 
     dispatch({ type: `@${entity}/DELETE_SUCCESS`, payload: id });

@@ -63,15 +63,15 @@ export const reboot = ({ switchId, name }) => async dispatch => {
     var response = await axios.post(`/api/switch/${switchId}/nics/reset?nic_name=${name}`, {}, {
       headers: { Token: getToken(), 'Content-Type': 'application/json' }
     });
-  } catch (error) {
-    dispatch(rebootError())
-    return dispatch(addAlert({ type: 'danger', title: `Error al resetear la NIC ${name}` }))
+  } catch (err) {
+    dispatch(addAlert({ type: 'danger', title: `Error al resetear la NIC ${name}`, description: `Error: ${err.message}` }))
+    return dispatch(rebootError()) 
   }
   if (response.status !== 200) {
-    dispatch(rebootError())
-    return dispatch(addAlert({ type: 'danger', title: "Error al resetear mac" }))  
+    dispatch(addAlert({ type: 'danger', title: `Error al resetear la NIC ${name}`, description: `Status code de la respuesta incorrecto:\n Deseado: 200\n Recibido ${response.status}`}))
+    return dispatch(rebootError())
   } else {
-    dispatch(rebootSuccess())
-    return dispatch(addAlert({ type: 'success', title: `La NIC ${name} se reseteo correctamente` }))
+    dispatch(addAlert({ type: 'success', title: `La NIC ${name} se reseteo correctamente` }))
+    return dispatch(rebootSuccess())
   }
 };
