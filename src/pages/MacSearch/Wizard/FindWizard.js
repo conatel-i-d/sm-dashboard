@@ -13,19 +13,21 @@ export const FindWizard = (props) => {
   const setFindMac = (value) => {
     history.push(`${location.pathname}${location.search.replace()}`)
     location.search.replace('?type=', '').replace(/&search=[a-zA-Z0-9_.-]*/,`&search=${value}`)
-  }  
-
+  }
   const searchId = React.useMemo(
     () => location.pathname.replace(`/macSearch/findbymac/`, ''),
     [location.pathname]
   );
   const searchType = React.useMemo(
-    () => location.search.replace('?type=', '').replace(/&search=[a-zA-Z0-9_.-]*/),
+    () => location.search.replace('?type=', '').replace(/&search=.*/),
     [location.search]
   );
 
   const findMac = React.useMemo(
-    () => location.search.replace(/.*&search=/, ''),
+    () => {
+      console.log("use memo befor replace search has", location.search)
+      return location.search.replace(/.*&search=/, '')
+    },
     [location.search]
   );
 
