@@ -38,40 +38,42 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     );
     return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: error });
   }
-  const startTime  = new Date()
-  console.log(`Starting ${startTime}...`)
+  const startTime = new Date();
+  console.log(`Starting ${startTime}...`);
   if (items !== undefined) {
     let result = [];
     items.map((sw) => {
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
-      const filterNics = Object.entries(sw.interfaces).filter(([nic_name])  => isValid(nic_name));
-      
+      const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) =>
+        isValid(nic_name)
+      );
+
       filterNics.map(([nic_name, nic_value]) => {
         const { mac_entries } = nic_value;
         if (mac_entries) {
-          mac_entries.map(currentMac => {
+          mac_entries.map((currentMac) => {
             // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
             // ninguna mac, agrego a result result el switch y nombre de la nic correspondiente
-            if (mac) {
-              if (currentMac.mac_address.toLowerCase().includes(mac.toLowerCase()))
-              result.push({
-                  switch_id: sw.id,
-                  switch_name: sw.name,
-                  interface_name: nic_name
-                });
-            }
-            else {
+            if (mac)
+              if (
+                currentMac.mac_address.toLowerCase().includes(mac.toLowerCase())
+              )
+                return;
+            if (
+              result.filter(
+                ([sid, sname]) => sid === sw.id && sname === nic_name
+              ).length > 0
+            )
               result.push({
                 switch_id: sw.id,
                 switch_name: sw.name,
                 interface_name: nic_name
               });
-            }
           });
         }
       });
     });
-    console.log(`Loop time: ${startTime.getTime() - new Date().getTime()}...`)
+    console.log(`Loop time: ${startTime.getTime() - new Date().getTime()}...`);
     return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: result });
   }
 
