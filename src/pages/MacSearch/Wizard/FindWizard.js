@@ -69,8 +69,8 @@ export const FindWizard = (props) => {
         }}
         description={
           searchType === 'switch'
-            ? `Buscar la mac ${findMac.toUpperCase()} en el switch ${searchId}.toUpperCase()`
-            : `Buscar la mac ${findMac.toUpperCase()} en todos los switches del edificio ${searchId}.toUpperCase()`
+            ? `Buscar la mac ${findMac.toUpperCase()} en el switch ${searchId.toUpperCase()}`
+            : `Buscar la mac ${findMac.toUpperCase()} en todos los switches del edificio ${searchId.toUpperCase()}`
         }
         steps={steps}
       />
