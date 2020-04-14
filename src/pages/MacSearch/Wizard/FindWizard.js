@@ -81,6 +81,7 @@ export const FindWizard = (props) => {
             : `Buscar la mac ${findMac.toUpperCase()} en todos los switches del edificio ${searchId.toUpperCase()}`
         }
         steps={steps}
+        startAtStep={findMac === "" ? 1 : 2}
       />
     </>
   );
