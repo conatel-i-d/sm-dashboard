@@ -96,7 +96,7 @@ export function selectAllAsTree(state) {
     if (item.name !== undefined) {
       const splitName = item.name.split("_");
       const buildingName = splitName.length > 2
-      ? isNaN(splitName[1]) ? splitName[1] : splitName[2].split(".")[0]
+      ? isNaN(parseInt(splitName[1])) ? splitName[1] : splitName[2].split(".")[0]
       : item.name;
       if (item.is_visible || getUserRoles().includes('administrator')) {
         if (!(buildingName in buildings)) buildings[buildingName] = {
