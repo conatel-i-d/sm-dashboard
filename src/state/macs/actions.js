@@ -46,20 +46,30 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name])  => isValid(nic_name));
       
-      console.log("filterNics", filterNics)
-      // de cada interface valida tomo mac_entries de <nic_value> y ahi dentro busco la mac
       filterNics.map(([nic_name, nic_value]) => {
         const { mac_entries } = nic_value;
-
+        
+        console.log("mac entries", mac_entries);
         if (mac_entries) {
           mac_entries.map(currentMac => {
-            // en caso de encontrarla la agrego a result y switch y en nombre de la nic correspondiente
-            if (currentMac.name.toLowerCase().includes(mac.toLowerCase()))
+            // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
+            // ninguna mac, agrego a result result el switch y nombre de la nic correspondiente
+            if (mac) {
+              console.log("mac in mac filter: ", mac);
+              if (currentMac.name.toLowerCase().includes(mac.toLowerCase()))
+                result.append({
+                  switch_id: sw.id,
+                  switch_name: sw.name,
+                  interface_name: nic_name
+                });
+            }
+            else {
               result.append({
                 switch_id: sw.id,
                 switch_name: sw.name,
                 interface_name: nic_name
               });
+            }
           });
         }
       });
