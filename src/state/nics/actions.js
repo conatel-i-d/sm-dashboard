@@ -28,7 +28,7 @@ export const get = (switchId) => rest.read(`${switchId}/nics`, {
 
 function parseItemFactory(switchId) {
   return function (item) {
-    return Object.values(item).filter(isValid).map(item => {
+    return Object.values(item).filter(isValid(item.name)).map(item => {
       item.id = `${switchId}__${item.name}`;
       item =
         item.mac_entries !== undefined

@@ -31,7 +31,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       dispatch(
         cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'cancel' })
       );
-      addAlert({ type: "warning", title: `Se ha cancelado la busqueda por mac para ${mac}`})
+      dispatch(addAlert({ type: "warning", title: `Se ha cancelado la busqueda por mac para ${mac}`}))
       return dispatch({ type: `@${ENTITY}/POST_CANCELED`, payload: err });
     }
     dispatch(
