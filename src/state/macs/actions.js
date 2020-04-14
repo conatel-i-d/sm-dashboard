@@ -54,15 +54,19 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
           mac_entries.map((currentMac) => {
             // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
             // ninguna mac, si la interface/switch no existia en result, la agrego
-            if (
-              ((mac && currentMac.mac_address.toLowerCase().includes(mac.toLowerCase())) || mac) &&
-              ((result && !result.every(({switch_name, interface_name}) => (switch_name !== sw.name && interface_name !== nic_name))) || result)
-            )
-              result.push({
-                switch_id: sw.id,
-                switch_name: sw.name,
-                interface_name: nic_name
-              });
+            if (((mac && currentMac.mac_address.toLowerCase().includes(mac.toLowerCase())) || mac))
+            {
+              console.log("current mac first if", currentMac)
+              if ((result && !result.every(({switch_name, interface_name}) => (switch_name !== sw.name && interface_name !== nic_name))) || result)
+                {
+                  console.log("current mac second if", currentMac)
+                  result.push({
+                    switch_id: sw.id,
+                    switch_name: sw.name,
+                    interface_name: nic_name
+                  });
+                }
+            }
           });
         }
       });
