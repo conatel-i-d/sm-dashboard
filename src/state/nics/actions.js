@@ -45,6 +45,7 @@ function parseItemFactory(switchId) {
   }
 
 export function isValid(name) {
+  console.log("isValid name: ", name)
   const lowerName = name.trim().toLowerCase();
   return (
     !DISALLOWED_INTERFACES.includes(lowerName) &&
