@@ -43,5 +43,5 @@ export const BranchCard = ({ value }) => {
   );
 };
 const handleFindByBuilding = name => {
-  history.push(`/macSearch/findbymac/${name}?type=building`)
+  history.push(`/macSearch/findbymac/${name}?type=building&search=`)
 }

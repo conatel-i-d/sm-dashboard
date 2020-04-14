@@ -61,5 +61,5 @@ export const LeafCard = ({ value, handleCheckVisible }) => {
 };
 
 const handleFindBySwitch = (id) => {
-  history.push(`/macSearch/findbymac/${id}?type=switch`);
+  history.push(`/macSearch/findbymac/${id}?type=switch&search=`);
 };

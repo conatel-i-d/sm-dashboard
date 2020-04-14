@@ -25,7 +25,6 @@ export const FindWizard = (props) => {
 
   const findMac = React.useMemo(
     () => {
-      console.log("use memo befor replace search has", location.search)
       return location.search.replace(/.*&search=/, '')
     },
     [location.search]
