@@ -8,7 +8,7 @@ import { InsertMacStep } from './InsertMacStep';
 import { isFunction } from '../../../modules/utils';
 
 export const FindWizard = (props) => {
-  const { location, cancelFindByMac } = props;
+  const { location, cancelFindByMac, onFind, switchesTree } = props;
 
   const setFindMac = (value) => {
     history.push(`${location.pathname}${location.search.replace()}`)
@@ -68,6 +68,24 @@ export const FindWizard = (props) => {
     } // TODO: Pending
   ];
 
+  const goToFind = (newStep) => {
+    if (newStep.name === "Buscando") {
+      if (searchType === 'switch') {
+        onFind({ switchesToFindIds: [searchId], mac: findMac });
+      } else {
+        const switchesToFind = switchesTree.filter(x => x.name === searchId);
+        if (switchesToFind !== undefined) {
+          if (switchesToFind[0].branches !== undefined) {
+            var switchesToFindIds = switchesToFind[0].branches.map((y) => y.value.id);
+            if  (switchesToFindIds.length > 0) {
+              onFind({ switchesToFindIds, mac: findMac });
+            }
+          }
+        }
+      }
+    }
+  }
+
   return (
     <>
       <Wizard
@@ -77,6 +95,7 @@ export const FindWizard = (props) => {
         onBack={() => {
           cancelFind('Cancel find by back to first step (insert mac form)');
         }}
+        onGoToStep={newStep => goToFind(newStep)}
         description={
           searchType === 'switch'
             ? `Buscar la mac ${findMac.toUpperCase()} en el switch ${searchId.toUpperCase()}`

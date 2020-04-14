@@ -6,31 +6,11 @@ import workingIcon from './working-icon.gif';
 import { Table } from './Table'
 
 export const FindingStep = ({
-  switchesTree,
-  onFind,
-  findMac,
   searchType,
-  searchId,
   isLoading,
   findResult,
   updateFilterInput
 }) => {
-  React.useEffect(() => {
-    if (searchType === 'switch') {
-      onFind({ switchesToFindIds: [searchId], mac: findMac });
-    } else {
-      const switchesToFind = switchesTree.filter(x => x.name === searchId);
-      if (switchesToFind !== undefined) {
-        if (switchesToFind[0].branches !== undefined) {
-          var switchesToFindIds = switchesToFind[0].branches.map((y) => y.value.id);
-          if  (switchesToFindIds.length > 0) {
-            onFind({ switchesToFindIds, mac: findMac });
-          }
-        }
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ ]);
 
   return isLoading ? (
     <div className="pf-l-bullseye">
