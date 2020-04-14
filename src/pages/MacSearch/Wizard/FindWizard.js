@@ -11,9 +11,13 @@ export const FindWizard = (props) => {
   const { location, cancelFindByMac, onFind, switchesTree } = props;
 
   const setFindMac = (value) => {
-    history.push(`${location.pathname}${location.search.replace()}`)
-    location.search.replace('?type=', '').replace(/&search=[a-zA-Z0-9_.-]*/,`&search=${value}`)
-  }
+    history.push(
+      `${location.pathname}${location.search.replace(
+        /search=[a-zA-Z0-9_.-]*/,
+        `search=${value}`
+      )}`
+    );
+  };
   const searchId = React.useMemo(
     () => location.pathname.replace(`/macSearch/findbymac/`, ''),
     [location.pathname]
@@ -23,12 +27,9 @@ export const FindWizard = (props) => {
     [location.search]
   );
 
-  const findMac = React.useMemo(
-    () => {
-      return location.search.replace(/.*&search=/, '')
-    },
-    [location.search]
-  );
+  const findMac = React.useMemo(() => {
+    return location.search.replace(/.*&search=/, '');
+  }, [location.search]);
 
   const cancelFind = (text) => {
     if (isFunction(cancelFindByMac)) {
@@ -68,22 +69,24 @@ export const FindWizard = (props) => {
   ];
 
   const goToFind = (newStep) => {
-    if (newStep.name === "Buscando") {
+    if (newStep.name === 'Buscando') {
       if (searchType === 'switch') {
         onFind({ switchesToFindIds: [searchId], mac: findMac });
       } else {
-        const switchesToFind = switchesTree.filter(x => x.name === searchId);
+        const switchesToFind = switchesTree.filter((x) => x.name === searchId);
         if (switchesToFind !== undefined) {
           if (switchesToFind[0].branches !== undefined) {
-            var switchesToFindIds = switchesToFind[0].branches.map((y) => y.value.id);
-            if  (switchesToFindIds.length > 0) {
+            var switchesToFindIds = switchesToFind[0].branches.map(
+              (y) => y.value.id
+            );
+            if (switchesToFindIds.length > 0) {
               onFind({ switchesToFindIds, mac: findMac });
             }
           }
         }
       }
     }
-  }
+  };
 
   return (
     <>
@@ -94,14 +97,14 @@ export const FindWizard = (props) => {
         onBack={() => {
           cancelFind('Cancel find by back to first step (insert mac form)');
         }}
-        onGoToStep={newStep => goToFind(newStep)}
+        onGoToStep={(newStep) => goToFind(newStep)}
         description={
           searchType === 'switch'
             ? `Buscar la mac ${findMac.toUpperCase()} en el switch ${searchId.toUpperCase()}`
             : `Buscar la mac ${findMac.toUpperCase()} en todos los switches del edificio ${searchId.toUpperCase()}`
         }
         steps={steps}
-        startAtStep={findMac === "" ? 1 : 2}
+        startAtStep={findMac === '' ? 1 : 2}
       />
     </>
   );
