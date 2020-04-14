@@ -38,21 +38,21 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     );
     return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: error });
   }
-  console.log("items", items);
   const startTime  = new Date()
   console.log(`Starting ${startTime}...`)
   if (items !== undefined) {
     const result = [];
     items.map((sw) => {
-      console.log(`${new Date()} sw: `, sw.name);
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name])  => isValid(nic_name));
+      
       console.log("filterNics", filterNics)
       // de cada interface valida tomo mac_entries de <nic_value> y ahi dentro busco la mac
       filterNics.map(([nic_name, nic_value]) => {
-        const { mac_entires } = nic_value;
-        if (mac_entires) {
-          mac_entires.map(currentMac => {
+        const { mac_entries } = nic_value;
+
+        if (mac_entries) {
+          mac_entries.map(currentMac => {
             // en caso de encontrarla la agrego a result y switch y en nombre de la nic correspondiente
             if (currentMac.name.toLowerCase().includes(mac.toLowerCase()))
               result.append({
@@ -75,13 +75,13 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
 };
 
 function isValid(name) {
-  const lowerName = name.toLowerCase();
-  console.log("nic: " + lowerName, {
-    disalowed_interfaces: !DISALLOWED_INTERFACES.includes(lowerName),
-    includesVlan: !lowerName.includes('vlan'),
-    includesPortChannel: !lowerName.includes('port-channel'),
-    includes_cpu: !lowerName.includes('cpu')
-  });
+  const lowerName = name.trim().toLowerCase();
+  // console.log("nic: " + lowerName, {
+  //   disalowed_interfaces: !DISALLOWED_INTERFACES.includes(lowerName),
+  //   includesVlan: !lowerName.includes('vlan'),
+  //   includesPortChannel: !lowerName.includes('port-channel'),
+  //   includes_cpu: !lowerName.includes('cpu')
+  // });
   return (
     !DISALLOWED_INTERFACES.includes(lowerName) &&
     !lowerName.includes('vlan') &&
