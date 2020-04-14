@@ -29,7 +29,8 @@ export const FindingStep = ({
         }
       }
     }
-  }, [ onFind, findMac, searchId, searchType, switchesTree ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   return isLoading ? (
     <div className="pf-l-bullseye">
