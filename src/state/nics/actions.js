@@ -45,14 +45,16 @@ function parseItemFactory(switchId) {
   }
 
 export function isValid(name) {
-  console.log("isValid name: ", name)
-  const lowerName = name.trim().toLowerCase();
-  return (
-    !DISALLOWED_INTERFACES.includes(lowerName) &&
-    !lowerName.includes('vlan') &&
-    !lowerName.includes('port-channel') &&
-    !lowerName.includes('cpu')
-  );
+  console.log(name)
+  if (name) {
+    const lowerName = name.trim().toLowerCase();
+    return (
+      !DISALLOWED_INTERFACES.includes(lowerName) &&
+      !lowerName.includes('vlan') &&
+      !lowerName.includes('port-channel') &&
+      !lowerName.includes('cpu')
+    );
+  } else return false;
 }
 
 export const rebootSuccess = actionCreator(`@${ENTITY}/REBOOT_REQUEST_SUCCESS`);
