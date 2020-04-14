@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { getToken, updateToken } from '../utils';
 
-import { DISALLOWED_INTERFACES } from '../nics';
-import get from 'lodash/get';
+import { isValid } from '../nics';
 
 var CancelToken = axios.CancelToken;
 const ENTITY = 'FIND_BY_MAC';
@@ -53,16 +52,30 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
           mac_entries.map((currentMac) => {
             // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
             // ninguna mac, si la interface/switch no existia en result, la agrego
-            if (((mac && currentMac.mac_address.toLowerCase().includes(mac.toLowerCase())) || !mac)
-            && ((result && result.every(({switch_name, interface_name}) => (switch_name !== sw.name && interface_name !== nic_name))) || !result))
-                  result.push({
-                    switch_id: sw.id,
-                    switch_name: sw.name,
-                    interface_name: nic_name
-                  });
+            if (
+              ((mac &&
+                currentMac.mac_address
+                  .toLowerCase()
+                  .includes(mac.toLowerCase())) ||
+                !mac) &&
+              ((result &&
+                result.every(
+                  ({ switch_name, interface_name }) =>
+                    switch_name !== sw.name && interface_name !== nic_name
+                )) ||
+                !result)
+            )
+              result.push({
+                switch_id: sw.id,
+                switch_name: sw.name,
+                interface_name: nic_name
+              });
+            return true;
           });
         }
+        return true;
       });
+      return false;
     });
     return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: result });
   }
@@ -72,16 +85,6 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
     payload: new Error('No `items` key found on response')
   });
 };
-
-function isValid(name) {
-  const lowerName = name.trim().toLowerCase();
-  return (
-    !DISALLOWED_INTERFACES.includes(lowerName) &&
-    !lowerName.includes('vlan') &&
-    !lowerName.includes('port-channel') &&
-    !lowerName.includes('cpu')
-  );
-}
 
 const cancelFindByMacAwxTasks = ({ switchesToFindIds }) => async (dispatch) => {
   dispatch({ type: `@${ENTITY}/CANCEL_TASKS_POST_REQUEST`, payload: {} });

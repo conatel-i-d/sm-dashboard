@@ -1,5 +1,3 @@
-import { actionCreator } from '../utils';
-
 const ENTITY = 'alerts';
 
 /**

@@ -1,7 +1,6 @@
 import { actionCreator, updateToken } from '../utils';
 import axios from 'axios'
 import { getToken } from '../utils'
-import getter from 'lodash/get'
 import Rest from '../utils/rest.js';
 import { schema } from 'normalizr';
 
@@ -45,12 +44,13 @@ function parseItemFactory(switchId) {
     };
   }
 
-function isValid(nic) {
-  const name = getter(nic, 'name', '').toLowerCase();
+export function isValid(name) {
+  const lowerName = name.trim().toLowerCase();
   return (
-    DISALLOWED_INTERFACES.indexOf(name) === -1 &&
-    name.search('vlan') < 0 &&
-    name.search('port-channel') < 0
+    !DISALLOWED_INTERFACES.includes(lowerName) &&
+    !lowerName.includes('vlan') &&
+    !lowerName.includes('port-channel') &&
+    !lowerName.includes('cpu')
   );
 }
 

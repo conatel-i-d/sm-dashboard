@@ -29,14 +29,14 @@ export const FindingStep = ({
         }
       }
     }
-  }, []);
+  }, [ onFind, findMac, searchId, searchType, switchesTree ]);
 
   return isLoading ? (
     <div className="pf-l-bullseye">
       <div className="pf-c-empty-state pf-m-lg">
         <h1 className="pf-c-title pf-m-lg">Buscando...</h1>
         <div className="pf-c-empty-state__body">
-          <img className="working-icon" src={workingIcon} />
+          <img alt="working-icon" className="working-icon" src={workingIcon} />
         </div>
         <div className="pf-c-empty-state__body">
           Puede tardar alunos minutos!!!
