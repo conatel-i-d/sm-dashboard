@@ -41,7 +41,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
   const startTime  = new Date()
   console.log(`Starting ${startTime}...`)
   if (items !== undefined) {
-    const result = [];
+    let result = [];
     items.map((sw) => {
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name])  => isValid(nic_name));
@@ -54,14 +54,14 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
             // ninguna mac, agrego a result result el switch y nombre de la nic correspondiente
             if (mac) {
               if (currentMac.mac_address.toLowerCase().includes(mac.toLowerCase()))
-                result.append({
+              result.push({
                   switch_id: sw.id,
                   switch_name: sw.name,
                   interface_name: nic_name
                 });
             }
             else {
-              result.append({
+              result.push({
                 switch_id: sw.id,
                 switch_name: sw.name,
                 interface_name: nic_name
