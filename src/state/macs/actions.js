@@ -57,7 +57,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
             if (((mac && currentMac.mac_address.toLowerCase().includes(mac.toLowerCase())) || !mac))
             {
               console.log("current mac first if", currentMac)
-              if ((result && result.every(({switch_name, interface_name}) => (switch_name !== sw.nme && interface_name !== nic_name))) || !result)
+              if ((result && result.every(({switch_name, interface_name}) => (switch_name !== sw.name && interface_name !== nic_name))) || !result)
                 {
                   console.log("current mac second if", currentMac)
                   result.push({
