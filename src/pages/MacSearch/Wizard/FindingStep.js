@@ -55,6 +55,6 @@ export const FindingStep = ({
       </div>
     </div>
   ) : (
-    <Table items={findResult} findMac={findMac} updateFilterInput={updateFilterInput} />
+    <Table items={findResult} updateFilterInput={updateFilterInput} />
   );
 };

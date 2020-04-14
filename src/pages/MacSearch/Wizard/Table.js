@@ -20,13 +20,13 @@ const COLUMNS = [
   { key: 'interface_name', title: 'NIC Name', transforms: [sortable] }
 ];
 
-export const Table = ({ items, updateFilterInput, findMac }) => {
+export const Table = ({ items, updateFilterInput }) => {
   return (
     <>
       <PatternflyTable
         aria-label="Switches Table"
         cells={COLUMNS}
-        rows={calculateRows(items, updateFilterInput, findMac)}
+        rows={calculateRows(items, updateFilterInput)}
         variant={TableVariant.compact}
       >
         <TableHeader />
@@ -36,7 +36,7 @@ export const Table = ({ items, updateFilterInput, findMac }) => {
   );
 };
 
-function calculateRows(items, updateFilterInput, findMac) {
+function calculateRows(items, updateFilterInput) {
   if (items === undefined) return [];
   return items.map((item) => ({
     cells: COLUMNS.map((column) => {
@@ -46,7 +46,7 @@ function calculateRows(items, updateFilterInput, findMac) {
             <Button
               component="a"
               onClick={() => {
-                handleGoToInterface(item, updateFilterInput, findMac);
+                handleGoToInterface(item, updateFilterInput);
               }}
               target="_blank"
               variant="primary"
@@ -60,8 +60,8 @@ function calculateRows(items, updateFilterInput, findMac) {
   }));
 }
 
-const handleGoToInterface = (item, updateFilterInput, findMac) => {
-  updateFilterInput(findMac);
+const handleGoToInterface = (item, updateFilterInput) => {
+  updateFilterInput(item.interface_name);
   history.push(`/switches/${item.switch_id}`);
 };
 
