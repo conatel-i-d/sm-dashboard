@@ -45,7 +45,7 @@ export const FindingStep = ({
           {searchType === 'switch'
             ? 'al switch'
             : 'a todos los switches del edificio'}{' '}
-          mediante ssh, ejecutar el comando <i>show mac address-table</i>y luego
+          mediante ssh, ejecutar el comando <i>show mac address-table</i> y luego
           parsear los resultados para poder buscar en la lista la mac. El
           resultado del proceso le presentara en esta pantalla si ha habido
           alguna coincidencia y le mostrara la interface donde se encontro la
