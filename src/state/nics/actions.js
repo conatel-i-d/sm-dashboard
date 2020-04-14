@@ -45,7 +45,6 @@ function parseItemFactory(switchId) {
   }
 
 export function isValid(name) {
-  console.log(name)
   if (name) {
     const lowerName = name.trim().toLowerCase();
     return (

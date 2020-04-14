@@ -69,7 +69,6 @@ export const FindWizard = (props) => {
   ];
 
   const goToFind = (newStep) => {
-    console.log("ejecuto newStep", newStep)
     if (newStep.name === 'Buscando') {
       if (searchType === 'switch') {
         onFind({ switchesToFindIds: [searchId], mac: findMac });
