@@ -10,15 +10,23 @@ import { isFunction } from '../../../modules/utils';
 export const FindWizard = (props) => {
   const { location, cancelFindByMac } = props;
 
-  const [findMac, setFindMac] = React.useState('');
+  const setFindMac = (value) => {
+    history.push(`${location.pathname}${location.search.replace()}`)
+    location.search.replace('?type=', '').replace(/&search=[a-zA-Z0-9_.-]*/,`&search=${value}`)
+  }  
 
   const searchId = React.useMemo(
     () => location.pathname.replace(`/macSearch/findbymac/`, ''),
-    [location]
+    [location.pathname]
   );
   const searchType = React.useMemo(
-    () => location.search.replace('?type=', ''),
-    [location]
+    () => location.search.replace('?type=', '').replace(/&search=[a-zA-Z0-9_.-]*/),
+    [location.search]
+  );
+
+  const findMac = React.useMemo(
+    () => location.search.replace(/.*&search=/),
+    [location.search]
   );
 
   const cancelFind = (text) => {
