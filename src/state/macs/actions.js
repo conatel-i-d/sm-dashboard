@@ -48,15 +48,12 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       
       filterNics.map(([nic_name, nic_value]) => {
         const { mac_entries } = nic_value;
-        
-        console.log("mac entries", mac_entries);
         if (mac_entries) {
           mac_entries.map(currentMac => {
             // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
             // ninguna mac, agrego a result result el switch y nombre de la nic correspondiente
             if (mac) {
-              console.log("mac in mac filter: ", mac);
-              if (currentMac.name.toLowerCase().includes(mac.toLowerCase()))
+              if (currentMac.mac_address.toLowerCase().includes(mac.toLowerCase()))
                 result.append({
                   switch_id: sw.id,
                   switch_name: sw.name,
