@@ -98,7 +98,7 @@ export const FindWizard = (props) => {
         onBack={() => {
           cancelFind('Cancel find by back to first step (insert mac form)');
         }}
-        onGoToStep={(newStep) => goToFind(newStep)}
+        onGoToStep={goToFind}
         description={
           searchType === 'switch'
             ? `Buscar la mac ${findMac.toUpperCase()} en el switch ${searchId.toUpperCase()}`
