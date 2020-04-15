@@ -69,7 +69,7 @@ export function selectAll(state) {
   const sortBy = get(state, `${ENTITY}.sortBy`, '');
   let items = ids
     .map((id) => collection[id])
-    .filter((item) => item !== undefined);
+    .filter((item) => item !== undefined && (item.is_visible || getUserRoles().includes('administrator')));
   if (filterInput !== '') {
     items = filterItems(items, filterInput, FUSE_OPTIONS);
   } else {

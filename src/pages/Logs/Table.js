@@ -13,18 +13,20 @@ import {
 import { selectAll } from '../../state/logs';
 
 const COLUMNS = [
-  { key: 'user_id', title: 'Usuario', transforms: [sortable] },
-  { key: 'date', title: 'Fecha', transforms: [sortable] },
-  { key: 'event_type', title: 'Tipo de Evento', transforms: [sortable] },
-  { key: 'event_result', title: 'Resultado', transforms: [sortable] },
-  { key: 'entity', title: 'Entidad', transforms: [sortable] },
-  { key: 'payload', title: 'Cuerpo', transforms: [sortable] }
+  { key: 'user_name', title: 'Usuario', transforms: [sortable] },
+  { key: 'http_url', title: 'URL', transforms: [sortable] },
+  { key: 'http_method', title: 'Metodo http', transforms: [sortable] },
+  { key: 'payload', title: 'Body', transforms: [sortable] },
+  { key: 'date_start', title: 'Inicio', transforms: [sortable] },
+  { key: 'date_end', title: 'End', transforms: [sortable] },
+  { key: 'response_status_code', title: 'Resp Status', transforms: [sortable] },
+  { key: 'message', title: 'Resp Message', transforms: [sortable] },
 ];
 
 function Table({ items, sortBy, onSort }) {
   return (
     <PatternflyTable
-      aria-label="Switches Table"
+      aria-label="Logs Table"
       sortBy={sortBy}
       onSort={(_, index, direction) =>
         onSort({ index, direction, key: get(COLUMNS, `${index}.key`) })
