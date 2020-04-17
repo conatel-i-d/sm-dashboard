@@ -44,7 +44,7 @@ function parseItemFactory(switchId) {
           item.protocol === undefined &&
           item.operationalStatus !== undefined
         ) {
-          item.protocol = item.operationalStatus;
+          item.protocol = item.operationalStatus.toLowerCase();
           delete item.operationalStatus;
         } else {
           item.protocol = item.protocol ? item.protocol.toLowerCase() : undefined;
