@@ -31,18 +31,18 @@ function parseItemFactory(switchId) {
     return Object.values(item).filter(item => isValid(item.name)).map(item => {
       item.id = `${switchId}__${item.name}`;
       
-      if (item.status === undefined && item.operationalStatus !== undefined) {
-        item.status = item.operationalStatus;
+      if (item.protocol === undefined && item.operationalStatus !== undefined) {
+        item.protocol = item.operationalStatus;
         delete item.operationalStatus
       }
 
-      if (item.protocol === undefined) {
+      if (item.adminisrtative_mode === undefined) {
         if ((item.description !== undefined && item.description.toLowerCase().includes('trunk')) ||
           (item.desiredVlanMode !== undefined && item.desiredVlanMode.toLowerCase().includes('trunk')) ||
           (item.operationalVlanMode !== undefined && item.operationalVlanMode.toLowerCase().includes('trunk')) ||
           item.trunkingEncapsulationNegotiation === true)
-            item.protocol = 'trunk';
-        else item.protocol = 'acess';
+            item.adminisrtative_mode = 'trunk';
+        else item.adminisrtative_mode = 'acess';
 }
       
       item =
