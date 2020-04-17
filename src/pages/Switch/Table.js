@@ -100,7 +100,7 @@ function validateResetNic(item) {
   administrativeMode === 'trunk' ||
   ((description !== undefined && description !== null)
   ? !FILTER_RESET_ENABLES.every(cond => !description.toLowerCase().includes(cond))
-  : protocol !== undefined && administrativeMode !== undefined
+  : (protocol !== undefined && administrativeMode !== undefined) || protocol === 'down'
   )
 }
 
