@@ -95,8 +95,8 @@ function TableRowWrapper({
 function validateResetNic(item) {
   const administrativeMode = get(item, 'adminisrtative_mode');
   const protocol = get(item, "protocol");
-  const { state, description } = item;
-  return state === 'down' || 
+  const { description } = item;
+  return protocol === 'down' || 
   administrativeMode === 'trunk' ||
   ((description !== undefined && description !== null)
   ? !FILTER_RESET_ENABLES.every(cond => !description.toLowerCase().includes(cond))
