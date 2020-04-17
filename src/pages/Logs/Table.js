@@ -39,7 +39,7 @@ function Table({ items, sortBy, onSort }) {
 
       <TableBody
         rowKey={({ rowData }) => {
-          return rowData.cells[1];
+          return rowData.cells[5];
         }}
       />
     </PatternflyTable>
