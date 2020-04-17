@@ -61,7 +61,6 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) =>
         isValid(nic_name)
       );
-      console.log('filterNics', filterNics);
       filterNics.map(([nic_name, nic_value]) => {
         const { mac_entries } = nic_value;
         if (mac_entries) {
