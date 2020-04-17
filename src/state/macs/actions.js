@@ -31,13 +31,24 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       dispatch(
         cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'cancel' })
       );
-      dispatch(addAlert({ type: "warning", title: `Se ha cancelado la busqueda por mac para ${mac}`}))
+      dispatch(
+        addAlert({
+          type: 'warning',
+          title: `Se ha cancelado la busqueda por mac para ${mac}`
+        })
+      );
       return dispatch({ type: `@${ENTITY}/POST_CANCELED`, payload: err });
     }
     dispatch(
       cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'error' })
     );
-    dispatch(addAlert({type: "danger", message: `Error al buscar por mac`, description: `Error: ${err.message}`}))
+    dispatch(
+      addAlert({
+        type: 'danger',
+        message: `Error al buscar por mac`,
+        description: `Error: ${err.message}`
+      })
+    );
     return dispatch({ type: `@${ENTITY}/POST_ERROR`, payload: err });
   }
 
@@ -48,27 +59,29 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) =>
         isValid(nic_name)
       );
-      console.log("filterNics", filterNics);
+      console.log('filterNics', filterNics);
       filterNics.map(([nic_name, nic_value]) => {
         const { mac_entries } = nic_value;
         if (mac_entries) {
           mac_entries.map((currentMac) => {
             // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
             // ninguna mac, si la interface/switch no existia en result, la agrego
-            if (currentMac.mac_address
-                  .toLowerCase()
-                  .includes(mac?.toLowerCase()) &&
-              (result.every(
-                  ({ switch_name, interface_name }) =>
-                    switch_name !== sw.name && interface_name !== nic_name
-                )) 
-            )
-            console.log(`en la nic ${nic_name} se inserta: `, currentMac);
-            result.push({
+            if (
+              currentMac.mac_address
+                .toLowerCase()
+                .includes(mac?.toLowerCase()) &&
+              result.every(
+                ({ switch_name, interface_name }) =>
+                  switch_name !== sw.name && interface_name !== nic_name
+              )
+            ) {
+              console.log(`en la nic ${nic_name} se inserta: `, currentMac);
+              result.push({
                 switch_id: sw.id,
                 switch_name: sw.name,
                 interface_name: nic_name
               });
+            }
             return true;
           });
         }
