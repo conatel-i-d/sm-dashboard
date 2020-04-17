@@ -40,7 +40,7 @@ function parseItemFactory(switchId) {
         if ((item.description !== undefined && item.description.toLowerCase().includes('trunk')) ||
           (item.desiredVlanMode !== undefined && item.desiredVlanMode.toLowerCase().includes('trunk')) ||
           (item.operationalVlanMode !== undefined && item.operationalVlanMode.toLowerCase().includes('trunk')) ||
-          trunkingEncapsulationNegotiation)
+          item.trunkingEncapsulationNegotiation === true)
             item.protocol = 'trunk';
         else item.protocol = 'acess';
 }
