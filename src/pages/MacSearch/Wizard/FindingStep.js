@@ -20,7 +20,7 @@ export const FindingStep = ({
           <img alt="working-icon" className="working-icon" src={workingIcon} />
         </div>
         <div className="pf-c-empty-state__body">
-          Puede tardar alunos minutos!!!
+          Puede tardar algunos minutos!!!
           <br />
           Para ejecutar esta tarea, el servidor debe conectarse{' '}
           {searchType === 'switch'
