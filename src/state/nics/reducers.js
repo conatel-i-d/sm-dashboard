@@ -31,6 +31,7 @@ const FUSE_OPTIONS = {
 export const reducer = createReducer(initialState, {
   [`@${ENTITY}/GET_REQUEST`]: updateActiveSwitchId,
   [`@${ENTITY}/GET_SUCCESS`]: updateSwitchNicsIds,
+  [`@${ENTITY}/GET_ERROR`]: updateSwitchNicsIds,
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
   [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
   [`@${ENTITY}/REBOOT_REQUEST_SUCCESS`]: state => state,
