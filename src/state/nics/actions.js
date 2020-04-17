@@ -46,6 +46,8 @@ function parseItemFactory(switchId) {
         ) {
           item.protocol = item.operationalStatus;
           delete item.operationalStatus;
+        } else {
+          item.protocol ? item.protocol.toLowerCase() : undefined
         }
 
         if (item.adminisrtative_mode === undefined) {
@@ -57,6 +59,8 @@ function parseItemFactory(switchId) {
           )
             item.adminisrtative_mode = 'trunk';
           else item.adminisrtative_mode = 'acess';
+        } else {
+          item.adminisrtative_mode = item.adminisrtative_mode.toLowerCase();
         }
 
         item =
