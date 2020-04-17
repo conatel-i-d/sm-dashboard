@@ -116,8 +116,9 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
         }
       }))
 
-      // Con las macs encontradas y las info de las interfaces, filtro las que sean ... y armo la respuesta.
-      const result = preResult.map(pr => {
+      // Con las macs encontradas y las info de las interfaces, filtro las que sean trunk o esten down y armo la respuesta.
+      const result = []; 
+      preResult.map(pr => {
         if (swWithPrimeInterfaces) {
           if (swWithPrimeInterfaces[pr.switch_name]) {
             if (swWithPrimeInterfaces[pr.switch_name][pr.interface_name]) {
@@ -131,6 +132,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
           }
         }
       }
+      result.push(pr)
       return pr;
       })
       return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: result });
