@@ -119,7 +119,13 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       // Con las macs encontradas y las info de las interfaces, filtro las que sean ... y armo la respuesta.
       const result = [];
       preResult.map(pr => {
-        console.log(swWithPrimeInterfaces[pr.switch_name][pr.interface_name]);
+        if (swWithPrimeInterfaces) {
+          if (swWithPrimeInterfaces[pr.switch_name]) {
+            if (swWithPrimeInterfaces[pr.switch_name][pr.interface_name]) {
+              console.log(swWithPrimeInterfaces[pr.switch_name][pr.interface_name]);
+          }
+        }
+      }
       })
       return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: preResult });
     }
