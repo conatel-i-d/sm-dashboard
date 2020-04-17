@@ -116,6 +116,7 @@ function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
   return filteredItems.map(item => ({
     cells: COLUMNS.map(column => {
       if (column.key === 'protocol') {
+        let label = get(item, column.key);
         const className =
           label.toLowerCase().includes('up') ? 'greenLabel' : 'normalLabel';
         return {
