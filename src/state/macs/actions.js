@@ -48,29 +48,23 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) =>
         isValid(nic_name)
       );
-
+      console.log("filterNics", filterNics);
       filterNics.map(([nic_name, nic_value]) => {
         const { mac_entries } = nic_value;
         if (mac_entries) {
           mac_entries.map((currentMac) => {
             // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
             // ninguna mac, si la interface/switch no existia en result, la agrego
-            if (
-              ((mac &&
-                currentMac.mac_address
+            if (currentMac.mac_address
                   .toLowerCase()
-                  .includes(mac.toLowerCase())) ||
-                !mac) &&
-              ((result &&
-                result.every(
+                  .includes(mac?.toLowerCase()) &&
+              (result.every(
                   ({ switch_name, interface_name }) =>
                     switch_name !== sw.name && interface_name !== nic_name
-                )) ||
-                !result)
+                )) 
             )
-            
-              console.log(`mac para la cual se va a agregar la interface ${nic_name}: `, currentMac);
-              result.push({
+            console.log(`en la nic ${nic_name} se inserta: `, currentMac);
+            result.push({
                 switch_id: sw.id,
                 switch_name: sw.name,
                 interface_name: nic_name

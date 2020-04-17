@@ -84,7 +84,7 @@ export function isValid(name) {
       !DISALLOWED_INTERFACES.includes(lowerName) &&
       !lowerName.includes('vlan') &&
       !lowerName.includes('port-channel') &&
-      !lowerName.includes('cpu')
+      !lowerName.includes('cpu') 
     );
   } else return false;
 }
