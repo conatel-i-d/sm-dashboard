@@ -111,7 +111,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
           else throw Error("Items is undefined in nics_prime");
         } catch (err) {
           console.log(
-            `No se pudieron obtener las interfaces desde el prime para el switch ${switchId}.`, `Error: ${err}`
+            `No se pudieron obtener las interfaces desde el prime para el switch ${sw.switch_name}.`, `Error: ${err}`
           );
         }
       }))
