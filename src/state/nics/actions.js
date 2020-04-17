@@ -47,7 +47,7 @@ function parseItemFactory(switchId) {
           item.protocol = item.operationalStatus;
           delete item.operationalStatus;
         } else {
-          item.protocol ? item.protocol.toLowerCase() : undefined
+          item.protocol = item.protocol ? item.protocol.toLowerCase() : undefined;
         }
 
         if (item.adminisrtative_mode === undefined) {
