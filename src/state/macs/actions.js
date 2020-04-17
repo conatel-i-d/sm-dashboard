@@ -102,7 +102,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
           await updateToken();
           var {
             data: { item }
-          } = await axios.get(`/api/${sw.switch_id}/nics/nics_prime`, {
+          } = await axios.get(`/api/${sw.switch_id}/nics_prime`, {
             headers: { Token: getToken(), 'Content-Type': 'application/json' }
           });
           if (item !== undefined) {
