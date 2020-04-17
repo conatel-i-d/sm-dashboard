@@ -37,11 +37,12 @@ function parseItemFactory(switchId) {
       }
 
       if (item.adminisrtative_mode === undefined) {
-        if ((item.description !== undefined && item.description.toLowerCase().includes('trunk')) ||
-          (item.desiredVlanMode !== undefined && item.desiredVlanMode.toLowerCase().includes('trunk')) ||
-          (item.operationalVlanMode !== undefined && item.operationalVlanMode.toLowerCase().includes('trunk')) ||
-          item.trunkingEncapsulationNegotiation === true)
-            item.adminisrtative_mode = 'trunk';
+        if (item.description !== undefined && item.description.toLowerCase().includes('trunk')) {
+          if (item.desiredVlanMode !== undefined && item.desiredVlanMode.toLowerCase().includes('trunk')) 
+            if (item.operationalVlanMode !== undefined && item.operationalVlanMode.toLowerCase().includes('trunk')) 
+              if (item.trunkingEncapsulationNegotiation === true)
+                item.adminisrtative_mode = 'trunk';
+        }
         else item.adminisrtative_mode = 'acess';
 }
       
