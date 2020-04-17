@@ -68,6 +68,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
                 )) ||
                 !result)
             )
+              console.log(`mac para la cual se va a agregar la interface ${nic_name}: `, currentMac);
               result.push({
                 switch_id: sw.id,
                 switch_name: sw.name,
