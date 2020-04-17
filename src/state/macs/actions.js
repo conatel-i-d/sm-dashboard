@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { getToken, updateToken } from '../utils';
 
+import _ from 'lodash'
+
 import { isValid } from '../nics';
 import { addAlert } from '../alerts';
 
@@ -53,7 +55,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
   }
 
   if (items !== undefined) {
-    let result = [];
+    let preResult = [];
     items.map((sw) => {
       // por cada sw, me filtro las interfces validas y las retorno como [[<nic_name>, <nic_value>]]
       const filterNics = Object.entries(sw.interfaces).filter(([nic_name]) =>
@@ -64,19 +66,19 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
         const { mac_entries } = nic_value;
         if (mac_entries) {
           mac_entries.map((currentMac) => {
-            // en caso de encontrar la `mac` ingresada o en el caso de que no se halla ingresado
-            // ninguna mac, si la interface/switch no existia en result, la agrego
+            // agrego la interface a preResult => cuando la `mac` ingresada se encuetna en la mac actual
+            // o en el caso de que no se halla ingresado, nunca agrego una interface dos veces
+
             if (
               currentMac.mac_address
                 .toLowerCase()
                 .includes(mac?.toLowerCase()) &&
-              result.every(
+              preResult.every(
                 ({ switch_name, interface_name }) =>
                   switch_name !== sw.name && interface_name !== nic_name
               )
             ) {
-              console.log(`en la nic ${nic_name} se inserta: `, currentMac);
-              result.push({
+              preResult.push({
                 switch_id: sw.id,
                 switch_name: sw.name,
                 interface_name: nic_name
@@ -89,14 +91,43 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       });
       return false;
     });
-    return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: result });
-  }
 
-  dispatch({
-    type: `@${ENTITY}/POST_ERROR`,
-    payload: new Error('No `items` key found on response')
-  });
-};
+    const itemsWithUniqueSw = _.uniqBy(preResult, "switch_id");
+    const swWithPrimeInterfaces = {};
+
+    // De los swtitches en los que se encontro la mac, me traigo la info de las interfaces desde el prime
+    await Promise.all(
+      itemsWithUniqueSw.map(async sw => {
+        try {
+          await updateToken();
+          var {
+            data: { item }
+          } = await axios.get(`/${sw.switch_id}/nics/nics_prime`, {
+            headers: { Token: getToken(), 'Content-Type': 'application/json' }
+          });
+          if (item !== undefined) {
+            swWithPrimeInterfaces[sw.switch_name] = item;
+          }
+          else throw Error("Items is undefined in nics_prime");
+        } catch (err) {
+          console.log(
+            `No se pudieron obtener las interfaces desde el prime para el switch ${switchId}.`, `Error: ${err}`
+          );
+        }
+      }))
+
+      // Con las macs encontradas y las info de las interfaces, filtro las que sean ... y armo la respuesta.
+      const result = [];
+      preResult.map(pr => {
+        console.log(swWithPrimeInterfaces[pr.switch_name][pr.interface_name]);
+      })
+      return dispatch({ type: `@${ENTITY}/POST_SUCCESS`, payload: preResult });
+    }
+    dispatch({
+      type: `@${ENTITY}/POST_ERROR`,
+      payload: new Error('No `items` key found on response')
+    });
+  }
 
 const cancelFindByMacAwxTasks = ({ switchesToFindIds }) => async (dispatch) => {
   dispatch({ type: `@${ENTITY}/CANCEL_TASKS_POST_REQUEST`, payload: {} });
