@@ -114,11 +114,14 @@ function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
   return filteredItems.map(item => ({
     cells: COLUMNS.map(column => {
       if (column.key === 'protocol') {
-        const label = get(item, column.key);
+        let label = get(item, column.key);
+        if (label === undefined) {
+          label = get(item, "operational_mode") || 'unknown';
+        }
         const className =
-          label === 'up (connected) ' ? 'greenLabel' : 'normalLabel';
+          label.toLowerCase().includes('up') ? 'greenLabel' : 'normalLabel';
         return {
-          title: <Label className={className}>{label || 'unknown'}</Label>
+          title: <Label className={className}>{label}</Label>
         };
       } else if (column.key === 'adminisrtative_mode') {
         const label = get(item, column.key);
