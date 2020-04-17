@@ -23,7 +23,7 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       {
         headers: { Token: getToken(), 'Content-Type': 'application/json' },
         cancelToken: new CancelToken((c) => {
-          cancelFindByMac = c;
+          // cancelFindByMac = c;
         })
       }
     );
