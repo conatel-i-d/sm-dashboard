@@ -22,29 +22,11 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       { switchesToFindIds },
       {
         headers: { Token: getToken(), 'Content-Type': 'application/json' },
-        timeout: 1000*60*3,
-        cancelToken: new CancelToken((c) => {
-          // cancelFindByMac = c;
-        })
+        timeout: 1000*60*3
       }
     );
   } catch (err) {
     console.error(err);
-    if (axios.isCancel(err)) {
-      dispatch(
-        cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'cancel' })
-      );
-      dispatch(
-        addAlert({
-          type: 'warning',
-          title: `Se ha cancelado la busqueda por mac para ${mac}`
-        })
-      );
-      return dispatch({ type: `@${ENTITY}/POST_CANCELED`, payload: err });
-    }
-    dispatch(
-      cancelFindByMacAwxTasks({ switchesToFindIds, errorType: 'error' })
-    );
     dispatch(
       addAlert({
         type: 'danger',
@@ -142,32 +124,3 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
       payload: new Error('No `items` key found on response')
     });
   }
-
-const cancelFindByMacAwxTasks = ({ switchesToFindIds }) => async (dispatch) => {
-  dispatch({ type: `@${ENTITY}/CANCEL_TASKS_POST_REQUEST`, payload: {} });
-  try {
-    await updateToken();
-    var resp = await axios.post(
-      `/api/macs/cancel_find_tasks`,
-      { switchesToFindIds },
-      {
-        headers: { Token: getToken(), 'Content-Type': 'application/json' }
-      }
-    );
-  } catch (error) {
-    return dispatch({
-      type: `@${ENTITY}/CANCEL_TASKS_POST_ERROR`,
-      payload: error
-    });
-  }
-  if (resp.status === 201)
-    return dispatch({
-      type: `@${ENTITY}/CANCEL_TASKS_POST_SUCCESS`,
-      payload: {}
-    });
-
-  dispatch({
-    type: `@${ENTITY}/CANCEL_TASKS_POST_ERROR`,
-    payload: new Error("Respose status code isn't equal to 201")
-  });
-};
