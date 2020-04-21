@@ -6,7 +6,6 @@ import _ from 'lodash'
 import { isValid } from '../nics';
 import { addAlert } from '../alerts';
 
-var CancelToken = axios.CancelToken;
 const ENTITY = 'FIND_BY_MAC';
 
 export var cancelFindByMac;
