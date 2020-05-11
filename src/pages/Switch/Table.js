@@ -19,6 +19,8 @@ import { selectSwitchNics, reboot } from '../../state/nics';
 
 import NicsModal from './NicsModal';
 
+import { getUserRoles } from '../../state/utils'
+
 const FILTER_RESET_ENABLES = ['trunk']
 const FILTER_ITEMS_BY_NAME = ['Te']
 
