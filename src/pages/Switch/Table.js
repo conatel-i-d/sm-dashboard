@@ -98,6 +98,7 @@ function validateResetNic(item) {
   const { description } = item;
   return protocol === 'down' || 
   administrativeMode === 'trunk' ||
+  (!getUserRoles().includes('administrator') && !getUserRoles().includes('operator')) ||
   ((description !== undefined && description !== null)
   ? !FILTER_RESET_ENABLES.every(cond => !description.toLowerCase().includes(cond))
   : (protocol !== undefined && administrativeMode !== undefined) || protocol === 'down'
