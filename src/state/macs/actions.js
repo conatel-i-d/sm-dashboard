@@ -51,9 +51,9 @@ export const findByMac = ({ switchesToFindIds, mac }) => async (dispatch) => {
             // o en el caso de que no se halla ingresado, nunca agrego una interface dos veces
 
             if (
-              currentMac.mac_address
+              (mac ? currentMac.mac_address
                 .toLowerCase()
-                .includes(mac?.toLowerCase()) &&
+                .includes((mac).toLowerCase()) : false)  &&
               preResult.every(
                 ({ switch_name, interface_name }) =>
                   switch_name !== sw.name && interface_name !== nic_name
