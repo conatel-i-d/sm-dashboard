@@ -2,12 +2,12 @@ import React from 'react';
 import { Wizard } from '@patternfly/react-core';
 
 import { history } from '../../../modules/history.js';
-import { FindingStep } from './FindingStep.js';
-import { InsertMacStep } from './InsertMacStep';
+import FindingStep from './FindingStep.js';
+import InsertMacStep from './InsertMacStep';
 
 import { isFunction } from '../../../modules/utils';
 
-export const FindWizard = (props) => {
+const FindWizard = (props) => {
   const { location, cancelFindByMac, onFind, switchesTree } = props;
 
   const setFindMac = (value) => {
@@ -109,3 +109,4 @@ export const FindWizard = (props) => {
     </>
   );
 };
+export default FindWizard;

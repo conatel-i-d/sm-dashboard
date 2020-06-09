@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormGroup, Form as PatternflyForm, TextInput } from '@patternfly/react-core';
 
-function Form({ model, onChange }) {
+const Form = ({ model, onChange }) => {
   return (
     <PatternflyForm>
       <FormGroup

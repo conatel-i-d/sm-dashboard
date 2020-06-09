@@ -3,9 +3,9 @@ import React from 'react';
 
 import workingIcon from './working-icon.gif';
 
-import { Table } from './Table'
+import Table from './Table'
 
-export const FindingStep = ({
+const FindingStep = ({
   searchType,
   isLoading,
   findResult,
@@ -38,3 +38,5 @@ export const FindingStep = ({
     <Table items={findResult} updateFilterInput={updateFilterInput} />
   );
 };
+
+export default FindingStep;

@@ -6,7 +6,7 @@ import React from 'react';
 import { history } from '../../../../modules/history';
 
 import { getUserRoles } from '../../../../state/utils';
-export const LeafCard = ({ value, handleCheckVisible }) => {
+const LeafCard = ({ value, handleCheckVisible }) => {
   const { id, name, model, ip, is_visible } = value;
   return (
     <>
@@ -63,3 +63,5 @@ export const LeafCard = ({ value, handleCheckVisible }) => {
 const handleFindBySwitch = (id) => {
   history.push(`/macSearch/findbymac/${id}?type=switch&search=`);
 };
+
+export default LeafCard;

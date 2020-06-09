@@ -4,7 +4,7 @@ import '../tree.css';
 import { history } from '../../../../modules/history';
 import React from 'react';
 
-export const BranchCard = ({ value }) => {
+const BranchCard = ({ value }) => {
   const { name, isOpen, branches } = value;
 
   const countChildSwitches = () => {
@@ -45,3 +45,5 @@ export const BranchCard = ({ value }) => {
 const handleFindByBuilding = name => {
   history.push(`/macSearch/findbymac/${name}?type=building&search=`)
 }
+
+export default BranchCard;

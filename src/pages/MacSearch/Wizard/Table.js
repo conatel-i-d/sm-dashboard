@@ -20,7 +20,7 @@ const COLUMNS = [
   { key: 'interface_name', title: 'NIC Name', transforms: [sortable] }
 ];
 
-export const Table = ({ items, updateFilterInput }) => {
+const Table = ({ items, updateFilterInput }) => {
   return (
     <>
       <PatternflyTable

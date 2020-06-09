@@ -2,9 +2,9 @@ import React from 'react';
 import { SimpleListGroup } from '@patternfly/react-core';
 
 
-import { BranchCard } from './BranchCard';
-import { Leaf } from '../Leaf'
-export const Branch = ({ name, branches = [], handleCheckVisible }) => {
+import  BranchCard from './BranchCard';
+import Leaf from '../Leaf'
+const Branch = ({ name, branches = [], handleCheckVisible }) => {
   var [open, setOpen] = React.useState(false);
 
   var handleOnClick = React.useCallback(
@@ -28,3 +28,4 @@ export const Branch = ({ name, branches = [], handleCheckVisible }) => {
     </SimpleListGroup>
   );
 };
+export default Branch;

@@ -13,7 +13,7 @@ import { FilterIcon } from '@patternfly/react-icons';
 
 import { updateFilterInput } from '../../state/switches';
 
-function Toolbar({ updateFilterInput }) {
+const Toolbar = ({ updateFilterInput }) => {
   return (
     <PatternflyToolbar className="Switches__Toolbar">
       <ToolbarItem>

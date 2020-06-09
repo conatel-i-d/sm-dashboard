@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { Tree } from './TreeView'
+import Tree from './TreeView'
 import Toolbar from './Toolbar.js';
 
 import {
@@ -27,7 +27,7 @@ import { findByMac, cancelFindByMac } from '../../state/macs'
 
 const ENTITY = 'switches';
 
-export function MacSearchPage({
+const MacSearchPage = ({
   location,
   loading,
   getSwitchesAsTree,
@@ -37,7 +37,7 @@ export function MacSearchPage({
   findByMac,
   updateFilterInput,
   handleCheckVisible
-}) {
+}) => {
   
   React.useEffect(() => { get() }, [get]);
   
