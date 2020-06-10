@@ -18,7 +18,6 @@ const LeafCard = ({ value, handleCheckVisible }) => {
                 type="checkbox"
                 checked={is_visible}
                 onChange={(e) => {
-                  console.log(value);
                   handleCheckVisible({ ...value, is_visible: !is_visible})}}
               />
             </div>

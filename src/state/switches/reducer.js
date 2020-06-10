@@ -110,9 +110,6 @@ export function selectAllAsTree(state) {
           });
       }
     }
-    else {
-      console.log(item)
-    }
       return true;
   })
   const result = Object.values(buildings); 

@@ -49,7 +49,6 @@ const SwitchPage = ({
       getInterfaces(switchId, foundInterface);
     }
   }, [getSwitch, getInterfaces, switchId, foundInterface]);
-
   return (
     <>
       <PageSection

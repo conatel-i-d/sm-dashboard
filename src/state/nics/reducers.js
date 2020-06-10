@@ -62,9 +62,9 @@ export function updateSwitchNicsIds(state, payload) {
 
 export function getLoading(state) {
   var loading = get(state, `${ENTITY}.loading`, false);
-  var items = getNics(state);
+  // var items = getNics(state);
   return {
-    loading: loading && items.length === 0
+    loading: loading // && items.length === 0
   };
 }
 

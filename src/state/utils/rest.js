@@ -31,7 +31,6 @@ export default function Rest(config) {
     }
 
     if (item !== undefined) {
-      console.log(item);
       return dispatch({ type: `@${entity}/POST_SUCCESS`, payload: normalize(parseItem(item), [schema]) });
     }
     
@@ -63,7 +62,6 @@ export default function Rest(config) {
     var { parseItem, requestPayload } = {...config, ...options};
     dispatch({ type: `@${entity}/PUT_REQUEST`, payload: requestPayload });
     
-    console.log(payload)
     var { id } = payload;
     
     if (id === undefined) 

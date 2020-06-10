@@ -5,9 +5,6 @@ import { history } from '../../modules/history.js';
 function ResetModal({ onReboot, location }) {
   const switchId = React.useMemo(() => location.pathname.replace(`/switches/`, '').replace('/reboot', ''), [location]);
   const name = React.useMemo(() => location.search.replace('?name=', ''), [location]);
-  
-  console.log(`switchId: ${switchId},  switchName: ${name}`);
-
   return (
     <PatternflyModal
       isSmall

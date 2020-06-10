@@ -23,7 +23,7 @@ const FindWizard = (props) => {
     [location.pathname]
   );
   const searchType = React.useMemo(
-    () => location.search.replace('?type=', '').replace(/&search=.*/),
+    () => location.search.replace('?type=', '').replace(/&search=.*/, ''),
     [location.search]
   );
 
@@ -90,6 +90,8 @@ const FindWizard = (props) => {
       }
     }
   };
+
+  console.log("before render find wizard, searchType is: ", searchType);
 
   return (
     <>

@@ -1,7 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PageSection, PageSectionVariants } from '@patternfly/react-core';
-
+import {
+  PageSection,
+  PageSectionVariants,
+  Bullseye
+} from '@patternfly/react-core';
+import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 import './index.css';
 import Modal from './Modal';
 import Table from './Table';
@@ -14,12 +18,12 @@ import {
   updateSortBy,
   getModel
 } from '../../state/switches';
-import get from 'lodash/get'
-
+import get from 'lodash/get';
 
 const ENTITY = 'switches';
 
 export function Switches({
+  loading,
   model,
   sortBy,
   get,
@@ -28,7 +32,9 @@ export function Switches({
   destroy,
   updateSortBy
 }) {
-  React.useEffect(() => { get() }, [get]);
+  React.useEffect(() => {
+    get();
+  }, [get]);
 
   return (
     <>
@@ -48,19 +54,25 @@ export function Switches({
         variant={PageSectionVariants.light}
         className="Switches__Page"
       >
-        <Table sortBy={sortBy} onSort={updateSortBy} />
+        {loading ? (
+          <Bullseye>
+            <Spinner />
+          </Bullseye>
+        ) : (
+          <Table sortBy={sortBy} onSort={updateSortBy} />
+        )}
       </PageSection>
     </>
   );
 }
 
-export const getState = state => ({
+export const getState = (state) => ({
   loading: get(state, `${ENTITY}.loading`),
   sortBy: get(state, `${ENTITY}.sortBy`),
   model: getModel(state)
 });
 
-const getDispatchers = dispatch => ({
+const getDispatchers = (dispatch) => ({
   get: (state) => dispatch(getSwitches(state)),
   create: (state) => dispatch(create(state)),
   edit: (state) => dispatch(edit(state)),

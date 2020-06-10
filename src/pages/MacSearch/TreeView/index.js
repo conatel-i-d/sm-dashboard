@@ -8,9 +8,6 @@ import Branch from './Branch';
 
 
 const Tree = ({ branches, handleCheckVisible }) => {
-  // const handleCheckVisible = (id) => {
-  //   console.log(getUserRoles())
-  // };
   return (
     <SimpleList aria-label="macSearch">
       {branches.length > 0

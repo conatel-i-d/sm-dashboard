@@ -9,7 +9,6 @@ export const initialState = {
 
 const addAlert = (state, payload) => {
   const visibles = get(state, `${ENTITY}.visibles`, []);
-  console.log(visibles);
   return {
     ...state,
     visibles: [...visibles, payload]
@@ -17,7 +16,6 @@ const addAlert = (state, payload) => {
 };
 
 const hideAlert = (state, payload) => {
-  console.log(payload)
   const visiblesSinFilter = get(state, `visibles`);
   const visibles = visiblesSinFilter.filter((alert) => alert.title !== payload);
   return {
