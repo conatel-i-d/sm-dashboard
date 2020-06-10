@@ -29,7 +29,7 @@ import './index.css';
 
 const ENTITY = 'switches';
 
-export function SwitchPage({
+const SwitchPage = ({
   loading,
   location,
   reboot,
@@ -37,16 +37,18 @@ export function SwitchPage({
   getInterfaces,
   sortBy,
   updateSortBy
-}) {
+}) => {
   
   const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, '').replace('/reboot/nics', ''), [location]);
+
+  const foundInterface = React.useMemo(() => location.search.replace('?filter_by_find=', ''), [location])
 
   React.useEffect(() => {
     if(!switchId.includes('reboot')) {
       getSwitch(switchId);
-      getInterfaces(switchId);
+      getInterfaces(switchId, foundInterface);
     }
-  }, [getSwitch, getInterfaces, switchId]);
+  }, [getSwitch, getInterfaces, switchId, foundInterface]);
 
   return (
     <>

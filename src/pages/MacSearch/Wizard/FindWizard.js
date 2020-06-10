@@ -68,6 +68,9 @@ const FindWizard = (props) => {
     } // TODO: Pending
   ];
 
+  // Si entre a la busqueda por un sw voy directo a la busqueda en ese sw,
+  // si entre por edificio (grupo de sw o branch en tree) en ese caso hago una lista
+  // con todos los ids de los switches de ese grupo y voy a buscar en todos
   const goToFind = (newStep) => {
     if (newStep.name === 'Buscando') {
       if (searchType === 'switch') {

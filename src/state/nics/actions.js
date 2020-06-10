@@ -27,16 +27,17 @@ var rest = Rest({
   schema: nicsSchema
 });
 
-export const get = (switchId) =>
+export const get = (switchId, foundInterface) =>
   rest.read(`${switchId}/nics`, {
     requestPayload: { switchId },
-    parseItem: parseItemFactory(switchId)
+    parseItem: parseItemFactory(switchId, foundInterface)
   });
 
-function parseItemFactory(switchId) {
-  return function (item) {
-    return Object.values(item)
-      .filter((item) => isValid(item.name))
+function parseItemFactory(switchId, foundInterface) {
+  return function (state) {
+    return Object.values(state)
+    // filtro nombre valido y si foundInterfce esta definido tambien por foundInterface
+      .filter((item) => isValid(item.name) && item.name === (foundInterface || item.name))
       .map((item) => {
         item.id = `${switchId}__${item.name}`;
 

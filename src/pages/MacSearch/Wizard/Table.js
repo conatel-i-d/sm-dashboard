@@ -61,8 +61,8 @@ function calculateRows(items, updateFilterInput) {
 }
 
 const handleGoToInterface = (item, updateFilterInput) => {
-  updateFilterInput(item.interface_name);
-  history.push(`/switches/${item.switch_id}`);
+  // updateFilterInput(item.interface_name);
+  history.push(`/switches/${item.switch_id}?filter_by_find=${item.interface_name}`);
 };
 
 export default Table;

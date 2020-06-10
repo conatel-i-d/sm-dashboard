@@ -2,9 +2,10 @@ import { Nav, NavItem, NavList, NavVariants } from '@patternfly/react-core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { selectPathname } from '../../../../state/ui';
-
-
+import { updateFilterInput as swUpdateFilterInput } from '../../../../state/switches';
+import { updateFilterInput as logsUpdateFilterInput } from '../../../../state/logs'
 export function PageNav({pathname}) {
   return (
     <Nav aria-label="Nav" theme="dark">
@@ -13,13 +14,13 @@ export function PageNav({pathname}) {
           <Link to="/">Home</Link>
         </NavItem>
         <NavItem itemId={1} isActive={/^\/switches/.test(pathname)}>
-          <Link to="/switches">Switches</Link>
+          <Link to="/switches" onClick={() => swUpdateFilterInput("")}>Switches</Link>
         </NavItem>
         <NavItem itemId={1} isActive={/^\/logs/.test(pathname)}>
-          <Link to="/logs">Logs</Link>
+          <Link to="/logs" onClick={() => logsUpdateFilterInput("")}>Logs</Link>
         </NavItem>
         <NavItem itemId={1} isActive={/^\/MacSearch/.test(pathname)}>
-          <Link to="/macSearch">Search By Mac</Link>
+          <Link to="/macSearch" onClick={() => swUpdateFilterInput("")}>Search By Mac</Link>
         </NavItem>
       </NavList>
     </Nav>
