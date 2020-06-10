@@ -41,13 +41,13 @@ function parseItemFactory(switchId) {
         item.id = `${switchId}__${item.name}`;
 
         if (
-          item.protocol === undefined &&
+          item.operational_mode === undefined &&
           item.operationalStatus !== undefined
         ) {
           item.protocol = item.operationalStatus.toLowerCase();
           delete item.operationalStatus;
         } else {
-          item.protocol = item.protocol ? item.protocol.toLowerCase() : undefined;
+          item.protocol = item.operational_mode ? item.operational_mode.toLowerCase() : undefined;
         }
 
         if (item.adminisrtative_mode === undefined) {
