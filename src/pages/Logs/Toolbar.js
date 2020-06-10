@@ -14,6 +14,10 @@ import { FilterIcon } from '@patternfly/react-icons';
 import { updateFilterInput } from '../../state/logs';
 
 function Toolbar({ updateFilterInput }) {
+  React.useEffect(() => {
+    updateFilterInput("");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <PatternflyToolbar className="Logs__Toolbar">
       <ToolbarItem>

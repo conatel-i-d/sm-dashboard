@@ -41,6 +41,10 @@ const MacSearchPage = ({
   
   React.useEffect(() => { get() }, [get]);
   
+  React.useEffect(() => {
+    updateFilterInput("");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
           <PageSection

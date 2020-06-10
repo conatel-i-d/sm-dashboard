@@ -14,6 +14,10 @@ import { PlusCircleIcon, SearchIcon } from '@patternfly/react-icons';
 import { updateFilterInput } from '../../state/switches';
 
 function Toolbar({ updateFilterInput }) {
+  React.useEffect(() => {
+    updateFilterInput("");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <PatternflyToolbar className="Switches__Toolbar">
       <ToolbarItem>

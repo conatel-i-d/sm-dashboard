@@ -17,6 +17,12 @@ import { updateFilterInput, selectSwitchNicsCount } from '../../state/nics';
 import get from 'lodash/get';
 
 function Toolbar({ updateFilterInput, filterInput, count }) {
+
+  React.useEffect(() => {
+    updateFilterInput("");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
   return (
     <PatternflyToolbar className="Switch__Toolbar">
       <ToolbarItem>

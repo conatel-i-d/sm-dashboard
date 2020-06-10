@@ -10,6 +10,7 @@ const LogsPage = ({ get, sortBy, updateSortBy }) => {
   React.useEffect(() => {
     get();
   }, [get]);
+
   return (
     <>
     <PageSection>
