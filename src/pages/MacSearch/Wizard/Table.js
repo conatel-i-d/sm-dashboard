@@ -13,6 +13,7 @@ import {
 import { Button } from '@patternfly/react-core';
 
 import { history } from '../../../modules/history';
+import { find } from 'lodash';
 
 const COLUMNS = [
   { key: 'switch_id', title: 'SW ID', transforms: [sortable] },
@@ -20,13 +21,13 @@ const COLUMNS = [
   { key: 'interface_name', title: 'NIC Name', transforms: [sortable] }
 ];
 
-const Table = ({ items, updateFilterInput }) => {
+const Table = ({ items, findMac }) => {
   return (
     <>
       <PatternflyTable
         aria-label="Switches Table"
         cells={COLUMNS}
-        rows={calculateRows(items, updateFilterInput)}
+        rows={calculateRows(items, findMac)}
         variant={TableVariant.compact}
       >
         <TableHeader />
@@ -36,7 +37,7 @@ const Table = ({ items, updateFilterInput }) => {
   );
 };
 
-function calculateRows(items, updateFilterInput) {
+function calculateRows(items, findMac) {
   if (items === undefined) return [];
   return items.map((item) => ({
     cells: COLUMNS.map((column) => {
@@ -46,7 +47,7 @@ function calculateRows(items, updateFilterInput) {
             <Button
               component="a"
               onClick={() => {
-                handleGoToInterface(item, updateFilterInput);
+                handleGoToInterface(item, findMac);
               }}
               target="_blank"
               variant="primary"
@@ -60,9 +61,8 @@ function calculateRows(items, updateFilterInput) {
   }));
 }
 
-const handleGoToInterface = (item, updateFilterInput) => {
-  // updateFilterInput(item.interface_name);
-  history.push(`/switches/${item.switch_id}?filter_by_find=${item.interface_name}`);
+const handleGoToInterface = (item, findMac) => {
+  history.push(`/switches/${item.switch_id}?found_mac=${findMac}`);
 };
 
 export default Table;

@@ -1,5 +1,6 @@
 import Rest from '../utils/rest.js';
 import { schema } from 'normalizr';
+import { actionCreator } from '../utils';
 
 const ENTITY = 'switches';
 const switchesSchema = new schema.Entity(ENTITY);
@@ -11,9 +12,7 @@ export const updateFilterInput = (filterInput) => (dispatch) => {
   });
 };
 
-export const updateSortBy = {
-  type: `@${ENTITY}/UPDATE_SORT_BY`
-};
+export const updateSortBy = actionCreator(`@${ENTITY}/UPDATE_SORT_BY`);
 
 var rest = Rest({
   entity: 'switches',

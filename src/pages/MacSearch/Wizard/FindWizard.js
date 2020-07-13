@@ -1,6 +1,6 @@
 import React from 'react';
 import { Wizard } from '@patternfly/react-core';
-
+import _ from 'lodash';
 import { history } from '../../../modules/history.js';
 import FindingStep from './FindingStep.js';
 import InsertMacStep from './InsertMacStep';
@@ -9,15 +9,8 @@ import { isFunction } from '../../../modules/utils';
 
 const FindWizard = (props) => {
   const { location, cancelFindByMac, onFind, switchesTree } = props;
+  const [findMac, setFindMac] = React.useState('');
 
-  const setFindMac = (value) => {
-    history.push(
-      `${location.pathname}${location.search.replace(
-        /search=[a-zA-Z0-9_.-]*/,
-        `search=${value}`
-      )}`
-    );
-  };
   const searchId = React.useMemo(
     () => location.pathname.replace(`/macSearch/findbymac/`, ''),
     [location.pathname]
@@ -26,10 +19,6 @@ const FindWizard = (props) => {
     () => location.search.replace('?type=', '').replace(/&search=.*/, ''),
     [location.search]
   );
-
-  const findMac = React.useMemo(() => {
-    return location.search.replace(/.*&search=/, '');
-  }, [location.search]);
 
   const cancelFind = (text) => {
     if (isFunction(cancelFindByMac)) {
@@ -65,13 +54,15 @@ const FindWizard = (props) => {
         />
       ),
       nextButtonText: 'Finalizar'
-    } // TODO: Pending
+    }
   ];
 
   // Si entre a la busqueda por un sw voy directo a la busqueda en ese sw,
   // si entre por edificio (grupo de sw o branch en tree) en ese caso hago una lista
   // con todos los ids de los switches de ese grupo y voy a buscar en todos
   const goToFind = (newStep) => {
+    const formatedMac = _.chunk(findMac.replace(/^,|:|-/g, ''), 4).map((s) => s.join('')).join('.');
+    history.push(`${location.pathname}?search=${findMac}`);
     if (newStep.name === 'Buscando') {
       if (searchType === 'switch') {
         onFind({ switchesToFindIds: [searchId], mac: findMac });
@@ -83,7 +74,7 @@ const FindWizard = (props) => {
               (y) => y.value.id
             );
             if (switchesToFindIds.length > 0) {
-              onFind({ switchesToFindIds, mac: findMac });
+              onFind({ switchesToFindIds, mac: formatedMac });
             }
           }
         }
@@ -91,7 +82,7 @@ const FindWizard = (props) => {
     }
   };
 
-  console.log("before render find wizard, searchType is: ", searchType);
+  console.log('before render find wizard, searchType is: ', searchType);
 
   return (
     <>

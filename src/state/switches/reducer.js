@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import _ from 'lodash';
 
 import {
   createReducer,
@@ -42,8 +42,8 @@ function removeId(state, payload) {
 export default reducer;
 
 export function selectOne(state, props) {
-  const id = get(props, 'match.params.id', undefined);
-  const collection = get(state, `entities.${ENTITY}`, {});
+  const id = _.get(props, 'match.params.id', undefined);
+  const collection = _.get(state, `entities.${ENTITY}`, {});
 
   if (id === undefined) return {};
 
@@ -63,10 +63,10 @@ const FUSE_OPTIONS = {
 };
 
 export function selectAll(state) {
-  const ids = get(state, `${ENTITY}.ids`, []);
-  const collection = get(state, `entities.${ENTITY}`, {});
-  const filterInput = get(state, `${ENTITY}.filterInput`, '');
-  const sortBy = get(state, `${ENTITY}.sortBy`, '');
+  const ids = _.get(state, `${ENTITY}.ids`, []);
+  const collection = _.get(state, `entities.${ENTITY}`, {});
+  const filterInput = _.get(state, `${ENTITY}.filterInput`, '');
+  const sortBy = _.get(state, `${ENTITY}.sortBy`, '');
   let items = ids
     .map((id) => collection[id])
     .filter((item) => item !== undefined && (item.is_visible || getUserRoles().includes('administrator')));
@@ -80,10 +80,10 @@ export function selectAll(state) {
 
 
 export function selectAllAsTree(state) {
-  const ids = get(state, `${ENTITY}.ids`, []);
-  const collection = get(state, `entities.${ENTITY}`, {});
-  const filterInput = get(state, `${ENTITY}.filterInput`, '');
-  const sortBy = get(state, `${ENTITY}.sortBy`, '');
+  const ids = _.get(state, `${ENTITY}.ids`, []);
+  const collection = _.get(state, `entities.${ENTITY}`, {});
+  const filterInput = _.get(state, `${ENTITY}.filterInput`, '');
+  const sortBy = _.get(state, `${ENTITY}.sortBy`, '');
   let items = ids.map(id => ({ id, ...collection[id]})).filter(item => item !== undefined);
   if (filterInput !== '') {
     items = filterItems(items, filterInput, FUSE_OPTIONS);
@@ -112,7 +112,7 @@ export function selectAllAsTree(state) {
     }
       return true;
   })
-  const result = Object.values(buildings); 
+  const result = _.orderBy(Object.values(buildings), ["name"], ["asc"]);
   return result.length > 0 ? result : {
     type: 'branch',
     name: 'CTMSG',
@@ -138,11 +138,11 @@ const defaultState = {
 const EXISTING_SWITCH_REG_EXP = new RegExp(`/${ENTITY}[/|a-zA-Z]+([0-9]+)`);
 
 export function getModel(state) {
-  const pathname = get(state, 'ui.history.pathname');
+  const pathname = _.get(state, 'ui.history.pathname');
   const existingSwitch = pathname.match(EXISTING_SWITCH_REG_EXP);
   if (existingSwitch) {
     const switchId = existingSwitch[1];
-    const model = get(state, `entities.${ENTITY}.${switchId}`, {
+    const model = _.get(state, `entities.${ENTITY}.${switchId}`, {
       ...defaultState,
       id: switchId
     });

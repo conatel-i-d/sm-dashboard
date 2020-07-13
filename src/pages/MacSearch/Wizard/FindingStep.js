@@ -9,6 +9,7 @@ const FindingStep = ({
   searchType,
   isLoading,
   findResult,
+  findMac,
   updateFilterInput
 }) => {
 
@@ -35,7 +36,7 @@ const FindingStep = ({
       </div>
     </div>
   ) : (
-    <Table items={findResult} updateFilterInput={updateFilterInput} />
+    <Table items={findResult} updateFilterInput={updateFilterInput} findMac={findMac} />
   );
 };
 

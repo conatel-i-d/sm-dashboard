@@ -28,11 +28,10 @@ const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
   { key: 'description', title: 'Descripción', transforms: [sortable] },
   { key: 'protocol', title: 'Estado', transforms: [sortable] },
-  { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] },
-  { key: 'mac_entries', title: 'Macs', transforms: [sortable] }
+  { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] }
 ];
 
-function Table({ items, sortBy, onSort = () => {}, reboot, switchId }) {
+const Table = ({ items, sortBy, onSort = () => {}, reboot, switchId }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [macEntries, setMacEntries] = React.useState('');
   function onReboot(_, __, rowData) {
@@ -46,11 +45,6 @@ function Table({ items, sortBy, onSort = () => {}, reboot, switchId }) {
 
   return (
     <>
-      <NicsModal
-        isOpen={isModalOpen}
-        onClose={handleModalToggle}
-        mac_entries={macEntries}
-      />
       <PatternflyTable
         aria-label="Switches Table"
         sortBy={sortBy}
@@ -127,21 +121,6 @@ function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
         const className = label === 'trunk' ? 'redLabel' : 'successLabel';
         return {
           title: <Label className={className}>{label}</Label>
-        };
-      } else if (column.key === 'mac_entries') {
-        return {
-          title: (
-            <Button
-              variant="link"
-              onClick={() => {
-                setMacEntries(item.mac_entries)
-                handleModalToggle(item.mac_entries)
-              }
-            }
-            >
-              {item.mac_entries ? item.mac_entries.split(',').length : 0}
-            </Button>
-          )
         };
       } else return get(item, column.key);
     }),

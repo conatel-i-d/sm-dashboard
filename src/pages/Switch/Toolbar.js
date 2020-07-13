@@ -16,7 +16,7 @@ import { SearchIcon } from '@patternfly/react-icons';
 import { updateFilterInput, selectSwitchNicsCount } from '../../state/nics';
 import get from 'lodash/get';
 
-function Toolbar({ updateFilterInput, filterInput, count }) {
+function Toolbar({ updateFilterInput, filterInput, count, foundInterface, foundMac }) {
 
   React.useEffect(() => {
     updateFilterInput("");
@@ -44,7 +44,12 @@ function Toolbar({ updateFilterInput, filterInput, count }) {
       </ToolbarItem>
       <ToolbarItem>
         <TextContent>
-          <Text component={TextVariants.h5}><b>Número de Interfaces:</b> {count}</Text>
+          {
+            foundInterface
+            ? <Text component={TextVariants.h5}><b>Mac buscada:</b> {foundMac}</Text>
+            : <Text component={TextVariants.h5}><b>Número de Interfaces:</b> {count}</Text>
+          }
+          
         </TextContent>
       </ToolbarItem>
     </PatternflyToolbar>

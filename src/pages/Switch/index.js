@@ -41,14 +41,15 @@ const SwitchPage = ({
   
   const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, '').replace('/reboot/nics', ''), [location]);
 
-  const foundInterface = React.useMemo(() => location.search.replace('?filter_by_find=', ''), [location])
+  const foundInterface = React.useMemo(() => location.search.replace('?filter_by_find=', '').replace(/&found_mac=.*/, ''), [location])
+
+  const foundMac = React.useMemo(() => location.search.replace(/.*&found_mac=/, ''), [location])
 
   React.useEffect(() => {
-    if(!switchId.includes('reboot')) {
       getSwitch(switchId);
       getInterfaces(switchId, foundInterface);
-    }
-  }, [getSwitch, getInterfaces, switchId, foundInterface]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <PageSection
@@ -62,7 +63,7 @@ const SwitchPage = ({
           />
         </Switch>
         <SwitchDetails />
-        <Toolbar />
+        <Toolbar  foundInterface={foundInterface} foundMac={foundMac}/>
       </PageSection>
       <PageSection 
         variant={PageSectionVariants.light} 

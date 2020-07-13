@@ -24,14 +24,14 @@ const COLUMNS = [
 const onEdit = onActionFactory('edit');
 const onDelete = onActionFactory('delete');
 
-function Table({ items, sortBy, onSort }) {
+function Table({ items, sortBy, onSort = () => {}, updateSortBy }) {
   return (
     <PatternflyTable
       aria-label="Switches Table"
       sortBy={sortBy}
-      onSort={(_, index, direction) =>
-        onSort({ index, direction, key: get(COLUMNS, `${index}.key`) })
-      }
+        onSort={(_, index, direction) =>
+          onSort({ index, direction, key: get(COLUMNS, `${index}.key`) })
+        }
       cells={COLUMNS}
       rows={calculateRows(items, sortBy)}
       actions={[

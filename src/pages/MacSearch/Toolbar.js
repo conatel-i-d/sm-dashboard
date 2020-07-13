@@ -1,3 +1,5 @@
+import './style.css'
+
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -7,7 +9,8 @@ import {
   Toolbar as PatternflyToolbar,
   ToolbarItem,
   InputGroup,
-  TextInput
+  TextInput,
+  ToolbarGroup
 } from '@patternfly/react-core';
 import { FilterIcon } from '@patternfly/react-icons';
 
@@ -16,24 +19,29 @@ import { updateFilterInput } from '../../state/switches';
 const Toolbar = ({ updateFilterInput }) => {
   return (
     <PatternflyToolbar className="Switches__Toolbar">
-      <ToolbarItem>
-        <InputGroup>
-          <TextInput
-            onChange={e => updateFilterInput(e)}
-            name="filterInput"
-            type="search"
-            aria-label="filter input"
-          />
-          <Button
-            variant={ButtonVariant.control}
-            aria-label="search button for filter input"
-          >
-            <FilterIcon />
-          </Button>
-        </InputGroup>
-      </ToolbarItem>
+      <ToolbarGroup>
+        <ToolbarItem className="--filter-text">
+          <p className="--filter-text">Filtro por edificio: </p>
+          </ToolbarItem>
+        <ToolbarItem>
+          <InputGroup>
+            <TextInput
+              onChange={(e) => updateFilterInput(e)}
+              name="filterInput"
+              type="search"
+              aria-label="filter input"
+            />
+            <Button
+              variant={ButtonVariant.control}
+              aria-label="search button for filter input"
+            >
+              <FilterIcon />
+            </Button>
+          </InputGroup>
+        </ToolbarItem>
+      </ToolbarGroup>
     </PatternflyToolbar>
   );
-}
+};
 
 export default connect(() => ({}), { updateFilterInput })(Toolbar);
