@@ -14,7 +14,6 @@ import {
 } from '@patternfly/react-core';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 
-import { updateFilterInput } from '../../state/nics';
 
 import {
   selectAllAsTree ,
