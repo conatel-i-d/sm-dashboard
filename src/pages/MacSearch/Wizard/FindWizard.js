@@ -1,6 +1,5 @@
 import React from 'react';
 import { Wizard } from '@patternfly/react-core';
-import _, { find } from 'lodash';
 import { history } from '../../../modules/history.js';
 import FindingStep from './FindingStep.js';
 import InsertMacStep from './InsertMacStep';

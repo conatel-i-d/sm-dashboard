@@ -35,16 +35,12 @@ const MacSearchPage = ({
   findResult,
   get,
   findByMac,
-  updateFilterInput,
   handleCheckVisible
 }) => {
-  
-  React.useEffect(() => { get() }, [get]);
-  
   React.useEffect(() => {
-    updateFilterInput("");
+    get();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [get]);
   return (
     <>
           <PageSection
@@ -58,8 +54,6 @@ const MacSearchPage = ({
           findResult={findResult}
           switchesTree={getSwitchesAsTree}
           cancelFindByMac={cancelFindByMac}
-          updateFilterInput={updateFilterInput}
-
         />
         <Toolbar />
       </PageSection>
@@ -86,7 +80,6 @@ export const getState = state => ({
 const getDispatchers = dispatch => ({
   get: (state) => dispatch(getSwitches(state)),
   findByMac: (state) => dispatch(findByMac(state)),
-  updateFilterInput: (state) => dispatch(updateFilterInput(state)),
   handleCheckVisible: (state) => dispatch(edit(state))
 });
 
