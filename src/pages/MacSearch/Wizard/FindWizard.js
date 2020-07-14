@@ -1,6 +1,6 @@
 import React from 'react';
 import { Wizard } from '@patternfly/react-core';
-import _ from 'lodash';
+import _, { find } from 'lodash';
 import { history } from '../../../modules/history.js';
 import FindingStep from './FindingStep.js';
 import InsertMacStep from './InsertMacStep';
@@ -61,7 +61,6 @@ const FindWizard = (props) => {
   // si entre por edificio (grupo de sw o branch en tree) en ese caso hago una lista
   // con todos los ids de los switches de ese grupo y voy a buscar en todos
   const goToFind = (newStep) => {
-    const formatedMac = _.chunk(findMac.replace(/^,|:|-/g, ''), 4).map((s) => s.join('')).join('.');
     history.push(`${location.pathname}?search=${findMac}`);
     if (newStep.name === 'Buscando') {
       if (searchType === 'switch') {
@@ -74,7 +73,7 @@ const FindWizard = (props) => {
               (y) => y.value.id
             );
             if (switchesToFindIds.length > 0) {
-              onFind({ switchesToFindIds, mac: formatedMac });
+              onFind({ switchesToFindIds, mac: findMac });
             }
           }
         }

@@ -41,7 +41,7 @@ const SwitchPage = ({
   
   const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, '').replace('/reboot/nics', ''), [location]);
 
-  const foundInterface = React.useMemo(() => location.search.replace('?filter_by_find=', '').replace(/&found_mac=.*/, ''), [location])
+  const foundInterface = React.useMemo(() => location.search.replace('?found_interface=', '').replace(/&found_mac=.*/, ''), [location])
 
   const foundMac = React.useMemo(() => location.search.replace(/.*&found_mac=/, ''), [location])
 

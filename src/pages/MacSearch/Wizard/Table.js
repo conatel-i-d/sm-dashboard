@@ -18,16 +18,17 @@ import { find } from 'lodash';
 const COLUMNS = [
   { key: 'switch_id', title: 'SW ID', transforms: [sortable] },
   { key: 'switch_name', title: 'SW Name', transforms: [sortable] },
-  { key: 'interface_name', title: 'NIC Name', transforms: [sortable] }
+  { key: 'interface_name', title: 'NIC Name', transforms: [sortable] },
+  { key: 'mac_address', title: 'MAC', transforms: [sortable] }
 ];
 
-const Table = ({ items, findMac }) => {
+const Table = ({ items }) => {
   return (
     <>
       <PatternflyTable
         aria-label="Switches Table"
         cells={COLUMNS}
-        rows={calculateRows(items, findMac)}
+        rows={calculateRows(items)}
         variant={TableVariant.compact}
       >
         <TableHeader />
@@ -37,7 +38,7 @@ const Table = ({ items, findMac }) => {
   );
 };
 
-function calculateRows(items, findMac) {
+function calculateRows(items) {
   if (items === undefined) return [];
   return items.map((item) => ({
     cells: COLUMNS.map((column) => {
@@ -47,7 +48,7 @@ function calculateRows(items, findMac) {
             <Button
               component="a"
               onClick={() => {
-                handleGoToInterface(item, findMac);
+                handleGoToInterface(item);
               }}
               target="_blank"
               variant="primary"
@@ -61,8 +62,8 @@ function calculateRows(items, findMac) {
   }));
 }
 
-const handleGoToInterface = (item, findMac) => {
-  history.push(`/switches/${item.switch_id}?found_mac=${findMac}`);
+const handleGoToInterface = (item) => {
+  history.push(`/switches/${item.switch_id}?found_interface=${item.interface_name}&found_mac=${item.mac_address}`);
 };
 
 export default Table;

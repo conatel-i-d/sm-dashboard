@@ -11,13 +11,11 @@ import {
   sortable
 } from '@patternfly/react-table';
 
-import { Label, Button } from '@patternfly/react-core';
+import { Label } from '@patternfly/react-core';
 
 import { history } from '../../modules/history.js';
 
 import { selectSwitchNics, reboot } from '../../state/nics';
-
-import NicsModal from './NicsModal';
 
 import { getUserRoles } from '../../state/utils'
 
@@ -33,7 +31,6 @@ const COLUMNS = [
 
 const Table = ({ items, sortBy, onSort = () => {}, reboot, switchId }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [macEntries, setMacEntries] = React.useState('');
   function onReboot(_, __, rowData) {
     const name = get(rowData, 'cells.0', '');
     history.push(`/switches/${switchId}/reboot?name=${name}`);
@@ -52,7 +49,7 @@ const Table = ({ items, sortBy, onSort = () => {}, reboot, switchId }) => {
           onSort({ index, direction, key: get(COLUMNS, `${index}.key`) })
         }
         cells={COLUMNS}
-        rows={calculateRows(items, sortBy, setMacEntries, handleModalToggle)}
+        rows={calculateRows(items, sortBy, handleModalToggle)}
         actions={[{ title: 'Reiniciar', onClick: onReboot }]}
         variant={TableVariant.compact}
         rowWrapper={TableRowWrapper}
@@ -104,7 +101,7 @@ function filterItemsByName(item) {
   : true
 }
 
-function calculateRows(items, sortBy, setMacEntries, handleModalToggle) {
+function calculateRows(items, sortBy, handleModalToggle) {
   if (items === undefined) return [];
   const filteredItems = items.filter(filterItemsByName)
   return filteredItems.map(item => ({

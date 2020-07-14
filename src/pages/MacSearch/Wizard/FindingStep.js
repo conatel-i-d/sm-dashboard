@@ -36,7 +36,7 @@ const FindingStep = ({
       </div>
     </div>
   ) : (
-    <Table items={findResult} updateFilterInput={updateFilterInput} findMac={findMac} />
+    <Table items={findResult} />
   );
 };
 

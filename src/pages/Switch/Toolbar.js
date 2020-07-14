@@ -46,7 +46,7 @@ function Toolbar({ updateFilterInput, filterInput, count, foundInterface, foundM
         <TextContent>
           {
             foundInterface
-            ? <Text component={TextVariants.h5}><b>Mac buscada:</b> {foundMac}</Text>
+            ? <Text component={TextVariants.h5}><b>Mac encontrada:</b> {foundMac}</Text>
             : <Text component={TextVariants.h5}><b>Número de Interfaces:</b> {count}</Text>
           }
           
