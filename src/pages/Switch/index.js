@@ -29,7 +29,7 @@ import './index.css';
 
 const ENTITY = 'switches';
 
-export function SwitchPage({
+const SwitchPage = ({
   loading,
   location,
   reboot,
@@ -37,17 +37,19 @@ export function SwitchPage({
   getInterfaces,
   sortBy,
   updateSortBy
-}) {
+}) => {
   
-  const switchId = React.useMemo(
-    () => location.pathname.replace(`/${ENTITY}/`, ''), []
-  );
+  const switchId = React.useMemo(() => location.pathname.replace(`/${ENTITY}/`, '').replace('/reboot/nics', ''), [location]);
+
+  const foundInterface = React.useMemo(() => location.search.replace('?found_interface=', '').replace(/&found_mac=.*/, ''), [location])
+
+  const foundMac = React.useMemo(() => location.search.replace(/.*&found_mac=/, ''), [location])
 
   React.useEffect(() => {
-    getSwitch({ id: switchId });
-    getInterfaces({ switchId });
-  }, [getSwitch, getInterfaces, switchId]);
-
+      getSwitch(switchId);
+      getInterfaces(switchId, foundInterface);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <PageSection
@@ -61,12 +63,12 @@ export function SwitchPage({
           />
         </Switch>
         <SwitchDetails />
-        <Toolbar />
+        <Toolbar  foundInterface={foundInterface} foundMac={foundMac}/>
       </PageSection>
       <PageSection 
         variant={PageSectionVariants.light} 
         className="Switch__Page Switch__Page-InterfacesTable">
-        {loading 
+        {loading
           ? <Bullseye><Spinner /></Bullseye>
           : <Table sortBy={sortBy} onSort={updateSortBy} />
         }

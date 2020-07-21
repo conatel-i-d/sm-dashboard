@@ -1,7 +1,28 @@
-import { actionCreator } from '../utils';
+import Rest from '../utils/rest.js';
+import { schema } from 'normalizr';
 
 const ENTITY = 'logs';
+const logsSchema = new schema.Entity(ENTITY);
 
-export const create = actionCreator(`@${ENTITY}/POST_REQUEST`);
-export const get = actionCreator(`@${ENTITY}/GET_REQUEST`);
-export const updateSortBy = actionCreator(`@${ENTITY}/UPDATE_SORT_BY`);
+var rest = Rest({
+  entity: `${ENTITY}`,
+  endpoint: `/api/${ENTITY}/`,
+  schema: logsSchema,
+});
+
+export const updateFilterInput = (filterInput) => (dispatch) => {
+  return dispatch({
+    type: `@${ENTITY}/UPDATE_FILTER_INPUT`,
+    payload: filterInput
+  });
+};
+
+export const updateSortBy = {
+  type: `@${ENTITY}/UPDATE_SORT_BY`
+};
+
+
+export const get = rest.read;
+export const create = rest.create;
+export const edit = rest.update;
+export const destroy = rest.destroy;

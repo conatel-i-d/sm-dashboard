@@ -1,0 +1,44 @@
+.Switches__Page {
+  padding: 0 1em;
+}
+
+.Switch__Toolbar {
+  padding: 0.5em 0;
+  justify-content: space-between;
+}
+
+.FindSearch__Page.FindSearch__Page-Details {
+  padding: var(--pf-c-page__main-section--PaddingTop) calc(var(--pf-c-page__main-section--PaddingRight)*2) calc(var(--pf-c-page__main-section--PaddingBottom)/4) calc(var(--pf-c-page__main-section--PaddingLeft)*2);
+}
+
+.FindSearch__Page.FindSearch__Page-InterfacesTable {
+  padding: calc(var(--pf-c-page__main-section--PaddingTop)/4) var(--pf-c-page__main-section--PaddingRight) var(--pf-c-page__main-section--PaddingBottom) 0;
+}
+
+.Switch--TrunkInterface {
+  border-left: 3px solid var(--pf-global--primary-color--100);
+}
+
+.redLabel {
+  background: var(--pf-global--danger-color--100);
+}
+
+.greenLabel {
+  background: var(--pf-global--success-color--100);
+}
+
+.successLabel {
+  background: var(--pf-global--info-color--100);
+}
+
+.normalLabel {
+  background: rgba(3,3,3,0.32);
+}
+
+.list-group-item-header {
+  padding: 0 0px; /* Items list padding - se podría ahorrar mas espacio a la izquierda */
+}
+
+.--filter-text {
+  margin: 0 0 0 0;
+}

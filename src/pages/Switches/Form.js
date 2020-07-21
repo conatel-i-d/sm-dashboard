@@ -63,12 +63,62 @@ function Form({ model, onChange }) {
           onChange={handleChange('ip')}
         />
       </FormGroup>
+      <FormGroup 
+        label="SSH User"
+        isRequired
+        fieldId="switch-form-user"
+        helperText="OBS: Solo para los switches agregados manual, no aplica a los switches obtenidos del Cisco Prime"  
+      >
+        <TextInput
+          isRequired={false}
+          type="text"
+          id="switch-form-user"
+          name="switch-form-user"
+          value={atob(model.ansible_user || "")}
+          onChange={handleChange('ansible_user')}
+        />
+      </FormGroup>
+      <FormGroup 
+        label="SSH Passwrod"
+        isRequired
+        fieldId="switch-form-password"
+        helperText="OBS: Solo para los switches agregados manual, no aplica a los switches obtenidos del Cisco Prime"  
+      >
+        <TextInput
+          isRequired={false}
+          type="password"
+          id="switch-form-password"
+          name="switch-form-password"
+          value={atob(model.ansible_ssh_pass || "")}
+          onChange={handleChange('ansible_ssh_pass')}
+        />
+      </FormGroup>
+      <FormGroup 
+        label="SSH Port"
+        isRequired
+        fieldId="switch-form-port"
+        helperText="OBS: Solo para los switches agregados manual, no aplica a los switches obtenidos del Cisco Prime"  
+      >
+        <TextInput
+          isRequired={false}
+          type="number"
+          id="switch-form-port"
+          name="switch-form-port"
+          value={model.ansible_ssh_port}
+          onChange={handleChange('ansible_ssh_port')}
+        />
+      </FormGroup>
     </PatternflyForm>
   );
 
   function handleChange(key) {
     return function (value) {
-      onChange({...model, [key]: value});
+      if (key === 'ansible_user' || key === 'ansible_ssh_pass') {
+        onChange({...model, [key]: btoa(value || "")});
+      }
+      else {
+        onChange({...model, [key]: value});
+      }
     }
   }
 }

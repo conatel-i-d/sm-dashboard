@@ -1,11 +1,16 @@
 import get from 'lodash/get';
-
-import { createReducer, updateState, sortItems, filterItems, updateIds } from '../utils';
-
+import {
+  createReducer,
+  updateState,
+  sortItems,
+  filterItems,
+} from '../utils';
 const ENTITY = 'nics';
 
 export const initialState = {
+  ids: {},
   loading: false,
+  switchId: undefined,
   sortBy: {
     index: 0,
     key: 'name',
@@ -17,37 +22,49 @@ const FUSE_OPTIONS = {
   shouldSort: true,
   threshold: 0.2,
   location: 0,
-  distance: 100,
+  distance: 10000,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ['name', 'description', 'protocol', 'adminisrtative_mode']
+  keys: ['name', 'description', 'protocol', 'adminisrtative_mode', 'mac_entries']
 };
 
-const handleLoading = updateState(`${ENTITY}.loading`, true);
-
-const resetNic = (state, payload) => {
-  return state;
-}
-
-
 export const reducer = createReducer(initialState, {
-  [`@${ENTITY}/LOADING`]: handleLoading,
-  [`@${ENTITY}/GET_REQUEST`]: (state, { entities, result }) => {
-    return {
-      ...updateIds(state, result),
-      entities: { ...state.entities, ...entities },
-      [`${ENTITY}.loading`]: false
-    }
-  },
-  [`@${ENTITY}/REBOOT_REQUEST`]: resetNic,
+  [`@${ENTITY}/GET_REQUEST`]: updateActiveSwitchId,
+  [`@${ENTITY}/GET_SUCCESS`]: updateSwitchNicsIds,
+  [`@${ENTITY}/GET_ERROR`]: updateSwitchNicsIds,
   [`@${ENTITY}/UPDATE_SORT_BY`]: updateState('sortBy'),
-  [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput')
+  [`@${ENTITY}/UPDATE_FILTER_INPUT`]: updateState('filterInput'),
+  [`@${ENTITY}/REBOOT_REQUEST_SUCCESS`]: state => state,
+  [`@${ENTITY}/REBOOT_REQUEST_ERROR`]: state => state
 });
 
+export function updateActiveSwitchId(state, payload) {
+  var switchId = get(payload, 'switchId');
+  return {
+    ...state,
+    loading: true,
+    switchId
+  };
+}
+
+export function updateSwitchNicsIds(state, payload) {
+  const switchId = get(state, 'switchId');
+  var ids = get(state, `ids`, {});
+  return {
+    ...state,
+    loading: false,
+    ids: {
+      ...ids,
+      [switchId]: payload.result
+    }
+  }
+}
 
 export function getLoading(state) {
+  var loading = get(state, `${ENTITY}.loading`, false);
+  // var items = getNics(state);
   return {
-    loading: get(state, `${ENTITY}.loading`)
+    loading: loading // && items.length === 0
   };
 }
 
@@ -80,7 +97,9 @@ export function selectSwitchNics(state) {
 
 function getNics(state) {
   const switchId = getSwitchId(state);
-  return get(state, `entities.switches.${switchId}.nics`, []);
+  const ids = get(state, `${ENTITY}.ids.${switchId}`, []);
+  const collection = get(state, `entities.${ENTITY}`, {});
+  return ids.map(id => collection[id]).filter(item => item !== undefined);
 }
 
 function getSwitchId(state) {

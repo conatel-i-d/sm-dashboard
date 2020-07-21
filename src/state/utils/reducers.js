@@ -56,3 +56,10 @@ export function updateIds(state, payload) {
     ids: union(state.ids, payload.result)
   });
 }
+
+export function resetIds(state) {
+  return updateObject(state, {
+    loading: false,
+    ids: []
+  });
+}

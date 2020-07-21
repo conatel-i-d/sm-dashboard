@@ -1,13 +1,15 @@
-# Stage 1 - the build process
-FROM node:12 as build-deps
-WORKDIR /usr/src/app
-COPY package.json yarn.lock ./
-RUN yarn
-COPY . ./
+FROM node:12.16.1-alpine3.9 as build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY ./package.json /app/
+RUN yarn --silent
+COPY . /app
 RUN yarn build
 
-# Stage 2 - the production environment
-FROM nginx:1.15.1
-COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
+# stage 2 - build the final image and copy the react build files
+FROM nginx:1.17.8-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -66,3 +66,24 @@ export function getToken() {
   if (window.k !== undefined) return window.k.idToken;
   return '';
 }
+
+export async function updateToken() {
+  try {
+    if (window.k !== undefined) {
+        await window.k.updateToken(600)
+      }
+  }
+  catch {
+    alert('Failed to refresh token');
+  }
+}
+
+export const getUserRoles = () => {
+  const base64Payload = window.k.token.split('.')[1];
+  const payload = JSON.parse(atob(base64Payload))
+  return payload.realm_access 
+  ? payload.realm_access.roles !== undefined
+      ? payload.realm_access.roles
+      : []
+  : []
+}

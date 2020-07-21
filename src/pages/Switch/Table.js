@@ -17,6 +17,11 @@ import { history } from '../../modules/history.js';
 
 import { selectSwitchNics, reboot } from '../../state/nics';
 
+import { getUserRoles } from '../../state/utils'
+
+const FILTER_RESET_ENABLES = ['trunk']
+const FILTER_ITEMS_BY_NAME = ['Te']
+
 const COLUMNS = [
   { key: 'name', title: 'Nombre', transforms: [sortable] },
   { key: 'description', title: 'Descripción', transforms: [sortable] },
@@ -24,32 +29,45 @@ const COLUMNS = [
   { key: 'adminisrtative_mode', title: 'Tipo', transforms: [sortable] }
 ];
 
-function Table({ items, sortBy, onSort=() => {}, reboot, switchId }) {
+const Table = ({ items, sortBy, onSort = () => {}, reboot, switchId }) => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   function onReboot(_, __, rowData) {
     const name = get(rowData, 'cells.0', '');
     history.push(`/switches/${switchId}/reboot?name=${name}`);
   }
 
+  const handleModalToggle = args => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
-    <PatternflyTable
-      aria-label="Switches Table"
-      sortBy={sortBy}
-      onSort={(_, index, direction) =>
-        onSort({ index, direction, key: get(COLUMNS, `${index}.key`) })
-      }
-      cells={COLUMNS}
-      rows={calculateRows(items, sortBy)}
-      actions={[{ title: 'Reiniciar', onClick: onReboot }]}
-      variant={TableVariant.compact}
-      rowWrapper={TableRowWrapper}
-    >
-      <TableHeader />
-      <TableBody rowKey={({ rowData }) => rowData.cells[0]} />
-    </PatternflyTable>
+    <>
+      <PatternflyTable
+        aria-label="Switches Table"
+        sortBy={sortBy}
+        onSort={(_, index, direction) =>
+          onSort({ index, direction, key: get(COLUMNS, `${index}.key`) })
+        }
+        cells={COLUMNS}
+        rows={calculateRows(items, sortBy, handleModalToggle)}
+        actions={[{ title: 'Reiniciar', onClick: onReboot }]}
+        variant={TableVariant.compact}
+        rowWrapper={TableRowWrapper}
+      >
+        <TableHeader />
+        <TableBody rowKey={({ rowData }) => rowData.cells[0]} />
+      </PatternflyTable>
+    </>
   );
 }
 
-function TableRowWrapper({trRef, className, rowProps, row: {isExpanded, isHeightAuto, cells}, ...props}) {
+function TableRowWrapper({
+  trRef,
+  className,
+  rowProps,
+  row: { isExpanded, isHeightAuto, cells },
+  ...props
+}) {
   const isTrunk = get(cells, '[4].title.props.children', '') === 'trunk';
   return (
     <tr
@@ -63,31 +81,47 @@ function TableRowWrapper({trRef, className, rowProps, row: {isExpanded, isHeight
       )}
       hidden={isExpanded !== undefined && !!isExpanded}
     />
-  )
+  );
 }
 
-function calculateRows(items) {
+
+function validateResetNic(item) {
+  const administrativeMode = get(item, 'adminisrtative_mode');
+  const protocol = get(item, "protocol");
+  const { description } = item;
+  return (protocol.includes('down') && !protocol.includes("err-disable")) || 
+  administrativeMode === 'trunk' ||
+  (!getUserRoles().includes('administrator') && !getUserRoles().includes('operator')) ||
+  (description && !FILTER_RESET_ENABLES.every(cond => !description.toLowerCase().includes(cond)))
+}
+
+function filterItemsByName(item) {
+  return (item.name !== undefined && item.name !== null)
+  ? FILTER_ITEMS_BY_NAME.every(cond => !item.name.includes(cond))
+  : true
+}
+
+function calculateRows(items, sortBy, handleModalToggle) {
   if (items === undefined) return [];
-  return items.map(item => ({
+  const filteredItems = items.filter(filterItemsByName)
+  return filteredItems.map(item => ({
     cells: COLUMNS.map(column => {
       if (column.key === 'protocol') {
-        const label = get(item, column.key);
-        const className = label === 'up (connected) ' ? 'greenLabel' : 'normalLabel';
+        let label = get(item, column.key, 'unknown');
+        const className =
+          label.toLowerCase().includes('up') ? 'greenLabel' : 'normalLabel';
         return {
           title: <Label className={className}>{label}</Label>
         };
       } else if (column.key === 'adminisrtative_mode') {
-        const label = get(item, column.key);
+        const label = get(item, column.key, 'unknown');
         const className = label === 'trunk' ? 'redLabel' : 'successLabel';
         return {
           title: <Label className={className}>{label}</Label>
         };
       } else return get(item, column.key);
     }),
-    disableActions:
-      item.state === 'down' || item['adminisrtative_mode'] === 'trunk'
-        ? true
-        : false
+    disableActions: validateResetNic(item)
   }));
 }
 
